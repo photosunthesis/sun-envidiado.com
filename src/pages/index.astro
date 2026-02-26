@@ -44,14 +44,6 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'WebSite',
-      '@id': `${siteBase}/#website`,
-      url: siteBase,
-      name: 'Sun Envidiado',
-      description: seoMeta.description,
-      inLanguage: 'en-US',
-    },
-    {
       '@type': 'Person',
       '@id': `${siteBase}/#person`,
       name: 'Sun Envidiado',
@@ -90,6 +82,7 @@ const jsonLd = {
     slot="head"
     title={seoMeta.title}
     description={seoMeta.description}
+    tags={seoMeta.tags}
     type="website"
     jsonLd={jsonLd}
   />

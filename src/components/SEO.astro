@@ -38,6 +38,19 @@ const imageUrl = image?.startsWith('http')
   : generateImageUrl(image || SITE_CONFIG.defaultImage, Astro.site);
 
 const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
+
+// WebSite structured data on every page so Google knows the proper site name
+const siteBase = (Astro.site || SITE_CONFIG.siteUrl).toString().replace(/\/$/, '');
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteBase}/#website`,
+  url: siteBase,
+  name: SITE_CONFIG.siteName,
+  alternateName: ['Sun Envidiado', 'sun-envidiado.com', 'sun envidiado'],
+  description: SITE_CONFIG.defaultDescription,
+  inLanguage: 'en-US',
+};
 ---
 
 <AstroSEO
@@ -93,8 +106,10 @@ const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
       { name: 'color-scheme', content: 'light dark' },
       { name: 'author', content: finalAuthor || SITE_CONFIG.authorName },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      ...(tags.length > 0 ? [{ name: 'keywords', content: tags.join(', ') }] : []),
     ],
   }}
 />
 
+<Schema item={websiteJsonLd as any} />
 {jsonLd && <Schema item={jsonLd as any} />}
