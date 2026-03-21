@@ -29,7 +29,7 @@ export const GET: APIRoute = async (context) => {
 
     items.push({
       ...post.data,
-      link: `/blog/${post.slug}`,
+      link: `/blog/${post.id}`,
       content: cleanContent,
       pubDate: post.data.pubDate,
     });

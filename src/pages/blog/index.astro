@@ -16,7 +16,7 @@ const grouped = posts.reduce(
     (acc[year] ||= []).push({
       title: p.data.title,
       pubDate: p.data.pubDate,
-      url: `/blog/${p.slug}`,
+      url: `/blog/${p.id}`,
     });
     return acc;
   },
@@ -26,7 +26,7 @@ const grouped = posts.reduce(
 const postList = posts.map((p) => ({
   title: p.data.title,
   pubDate: p.data.pubDate,
-  url: `/blog/${p.slug}`,
+  url: `/blog/${p.id}`,
 }));
 
 const seoMeta = {

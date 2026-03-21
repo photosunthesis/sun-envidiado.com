@@ -1,7 +1,12 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-	type: 'content',
+	loader: glob({
+		pattern: '**/[^_]*.{md,mdx}',
+		base: './src/content/blog',
+		generateId: ({ entry }: { entry: string }) => entry.replace(/\/index\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, ''),
+	}),
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
@@ -10,7 +15,7 @@ const blog = defineCollection({
 		tags: z.array(z.string()).optional(),
 		cover: z.string().optional(),
 		coverAlt: z.string().optional(),
-		layout: z.string().optional(), // Kept for backward compatibility, though usually handled in the page
+		layout: z.string().optional(),
 	}),
 });
 
