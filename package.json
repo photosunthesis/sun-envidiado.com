@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "preview": "astro build && wrangler pages dev",
+    "preview": "astro build && astro preview",
     "build": "astro build",
     "build:prod": "tsx scripts/send-newsletter.ts && astro build",
-    "deploy": "astro build && wrangler pages deploy",
+    "deploy": "astro build && wrangler deploy",
     "astro": "astro",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.astro",

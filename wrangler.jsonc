@@ -1,15 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "personal-website",
-  "pages_build_output_dir": "dist",
-  "compatibility_date": "2025-10-21",
-  "env": {
-    "production": {
-      "compatibility_date": "2026-01-27",
-      "compatibility_flags": [
-        "nodejs_compat",
-        "global_fetch_strictly_public"
-      ]
-    }
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-01-27",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./dist"
   }
 }

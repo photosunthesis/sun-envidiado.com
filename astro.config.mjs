@@ -14,27 +14,7 @@ export default defineConfig({
   },
   adapter: cloudflare({
     imageService: 'compile',
+    prerenderEnvironment: 'node',
   }),
   integrations: [sitemap(), mdx(), purgecss()],
-  vite: {
-    ssr: {
-      external: [
-        'node:fs/promises',
-        'node:url',
-        'node:path',
-        'node:fs',
-        'node:http2',
-        'node:buffer',
-        'node:crypto',
-        'fs',
-        'os',
-        'path',
-        'child_process',
-        'crypto',
-        'tty',
-        'worker_threads',
-        'url',
-      ],
-    },
-  },
 });
