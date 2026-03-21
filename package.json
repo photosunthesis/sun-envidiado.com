@@ -45,5 +45,11 @@
     "tsx": "^4.21.0",
     "typescript-eslint": "^8.56.1",
     "wrangler": "^4.76.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   }
 }
