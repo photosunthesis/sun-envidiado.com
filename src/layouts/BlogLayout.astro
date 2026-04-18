@@ -133,23 +133,73 @@ const jsonLd = {
     }
   }
 
+  .blog-title {
+    margin-bottom: 0.5rem;
+  }
+
   .post-pub-date {
     color: var(--comment);
-    margin-top: -0.4rem;
+    margin: 0;
   }
 
   .cover-image-wrapper {
     width: 100%;
-    margin: 0 0 2rem;
+    margin: 0 0 2.5rem;
   }
 
   .blog-article {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
   }
 
   #back-to-top-button {
     margin-top: 2rem;
+  }
+
+  .blog-article :global(> :first-child) {
+    margin-top: 0;
+  }
+
+  .blog-article :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  .blog-article :global(p) {
+    margin: 0 0 1.25rem;
+  }
+
+  .blog-article :global(h2) {
+    margin: 2.5rem 0 1rem;
+  }
+
+  .blog-article :global(h3) {
+    margin: 2rem 0 0.75rem;
+  }
+
+  .blog-article :global(h4) {
+    margin: 1.75rem 0 0.5rem;
+  }
+
+  .blog-article :global(ul),
+  .blog-article :global(ol) {
+    margin: 0 0 1.25rem;
+  }
+
+  .blog-article :global(pre) {
+    margin: 1.5rem 0;
+  }
+
+  .blog-article :global(blockquote) {
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--comment);
+    color: var(--comment);
+  }
+
+  .blog-article :global(hr) {
+    margin: 2.5rem 0;
+    border: 0;
+    border-top: 1px solid var(--comment);
   }
 
   .blog-article :global(img),
@@ -159,7 +209,7 @@ const jsonLd = {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
-    margin: 2rem auto;
+    margin: 2rem auto 2rem;
   }
 
   .cover-image-wrapper :global(img),
