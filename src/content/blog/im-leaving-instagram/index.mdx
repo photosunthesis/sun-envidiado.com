@@ -28,8 +28,11 @@ I just wanted a quiet place to dump photos and life updates for the people who a
 
 <Picture
   src={inThePool}
-  formats={['webp']}
+  formats={['avif', 'webp']}
   fallbackFormat="jpg"
+  widths={[400, 600, 900, 1200]}
+  sizes="(max-width: 600px) 100vw, 500px"
+  loading="lazy"
   alt="Me seen through a glass-bottom pool (optical illusion)"
   inferSize
 />

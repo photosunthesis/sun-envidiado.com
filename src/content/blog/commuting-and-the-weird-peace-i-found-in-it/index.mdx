@@ -21,8 +21,11 @@ There's this weird peace I find in the middle of all the chaos and I still can't
 
 <Picture
   src={lrtStation}
-  formats={['webp']}
+  formats={['avif', 'webp']}
   fallbackFormat="jpg"
+  widths={[400, 600, 900, 1200]}
+  sizes="(max-width: 600px) 100vw, 500px"
+  loading="lazy"
   alt="People walking along a footpath beside an LRT station building on a sunny day in Manila"
   inferSize
 />
@@ -37,8 +40,11 @@ I spend half the time zoning out, looking out the window, watching the city pass
 
 <Picture
   src={busInterior}
-  formats={['webp']}
+  formats={['avif', 'webp']}
   fallbackFormat="jpg"
+  widths={[400, 600, 900, 1200]}
+  sizes="(max-width: 600px) 100vw, 500px"
+  loading="lazy"
   alt="View from inside a Manila city bus, looking toward the front with passengers seated and the city visible through the window"
   inferSize
 />

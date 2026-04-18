@@ -73,8 +73,12 @@ const jsonLd = {
         <div class="cover-image-wrapper">
           <Picture
             src={coverImage}
-            formats={['webp']}
+            formats={['avif', 'webp']}
             fallbackFormat="jpg"
+            widths={[400, 600, 900, 1200]}
+            sizes="(max-width: 600px) 100vw, 500px"
+            loading="eager"
+            fetchpriority="high"
             alt={frontmatter.coverAlt || 'Cover image'}
           />
         </div>

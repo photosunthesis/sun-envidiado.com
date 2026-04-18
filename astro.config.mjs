@@ -12,8 +12,11 @@ export default defineConfig({
   build: {
     format: 'file',
   },
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp' },
+  },
   adapter: cloudflare({
-    imageService: 'compile',
+    imageService: 'custom',
     prerenderEnvironment: 'node',
   }),
   integrations: [sitemap(), mdx(), purgecss()],

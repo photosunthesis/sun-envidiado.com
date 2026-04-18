@@ -168,8 +168,11 @@ const projects = [
                 <div class="project-image-container">
                   <Picture
                     src={project.image}
-                    formats={['webp']}
+                    formats={['avif', 'webp']}
                     fallbackFormat="jpg"
+                    widths={[200, 400, 600]}
+                    sizes="(max-width: 600px) 100vw, 200px"
+                    loading="lazy"
                     alt={project.alt}
                     class="project-image"
                   />

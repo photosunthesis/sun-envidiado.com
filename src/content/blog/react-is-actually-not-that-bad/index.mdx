@@ -52,8 +52,11 @@ I wrote an article lowkey trashing React because setting up a project was overwh
 
 <Picture
   src={RateStuffOnline}
-  formats={['webp']}
+  formats={['avif', 'webp']}
   fallbackFormat="jpg"
+  widths={[400, 600, 900, 1200]}
+  sizes="(max-width: 600px) 100vw, 500px"
+  loading="lazy"
   alt="Rate Stuff Online screenshot"
 />
 
