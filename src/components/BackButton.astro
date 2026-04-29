@@ -13,21 +13,22 @@ const { href = '/', label = '← Back', class: className } = Astro.props;
 </div>
 
 <script>
-  const backButtons = document.querySelectorAll('a.js-back-button');
+  const handleBackClick = (e: Event) => {
+    if (window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  };
 
-  backButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      const hasHistory = window.history.length > 1;
-      const isSameOrigin =
-        document.referrer && document.referrer.indexOf(window.location.host) !== -1;
-
-      if (hasHistory && isSameOrigin) {
-        e.preventDefault();
-        window.history.back();
-        return;
-      }
+  const bindBackButtons = () => {
+    document.querySelectorAll('a.js-back-button').forEach((button) => {
+      button.removeEventListener('click', handleBackClick);
+      button.addEventListener('click', handleBackClick);
     });
-  });
+  };
+
+  bindBackButtons();
+  document.addEventListener('astro:page-load', bindBackButtons);
 </script>
 
 <style lang="scss">
