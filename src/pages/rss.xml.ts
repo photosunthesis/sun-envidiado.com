@@ -41,6 +41,7 @@ export const GET: APIRoute = async (context) => {
       'Random thoughts from Sun about coding, gaming, life updates, and whatever else crosses my mind.',
     site: context.site?.toString() || 'https://sun-envidiado.com',
     items,
-    customData: `<language>en-us</language>`,
+    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
+    customData: `<language>en-us</language><atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />`,
   });
 };
