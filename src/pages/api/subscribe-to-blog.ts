@@ -1,12 +1,11 @@
 import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
 import { SignJWT } from 'jose';
 import { Resend } from 'resend';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const { env } = locals.runtime;
-
+export const POST: APIRoute = async ({ request }) => {
   const RESEND_API_KEY = env.RESEND_API_KEY;
   const JWT_SECRET = env.JWT_SECRET;
   const SITE_URL = env.PUBLIC_SITE_URL || 'https://sun-envidiado.com';
@@ -16,7 +15,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 
   try {
-    const { email } = await request.json();
+    const { email } = (await request.json()) as { email?: string };
 
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
       return new Response(JSON.stringify({ message: 'Invalid email address' }), { status: 400 });

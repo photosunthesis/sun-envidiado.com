@@ -2,6 +2,7 @@ import type {
   BlogPosting,
   BreadcrumbList,
   CollectionPage,
+  ImageObject,
   WithContext,
 } from 'schema-dts';
 import { PERSON_ID, SITE_CONFIG, generateCanonicalUrl } from './seo';
@@ -9,19 +10,28 @@ import { PERSON_ID, SITE_CONFIG, generateCanonicalUrl } from './seo';
 export interface BlogPostingInput {
   title: string;
   description: string;
-  imageUrl: string;
+  image: string | { url: string; width: number; height: number };
   canonicalUrl: string;
   pubDate?: string;
   updatedDate?: string;
 }
 
 export function buildBlogPostingSchema(input: BlogPostingInput): BlogPosting {
+  const image: ImageObject | string =
+    typeof input.image === 'string'
+      ? input.image
+      : {
+          '@type': 'ImageObject',
+          url: input.image.url,
+          width: { '@type': 'QuantitativeValue', value: input.image.width, unitCode: 'E37' },
+          height: { '@type': 'QuantitativeValue', value: input.image.height, unitCode: 'E37' },
+        };
   return {
     '@type': 'BlogPosting',
     mainEntityOfPage: { '@type': 'WebPage', '@id': input.canonicalUrl },
     headline: input.title,
     description: input.description,
-    image: input.imageUrl,
+    image,
     datePublished: input.pubDate,
     dateModified: input.updatedDate || input.pubDate,
     author: { '@id': PERSON_ID },

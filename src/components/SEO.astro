@@ -92,6 +92,12 @@ const isArticle = type === 'article';
       { rel: 'manifest', href: '/site.webmanifest' },
       { rel: 'sitemap', href: '/sitemap-index.xml' },
       {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: `${SITE_CONFIG.siteName} Blog`,
+        href: '/rss.xml',
+      },
+      {
         rel: 'preload',
         href: '/fonts/Web437_ToshibaSat_8x14.woff2',
         as: 'font',

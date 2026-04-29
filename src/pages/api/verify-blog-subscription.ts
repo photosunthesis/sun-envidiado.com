@@ -1,12 +1,11 @@
 import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
 import { jwtVerify } from 'jose';
 import { Resend } from 'resend';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ request, redirect, locals }) => {
-  const { env } = locals.runtime;
-
+export const GET: APIRoute = async ({ request, redirect }) => {
   const RESEND_API_KEY = env.RESEND_API_KEY;
   const JWT_SECRET = env.JWT_SECRET;
   const BLOG_SEGMENT_ID = env.BLOG_SEGMENT_ID;

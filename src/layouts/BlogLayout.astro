@@ -37,6 +37,10 @@ const socialImageUrl = coverImage
     ? frontmatter.image
     : generateImageUrl(frontmatter.image || SITE_CONFIG.defaultImage, Astro.site);
 
+const schemaImage = coverImage
+  ? { url: socialImageUrl, width: coverImage.width, height: coverImage.height }
+  : socialImageUrl;
+
 const tags = frontmatter.tags || [];
 const pubDate = frontmatter.pubDate ? new Date(frontmatter.pubDate).toISOString() : undefined;
 const updatedDate = frontmatter.updatedDate
@@ -49,7 +53,7 @@ const jsonLd = buildBlogPostGraph(
   {
     title: rawTitle,
     description,
-    imageUrl: socialImageUrl,
+    image: schemaImage,
     canonicalUrl,
     pubDate,
     updatedDate,
@@ -85,7 +89,7 @@ const jsonLd = buildBlogPostGraph(
             sizes="(max-width: 600px) 100vw, 500px"
             loading="eager"
             fetchpriority="high"
-            alt={frontmatter.coverAlt || 'Cover image'}
+            alt={frontmatter.coverAlt}
           />
         </div>
       )
