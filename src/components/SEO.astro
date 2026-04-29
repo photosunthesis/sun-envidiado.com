@@ -1,7 +1,13 @@
 ---
 import { SEO as AstroSEO } from 'astro-seo';
 import { Schema } from 'astro-seo-schema';
-import { SITE_CONFIG, generateCanonicalUrl, generateImageUrl } from '../utils/seo';
+import {
+  PERSON_SCHEMA,
+  SITE_CONFIG,
+  WEBSITE_SCHEMA,
+  generateCanonicalUrl,
+  generateImageUrl,
+} from '../utils/seo';
 
 interface Props {
   title?: string;
@@ -14,6 +20,7 @@ interface Props {
   author?: string;
   tags?: string[];
   jsonLd?: Record<string, unknown>;
+  isHomepage?: boolean;
 }
 
 const {
@@ -27,6 +34,7 @@ const {
   author,
   tags = [],
   jsonLd,
+  isHomepage = false,
 } = Astro.props;
 
 const canonicalUrl = canonical?.startsWith('http')
@@ -39,18 +47,6 @@ const imageUrl = image?.startsWith('http')
 
 const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
 
-// WebSite structured data on every page so Google knows the proper site name
-const siteBase = (Astro.site || SITE_CONFIG.siteUrl).toString().replace(/\/$/, '');
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${siteBase}/#website`,
-  url: siteBase,
-  name: SITE_CONFIG.siteName,
-  alternateName: ['Sun Envidiado', 'sun-envidiado.com', 'sun envidiado'],
-  description: SITE_CONFIG.defaultDescription,
-  inLanguage: 'en-US',
-};
 ---
 
 <AstroSEO
@@ -111,5 +107,6 @@ const websiteJsonLd = {
   }}
 />
 
-<Schema item={websiteJsonLd as any} />
+<Schema item={PERSON_SCHEMA as any} />
+{isHomepage && <Schema item={WEBSITE_SCHEMA as any} />}
 {jsonLd && <Schema item={jsonLd as any} />}

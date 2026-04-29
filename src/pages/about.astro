@@ -2,9 +2,8 @@
 import BackButton from '../components/BackButton.astro';
 import SEO from '../components/SEO.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { PERSON_ID } from '../utils/seo';
 
-const siteBase = Astro.site || 'https://sun-envidiado.com';
-const imageUrl = new URL('/default.png', siteBase).toString();
 const seoMeta = {
   title: 'About — Sun Envidiado',
   description:
@@ -21,19 +20,7 @@ const seoMeta = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  mainEntity: {
-    '@type': 'Person',
-    '@id': `${siteBase}/#person`,
-    name: 'Sun Envidiado',
-    url: siteBase,
-    image: imageUrl,
-    jobTitle: 'Software Developer',
-    description: seoMeta.description,
-    knowsAbout: ['Flutter'],
-    addressLocality: 'Manila, Philippines',
-    sameAs: ['https://github.com/photosunthesis', 'https://www.linkedin.com/in/sunenvidiado/'],
-    interestIn: ['Coding', 'Gaming', 'Karaoke', 'Cooking'],
-  },
+  mainEntity: { '@id': PERSON_ID },
 };
 ---
 

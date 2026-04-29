@@ -8,6 +8,50 @@ export const SITE_CONFIG = {
   siteUrl: 'https://sun-envidiado.com',
 } as const;
 
+export const PERSON_ID = `${SITE_CONFIG.siteUrl}/#person`;
+export const WEBSITE_ID = `${SITE_CONFIG.siteUrl}/#website`;
+
+export const PERSON_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': PERSON_ID,
+  name: SITE_CONFIG.authorName,
+  url: SITE_CONFIG.siteUrl,
+  image: `${SITE_CONFIG.siteUrl}${SITE_CONFIG.defaultImage}`,
+  jobTitle: 'Software Developer',
+  description:
+    'Software developer from Manila, Philippines, focused on Flutter app development.',
+  knowsAbout: [
+    'Flutter',
+    'Dart',
+    'Swift',
+    'iOS App Development',
+    'JavaScript',
+    'TypeScript',
+    'React',
+    'Vue',
+    'Web Development',
+    'Mobile Development',
+    'C#',
+    '.NET',
+    'PHP',
+    'Laravel',
+  ],
+  sameAs: ['https://github.com/photosunthesis', 'https://www.linkedin.com/in/sunenvidiado/'],
+} as const;
+
+export const WEBSITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  url: SITE_CONFIG.siteUrl,
+  name: SITE_CONFIG.siteName,
+  alternateName: ['sun-envidiado.com', 'sun envidiado'],
+  description: SITE_CONFIG.defaultDescription,
+  inLanguage: 'en-US',
+  publisher: { '@id': PERSON_ID },
+} as const;
+
 export interface SEOMetadata {
   title: string;
   description: string;

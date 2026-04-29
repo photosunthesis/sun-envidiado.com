@@ -3,6 +3,7 @@ import BackButton from '../../components/BackButton.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import SEO from '../../components/SEO.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PERSON_ID } from '../../utils/seo';
 
 import { getCollection } from 'astro:content';
 
@@ -43,7 +44,7 @@ const seoMeta = {
   ],
 };
 
-const siteBase = Astro.site || 'https://sun-envidiado.com';
+const siteBase = (Astro.site || 'https://sun-envidiado.com').toString().replace(/\/$/, '');
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -52,20 +53,14 @@ const jsonLd = {
   name: seoMeta.title,
   description: seoMeta.description,
   url: `${siteBase}/blog`,
-  author: {
-    '@type': 'Person',
-    '@id': `${siteBase}/#person`,
-    name: 'Sun Envidiado',
-  },
+  author: { '@id': PERSON_ID },
+  publisher: { '@id': PERSON_ID },
   blogPost: postList.map((p) => ({
     '@type': 'BlogPosting',
     headline: p.title,
     url: new URL(p.url, siteBase).toString(),
     datePublished: p.pubDate.toISOString(),
-    author: {
-      '@type': 'Person',
-      name: 'Sun Envidiado',
-    },
+    author: { '@id': PERSON_ID },
   })),
 };
 ---

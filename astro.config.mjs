@@ -9,6 +9,10 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://sun-envidiado.com',
   trailingSlash: 'never',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
   build: {
     format: 'file',
   },

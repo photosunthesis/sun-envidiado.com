@@ -10,8 +10,7 @@ const seoMeta = {
   tags: ['sun envidiado', 'personal website', 'developer blog', 'gaming', 'coding', 'manila'],
 };
 
-const siteBase = Astro.site ?? 'https://sun-envidiado.com';
-const imageUrl = new URL('/default.png', siteBase).toString();
+const siteBase = (Astro.site || 'https://sun-envidiado.com').toString().replace(/\/$/, '');
 
 const commands = [
   {
@@ -42,38 +41,10 @@ const commands = [
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Person',
-      '@id': `${siteBase}/#person`,
-      name: 'Sun Envidiado',
-      url: siteBase,
-      image: imageUrl,
-      jobTitle: 'Software Developer',
-      description: seoMeta.description,
-      knowsAbout: [
-        'Flutter',
-        'Dart',
-        'JavaScript',
-        'TypeScript',
-        'React',
-        'Vue',
-        'Web Development',
-        'Mobile Development',
-        'C#',
-        '.NET',
-        'PHP',
-        'Laravel',
-      ],
-      sameAs: ['https://github.com/photosunthesis', 'https://www.linkedin.com/in/sunenvidiado/'],
-    },
-    {
-      '@type': 'SiteNavigationElement',
-      '@id': `${siteBase}/#navigation`,
-      name: ['Blog', 'About', 'Contact', 'Work'],
-      url: [`${siteBase}/blog`, `${siteBase}/about`, `${siteBase}/contact`, `${siteBase}/work`],
-    },
-  ],
+  '@type': 'SiteNavigationElement',
+  '@id': `${siteBase}/#navigation`,
+  name: ['Blog', 'About', 'Contact', 'Work'],
+  url: [`${siteBase}/blog`, `${siteBase}/about`, `${siteBase}/contact`, `${siteBase}/work`],
 };
 ---
 
@@ -85,6 +56,7 @@ const jsonLd = {
     tags={seoMeta.tags}
     type="website"
     jsonLd={jsonLd}
+    isHomepage
   />
   <div class="index-main-content">
     <SpinningSunAsciiArt />
