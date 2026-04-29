@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/main.scss';
 
 const isProd = import.meta.env && import.meta.env.PROD;
@@ -7,6 +8,7 @@ const isProd = import.meta.env && import.meta.env.PROD;
 <html lang="en">
   <head>
     <slot name="head" />
+    <ClientRouter />
     {
       isProd && (
         <script
@@ -27,3 +29,11 @@ const isProd = import.meta.env && import.meta.env.PROD;
     <div id="crt-overlay-container"></div>
   </body>
 </html>
+
+<style is:global>
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.06s;
+    animation-timing-function: ease-out;
+  }
+</style>
