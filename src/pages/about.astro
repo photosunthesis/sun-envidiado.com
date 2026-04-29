@@ -5,7 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { PERSON_ID } from '../utils/seo';
 
 const seoMeta = {
-  title: 'About — Sun Envidiado',
+  title: 'About',
   description:
     "I'm Sun Envidiado, a software developer from Manila who focuses on Flutter app development. Outside of programming, I play games, do karaoke, and cook. This is my corner of the internet where I share work projects, personal posts, and random thoughts.",
   tags: [
@@ -31,7 +31,7 @@ const jsonLd = {
     description={seoMeta.description}
     tags={seoMeta.tags}
     type="website"
-    jsonLd={jsonLd}
+    schemas={[jsonLd]}
   />
   <div class="about-content">
     <article class="about-article" aria-labelledby="about-title">

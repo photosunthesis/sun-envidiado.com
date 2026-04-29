@@ -5,7 +5,8 @@ import Newsletter from '../components/Newsletter.astro';
 import BackButton from '../components/BackButton.astro';
 import SEO from '../components/SEO.astro';
 import BaseLayout from './BaseLayout.astro';
-import { PERSON_ID, SITE_CONFIG, generateCanonicalUrl, generateImageUrl } from '../utils/seo';
+import { SITE_CONFIG, generateCanonicalUrl, generateImageUrl } from '../utils/seo';
+import { buildBlogPostGraph } from '../utils/schema';
 
 const props = Astro.props;
 const frontmatter = props.frontmatter || props;
@@ -28,9 +29,9 @@ if (frontmatter.cover) {
 }
 
 const rawTitle = frontmatter.title || SITE_CONFIG.siteName;
-const title = frontmatter.pubDate ? `${rawTitle} — Sun Envidiado` : rawTitle;
 const description = frontmatter.description || SITE_CONFIG.defaultDescription;
-const imageUrl = coverImage
+
+const socialImageUrl = coverImage
   ? generateImageUrl(coverImage.src, Astro.site)
   : frontmatter.image?.startsWith('http')
     ? frontmatter.image
@@ -42,46 +43,33 @@ const updatedDate = frontmatter.updatedDate
   ? new Date(frontmatter.updatedDate).toISOString()
   : undefined;
 
-const siteBase = (Astro.site || SITE_CONFIG.siteUrl).toString().replace(/\/$/, '');
 const canonicalUrl = generateCanonicalUrl(Astro.url.pathname, Astro.site);
 
-const blogPostingSchema = {
-  '@type': 'BlogPosting',
-  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
-  headline: rawTitle,
-  description: description,
-  image: imageUrl,
-  datePublished: pubDate,
-  dateModified: updatedDate || pubDate,
-  author: { '@id': PERSON_ID },
-  publisher: { '@id': PERSON_ID },
-};
-
-const breadcrumbSchema = {
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: siteBase },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteBase}/blog` },
-    { '@type': 'ListItem', position: 3, name: rawTitle, item: canonicalUrl },
-  ],
-};
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [blogPostingSchema, breadcrumbSchema],
-};
+const jsonLd = buildBlogPostGraph(
+  {
+    title: rawTitle,
+    description,
+    imageUrl: socialImageUrl,
+    canonicalUrl,
+    pubDate,
+    updatedDate,
+  },
+  Astro.url.pathname,
+  Astro.site,
+);
 ---
 
 <BaseLayout>
   <SEO
     slot="head"
-    title={title}
+    title={rawTitle}
     description={description}
-    image={imageUrl}
+    image={socialImageUrl}
     type="article"
     pubDate={pubDate}
+    updatedDate={updatedDate}
     tags={tags}
-    jsonLd={jsonLd}
+    schemas={[jsonLd]}
   />
   <div class="blog-layout">
     <BackButton />

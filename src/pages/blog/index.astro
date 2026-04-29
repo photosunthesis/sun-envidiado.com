@@ -31,7 +31,7 @@ const postList = posts.map((p) => ({
 }));
 
 const seoMeta = {
-  title: 'Blog — Sun Envidiado',
+  title: 'Blog',
   description:
     'Random thoughts from Sun about coding, gaming, life updates, and whatever else crosses my mind. No formal structure, just honest musings about tech and everything in between.',
   tags: [
@@ -72,7 +72,7 @@ const jsonLd = {
     description={seoMeta.description}
     tags={seoMeta.tags}
     type="website"
-    jsonLd={jsonLd}
+    schemas={[jsonLd]}
   />
   <div class="blog-content">
     <header class="blog-header">

@@ -18,7 +18,7 @@ if (
 }
 
 const seoMeta = {
-  title: 'Work — Sun Envidiado',
+  title: 'Work',
   description: `Check out my work experience as a Flutter Developer with ${years} years of experience building cross-platform mobile applications.`,
   tags: ['sun envidiado', 'flutter developer', 'work experience', 'mobile developer', 'portfolio'],
 };
@@ -116,7 +116,7 @@ const projects = [
     description={seoMeta.description}
     tags={seoMeta.tags}
     type="website"
-    jsonLd={jsonLd}
+    schemas={[jsonLd]}
   />
   <div class="work-content">
     <article class="work-article" aria-labelledby="work-title">

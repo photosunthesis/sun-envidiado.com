@@ -4,7 +4,7 @@ import SEO from '../components/SEO.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const seoMeta = {
-  title: 'Contact — Sun Envidiado',
+  title: 'Contact',
   description:
     'Wanna chat? Hit me up via email, LinkedIn, or GitHub. Always down to talk about code, games, or just connect with cool people.',
   tags: ['contact sun envidiado', 'get in touch', 'developer contact', 'email', 'connect'],
@@ -43,7 +43,7 @@ const jsonLd = {
     description={seoMeta.description}
     tags={seoMeta.tags}
     type="website"
-    jsonLd={jsonLd}
+    schemas={[jsonLd]}
   />
   <div class="contact-content">
     <h1 class="sr-only">Contact</h1>

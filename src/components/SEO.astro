@@ -1,10 +1,10 @@
 ---
 import { SEO as AstroSEO } from 'astro-seo';
-import { Schema } from 'astro-seo-schema';
 import {
   PERSON_SCHEMA,
   SITE_CONFIG,
   WEBSITE_SCHEMA,
+  buildTitle,
   generateCanonicalUrl,
   generateImageUrl,
 } from '../utils/seo';
@@ -17,9 +17,9 @@ interface Props {
   noIndex?: boolean;
   type?: 'website' | 'article';
   pubDate?: string;
-  author?: string;
+  updatedDate?: string;
   tags?: string[];
-  jsonLd?: Record<string, unknown>;
+  schemas?: object[];
   isHomepage?: boolean;
 }
 
@@ -31,9 +31,9 @@ const {
   noIndex = false,
   type = 'website',
   pubDate,
-  author,
+  updatedDate,
   tags = [],
-  jsonLd,
+  schemas = [],
   isHomepage = false,
 } = Astro.props;
 
@@ -41,30 +41,31 @@ const canonicalUrl = canonical?.startsWith('http')
   ? canonical
   : generateCanonicalUrl(canonical || Astro.url.pathname, Astro.site);
 
+const finalTitle = buildTitle(title, Astro.url.pathname);
+
 const imageUrl = image?.startsWith('http')
   ? image
   : generateImageUrl(image || SITE_CONFIG.defaultImage, Astro.site);
 
-const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
-
+const isArticle = type === 'article';
 ---
 
 <AstroSEO
   charset="utf-8"
-  title={title}
+  title={finalTitle}
   description={description}
   canonical={canonicalUrl}
   noindex={noIndex}
   nofollow={noIndex}
   openGraph={{
     basic: {
-      title: title,
+      title: finalTitle,
       type: type,
       image: imageUrl,
       url: canonicalUrl,
     },
     image: {
-      alt: title,
+      alt: finalTitle,
     },
     optional: {
       description: description,
@@ -72,14 +73,15 @@ const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
     },
     article: {
       publishedTime: pubDate,
-      authors: finalAuthor ? [finalAuthor] : undefined,
+      modifiedTime: updatedDate,
+      authors: isArticle ? [SITE_CONFIG.authorName] : undefined,
       tags: tags,
     },
   }}
   twitter={{
     card: imageUrl ? 'summary_large_image' : 'summary',
     image: imageUrl,
-    title: title,
+    title: finalTitle,
     description: description,
   }}
   extend={{
@@ -100,13 +102,13 @@ const finalAuthor = author || (pubDate ? SITE_CONFIG.authorName : undefined);
     meta: [
       { name: 'theme-color', content: '#09090b' },
       { name: 'color-scheme', content: 'light dark' },
-      { name: 'author', content: finalAuthor || SITE_CONFIG.authorName },
+      { name: 'author', content: SITE_CONFIG.authorName },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ...(tags.length > 0 ? [{ name: 'keywords', content: tags.join(', ') }] : []),
     ],
   }}
 />
 
-<Schema item={PERSON_SCHEMA as any} />
-{isHomepage && <Schema item={WEBSITE_SCHEMA as any} />}
-{jsonLd && <Schema item={jsonLd as any} />}
+<script is:inline type="application/ld+json" set:html={JSON.stringify(PERSON_SCHEMA)} />
+{isHomepage && <script is:inline type="application/ld+json" set:html={JSON.stringify(WEBSITE_SCHEMA)} />}
+{schemas.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}

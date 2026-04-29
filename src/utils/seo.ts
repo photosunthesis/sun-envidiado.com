@@ -69,6 +69,14 @@ export function generateCanonicalUrl(pathname: string, site?: URL | string): str
   return new URL(pathname, baseUrl).toString();
 }
 
+export function buildTitle(rawTitle: string, pathname: string): string {
+  const path = pathname.replace(/\/+$/, '') || '/';
+  if (path === '/') return SITE_CONFIG.siteName;
+  if (!rawTitle || rawTitle === SITE_CONFIG.siteName) return SITE_CONFIG.siteName;
+  if (rawTitle.includes(`— ${SITE_CONFIG.siteName}`)) return rawTitle;
+  return `${rawTitle} — ${SITE_CONFIG.siteName}`;
+}
+
 export function generateImageUrl(imageSrc: string, site?: URL | string): string {
   const baseUrl = site || SITE_CONFIG.siteUrl;
   return new URL(imageSrc, baseUrl).toString();
@@ -82,10 +90,9 @@ export function buildSEOMetadata(params: {
 }): SEOMetadata {
   const { frontmatter = {}, pathname, site, coverImage } = params;
 
-  // Support both frontmatter and direct props for backwards compatibility
   const rawTitle = (frontmatter.title as string) || SITE_CONFIG.siteName;
   const pubDate = frontmatter.pubDate as string | undefined;
-  const title = pubDate ? `${rawTitle} — Sun Envidiado` : rawTitle;
+  const title = buildTitle(rawTitle, pathname);
 
   const description = (frontmatter.description as string) || SITE_CONFIG.defaultDescription;
   const rawCanonical = (frontmatter.url as string) || generateCanonicalUrl(pathname, site);
