@@ -114,6 +114,18 @@ const jsonLd = {
             day: 'numeric',
           })
       }
+      {
+        frontmatter.updatedDate && (
+          <span class="post-updated-date">
+            {' · Updated '}
+            {new Date(frontmatter.updatedDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </span>
+        )
+      }
     </p>
 
     <article class="blog-article" aria-labelledby="post-title">
