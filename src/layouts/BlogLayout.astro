@@ -141,8 +141,10 @@ const jsonLd = buildBlogPostGraph(
 </BaseLayout>
 
 <script>
-  const backToTopButton = document.getElementById('back-to-top-button');
-  if (backToTopButton) {
+  function bindBackToTop() {
+    const backToTopButton = document.getElementById('back-to-top-button');
+    if (!backToTopButton || backToTopButton.dataset.bound === 'true') return;
+    backToTopButton.dataset.bound = 'true';
     backToTopButton.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
@@ -150,6 +152,9 @@ const jsonLd = buildBlogPostGraph(
       });
     });
   }
+
+  bindBackToTop();
+  document.addEventListener('astro:page-load', bindBackToTop);
 </script>
 
 <style lang="scss">
