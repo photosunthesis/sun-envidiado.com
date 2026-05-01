@@ -1,273 +1,55 @@
 ---
-import SEO from '../components/SEO.astro';
-import SpinningSunAsciiArt from '../components/SpinningSunAsciiArt.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PERSON_SCHEMA, WEBSITE_SCHEMA } from "../utils/seo";
 
-const seoMeta = {
-  title: 'Sun Envidiado',
-  description:
-    "I'm a software developer, gamer, and karaoke enthusiast. Welcome to my little corner of the internet. Expect code, games, and unsolicited opinions.",
-  tags: ['sun envidiado', 'personal website', 'developer blog', 'gaming', 'coding', 'manila'],
-};
+const tagline = "I'm a mediocre programmer, epic pro gamer, and a karaoke menace.";
+const description = `Sun Envidiado — ${tagline}. Welcome to my tiny corner on the internet.`;
 
-const siteBase = (Astro.site || 'https://sun-envidiado.com').toString().replace(/\/$/, '');
-
-const commands = [
-  {
-    type: 'Go to',
-    action: 'blog',
-    url: '/blog',
-    description: 'to check my latest posts.',
-  },
-  {
-    type: 'Go to',
-    action: 'about',
-    url: '/about',
-    description: 'to learn more about me.',
-  },
-  {
-    type: 'Go to',
-    action: 'contact',
-    url: '/contact',
-    description: 'to get in touch.',
-  },
-  {
-    type: 'Go to',
-    action: 'work',
-    url: '/work',
-    description: 'for my work details.',
-  },
+const sections = [
+  { href: "/about", label: ":about", desc: "to learn more about me" },
+  { href: "/blog", label: ":blog", desc: "to see my blog posts" },
+  { href: "/contact", label: ":contact", desc: "to get in touch" },
+  { href: "/work", label: ":work", desc: "for my work details" },
 ];
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SiteNavigationElement',
-  '@id': `${siteBase}/#navigation`,
-  name: ['Blog', 'About', 'Contact', 'Work'],
-  url: [`${siteBase}/blog`, `${siteBase}/about`, `${siteBase}/contact`, `${siteBase}/work`],
-};
 ---
 
-<BaseLayout>
-  <SEO
-    slot="head"
-    title={seoMeta.title}
-    description={seoMeta.description}
-    tags={seoMeta.tags}
-    type="website"
-    schemas={[jsonLd]}
-    isHomepage
-  />
-  <div class="index-main-content">
-    <SpinningSunAsciiArt />
-    <div class="intro-container">
-      <h1 class="sr-only">{seoMeta.title}</h1>
-      <span class="intro-heading">{`Hi! I'm Sun Envidiado.`}</span>
-      <span class="intro-body"> {seoMeta.description}</span>
-    </div>
-    <nav class="command-hints-container" aria-label="Quick commands">
-      <ul class="command-hints-grid">
+<BaseLayout
+  title="Sun Envidiado"
+  description={description}
+  jsonLd={[WEBSITE_SCHEMA, PERSON_SCHEMA]}
+>
+  <article class="w-full max-w-[44ch] leading-relaxed">
+    <img
+      src="/sun-logo.svg"
+      alt=""
+      aria-hidden="true"
+      width="48"
+      height="48"
+      class="mx-auto mb-[0.5lh] block h-12 w-12"
+    />
+    <h1 class="text-vim-link text-center font-semibold">Sun Envidiado</h1>
+    <p
+      class="mt-[1lh] text-center min-[325px]:text-justify min-[325px]:[text-align-last:center]"
+    >
+      {tagline} Anyway, welcome to the website.
+    </p>
+    <nav class="mt-[1lh]" aria-label="Site sections">
+      <ul
+        class="space-y-2 font-mono min-[325px]:grid min-[325px]:w-full min-[325px]:grid-cols-[auto_auto_1fr_auto] min-[325px]:gap-x-[1.5ch] min-[325px]:space-y-0 sm:gap-x-[2.5ch]"
+      >
         {
-          commands.map((cmd) => (
-            <li class="command-hint-row">
-              <span class="command-hint-type">{cmd.type}</span>
-              <span class="command-hint-command">
-                <span class="command-action-group">
-                  <a
-                    class="command-action command-hint-link"
-                    href={cmd.url}
-                    aria-label={`${cmd.type} ${cmd.action}`}
-                  >
-                    :{cmd.action}
-                  </a>
-                </span>
-              </span>
-              <span class="command-hint-description">{cmd.description}</span>
+          sections.map((s) => (
+            <li class="min-[325px]:contents">
+              <span>{`go to `}</span>
+              <a class="link" href={s.href}>
+                {s.label}
+              </a>
+              <span aria-hidden="true" class="hidden min-[325px]:block" />
+              <span>{` ${s.desc}.`}</span>
             </li>
           ))
         }
       </ul>
     </nav>
-  </div>
+  </article>
 </BaseLayout>
-
-<style lang="scss">
-  $max-content-width: 420px;
-
-  .index-main-content {
-    margin-top: -5rem;
-
-    @media (max-width: 480px) {
-      padding: 0 1.5rem;
-      margin-top: -4rem;
-    }
-  }
-
-  .intro-container {
-    max-width: $max-content-width;
-    margin: 0 auto;
-    color: var(--foreground);
-    text-align: left;
-    white-space: pre-line;
-  }
-
-  .intro-heading {
-    display: block;
-    text-align: center;
-    margin-bottom: 1em;
-    line-height: 1.5;
-  }
-
-  .intro-body {
-    display: block;
-    text-align: justify;
-    line-height: 1.5;
-  }
-
-  .command-hints-container {
-    width: 100%;
-    max-width: $max-content-width;
-    margin: 1rem auto 0;
-  }
-
-  .command-hints-grid {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: space-between;
-    row-gap: 0.25rem;
-    align-items: center;
-    width: 100%;
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-
-    @media (min-width: 480px) {
-      gap: 0.75rem 0.1ch;
-    }
-
-    @media (max-width: 480px) {
-      display: block;
-    }
-  }
-
-  .command-hint-row {
-    display: contents;
-    line-height: 1.2;
-
-    @media (max-width: 480px) {
-      display: block;
-      margin-bottom: 0.75rem;
-      text-align: left;
-      line-height: 1.5;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  .command-hint-type {
-    font-family: inherit;
-    justify-self: end;
-    white-space: nowrap;
-    margin-right: 0.5ch;
-    color: var(--comment);
-
-    @media (min-width: 480px) {
-      margin-right: 1ch;
-    }
-
-    @media (max-width: 480px) {
-      display: inline;
-      white-space: normal;
-      margin-right: 0;
-
-      &::after {
-        content: ' ';
-      }
-    }
-  }
-
-  .command-hint-command {
-    color: var(--foreground);
-    font-family: inherit;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.25ch;
-    justify-self: start;
-
-    @media (max-width: 480px) {
-      display: inline;
-      white-space: normal;
-
-      &::before {
-        content: ' ';
-      }
-
-      &::after {
-        content: ' ';
-      }
-    }
-  }
-
-  .command-action-group {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.25ch;
-
-    @media (max-width: 480px) {
-      display: inline;
-    }
-  }
-
-  .command-separator {
-    white-space: nowrap;
-  }
-
-  .command-hint-description {
-    font-family: inherit;
-    justify-self: start;
-    margin-left: 0.5ch;
-    white-space: nowrap;
-    overflow: visible;
-    text-overflow: clip;
-    color: var(--comment);
-
-    @media (min-width: 480px) {
-      margin-left: 1ch;
-    }
-
-    @media (max-width: 480px) {
-      display: inline;
-      white-space: normal;
-      margin-left: 0;
-    }
-  }
-
-  .command-hint-link {
-    color: var(--cyan);
-    text-decoration: none;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    border: none;
-    font-family: inherit;
-    white-space: nowrap;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25ch;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-      color: var(--cyan);
-      outline: none;
-    }
-
-    &:focus-visible {
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--cyan) 30%, transparent);
-    }
-  }
-</style>

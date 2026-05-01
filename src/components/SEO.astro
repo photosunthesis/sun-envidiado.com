@@ -1,120 +1,133 @@
 ---
-import { SEO as AstroSEO } from 'astro-seo';
-import {
-  PERSON_SCHEMA,
-  SITE_CONFIG,
-  WEBSITE_SCHEMA,
-  buildTitle,
-  generateCanonicalUrl,
-  generateImageUrl,
-} from '../utils/seo';
+import { SEO as AstroSEO } from "astro-seo";
+import { SITE, WEBSITE_SCHEMA, PERSON_SCHEMA, absoluteUrl } from "../utils/seo";
 
 interface Props {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
+  type?: "website" | "article";
   image?: string;
-  canonical?: string;
-  noIndex?: boolean;
-  type?: 'website' | 'article';
+  imageWidth?: number;
+  imageHeight?: number;
   pubDate?: string;
   updatedDate?: string;
   tags?: string[];
-  schemas?: object[];
-  isHomepage?: boolean;
+  noindex?: boolean;
+  schemas?: Record<string, unknown>[];
 }
 
 const {
-  title = SITE_CONFIG.siteName,
-  description = SITE_CONFIG.defaultDescription,
-  image,
-  canonical,
-  noIndex = false,
-  type = 'website',
+  title,
+  description,
+  type = "website",
+  image = SITE.defaultImage,
+  imageWidth,
+  imageHeight,
   pubDate,
   updatedDate,
   tags = [],
-  schemas = [],
-  isHomepage = false,
+  noindex = false,
+  schemas,
 } = Astro.props;
 
-const canonicalUrl = canonical?.startsWith('http')
-  ? canonical
-  : generateCanonicalUrl(canonical || Astro.url.pathname, Astro.site);
-
-const finalTitle = buildTitle(title, Astro.url.pathname);
-
-const imageUrl = image?.startsWith('http')
+const canonical = absoluteUrl(Astro.url.pathname, Astro.site);
+const ogImage = image.startsWith("http")
   ? image
-  : generateImageUrl(image || SITE_CONFIG.defaultImage, Astro.site);
+  : absoluteUrl(image, Astro.site);
 
-const isArticle = type === 'article';
+const articleMeta =
+  type === "article"
+    ? [
+        ...(pubDate
+          ? [{ property: "article:published_time", content: pubDate }]
+          : []),
+        ...(updatedDate
+          ? [{ property: "article:modified_time", content: updatedDate }]
+          : []),
+        { property: "article:author", content: SITE.name },
+        ...tags.map((tag) => ({ property: "article:tag", content: tag })),
+      ]
+    : [];
+
+const ld = schemas ?? [WEBSITE_SCHEMA, PERSON_SCHEMA];
 ---
 
 <AstroSEO
-  charset="utf-8"
-  title={finalTitle}
+  title={title}
   description={description}
-  canonical={canonicalUrl}
-  noindex={noIndex}
-  nofollow={noIndex}
+  canonical={canonical}
+  noindex={noindex}
+  nofollow={noindex}
   openGraph={{
     basic: {
-      title: finalTitle,
-      type: type,
-      image: imageUrl,
-      url: canonicalUrl,
-    },
-    image: {
-      alt: finalTitle,
+      title,
+      type,
+      image: ogImage,
+      url: canonical,
     },
     optional: {
-      description: description,
-      siteName: SITE_CONFIG.siteName,
+      description,
+      siteName: SITE.name,
+      locale: SITE.locale,
     },
-    article: {
-      publishedTime: pubDate,
-      modifiedTime: updatedDate,
-      authors: isArticle ? [SITE_CONFIG.authorName] : undefined,
-      tags: tags,
-    },
+    image:
+      imageWidth && imageHeight
+        ? { url: ogImage, width: imageWidth, height: imageHeight, alt: title }
+        : { url: ogImage, alt: title },
+    article:
+      type === "article"
+        ? {
+            publishedTime: pubDate,
+            modifiedTime: updatedDate,
+            authors: [SITE.name],
+            tags,
+          }
+        : undefined,
   }}
   twitter={{
-    card: imageUrl ? 'summary_large_image' : 'summary',
-    image: imageUrl,
-    title: finalTitle,
-    description: description,
+    card: "summary_large_image",
+    title,
+    description,
+    image: ogImage,
   }}
   extend={{
     link: [
-      { rel: 'icon', href: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' },
-      { rel: 'manifest', href: '/site.webmanifest' },
-      { rel: 'sitemap', href: '/sitemap-index.xml' },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       {
-        rel: 'alternate',
-        type: 'application/rss+xml',
-        title: `${SITE_CONFIG.siteName} Blog`,
-        href: '/rss.xml',
+        rel: "icon",
+        href: "/favicon-96x96.png",
+        type: "image/png",
+        sizes: "96x96",
       },
       {
-        rel: 'preload',
-        href: '/fonts/Web437_ToshibaSat_8x14.woff2',
-        as: 'font',
-        type: 'font/woff2',
-        crossorigin: '',
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png",
+        sizes: "180x180",
+      },
+      { rel: "manifest", href: "/site.webmanifest" },
+      {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: `${SITE.name} Blog`,
+        href: "/rss.xml",
       },
     ],
     meta: [
-      { name: 'theme-color', content: '#09090b' },
-      { name: 'color-scheme', content: 'light dark' },
-      { name: 'author', content: SITE_CONFIG.authorName },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      ...(tags.length > 0 ? [{ name: 'keywords', content: tags.join(', ') }] : []),
+      { name: "author", content: SITE.name },
+      { name: "theme-color", content: SITE.themeColor },
+      { name: "color-scheme", content: "dark" },
+      ...articleMeta,
     ],
   }}
 />
 
-<script is:inline type="application/ld+json" set:html={JSON.stringify(PERSON_SCHEMA)} />
-{isHomepage && <script is:inline type="application/ld+json" set:html={JSON.stringify(WEBSITE_SCHEMA)} />}
-{schemas.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
+{
+  ld.map((schema) => (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(schema)}
+    />
+  ))
+}

@@ -1,67 +1,76 @@
 ---
-const { hasBorderTop = false } = Astro.props;
+interface Props {
+  hasDivider?: boolean;
+  class?: string;
+}
+
+const { hasDivider = false, class: className } = Astro.props;
 ---
 
-<section class:list={['newsletter-section', { 'has-border-top': hasBorderTop }]}>
-  <div class="newsletter-container">
-    <p class="newsletter-desc">
-      Subscribe for new post notifications. Zero spam, I promise! Or try <a href="/rss.xml">RSS</a>.
-    </p>
+{hasDivider && <p class="text-vim-dim mt-[2lh] mb-[2lh]">---</p>}
+<section class:list={["w-full", className]}>
+  <p class="mb-[0.75lh]">
+    Subscribe to get an email when I publish a new post (or use <a
+      class="link"
+      href="/rss.xml">RSS</a
+    >). No spam. I promise!
+  </p>
 
-    <form class="newsletter-form" id="newsletter-form">
-      <div class="input-group">
-        <label for="email" class="sr-only">Email address</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="your@email.com"
-          required
-          class="newsletter-input"
-        />
-        <button type="submit" class="newsletter-btn">Subscribe ↪</button>
-      </div>
-      <div class="form-message" id="form-message" aria-live="polite"></div>
-    </form>
-  </div>
+  <form id="newsletter-form" class="flex flex-wrap items-center gap-[1ch]">
+    <label for="newsletter-email" class="sr-only">Email address</label>
+    <input
+      type="email"
+      id="newsletter-email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="border-vim-dim text-vim-fg placeholder:text-vim-dim focus:border-vim-link min-w-[18ch] flex-1 border bg-transparent px-[1ch] py-[0.25lh] focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="bg-vim-link text-vim-bg cursor-pointer border-none px-4 py-[0.25lh] disabled:cursor-wait disabled:opacity-50 md:px-10"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p id="newsletter-message" class="mt-[0.25lh] min-h-lh" aria-live="polite">
+  </p>
 </section>
 
 <script>
-  const form = document.getElementById('newsletter-form') as HTMLFormElement;
-  const messageEl = document.getElementById('form-message');
-  const btn = form?.querySelector('button');
+  const form = document.getElementById("newsletter-form") as HTMLFormElement;
+  const messageEl = document.getElementById("newsletter-message");
+  const btn = form?.querySelector("button");
 
-  if (form) {
-    form.addEventListener('submit', async (e) => {
+  if (form && messageEl && btn) {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!btn || !messageEl) return;
-
       const formData = new FormData(form);
-      const email = formData.get('email');
+      const email = formData.get("email");
       const originalBtnText = btn.textContent;
 
       btn.disabled = true;
-      btn.textContent = 'Sending...';
-      messageEl.textContent = '';
-      messageEl.className = 'form-message';
+      btn.textContent = "Sending...";
+      messageEl.textContent = "";
+      messageEl.classList.remove("text-vim-link", "text-vim-dim");
 
       try {
-        const res = await fetch('/api/subscribe-to-blog', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("/api/subscribe-to-blog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
         });
-
         await res.json();
-
         if (!res.ok) throw new Error();
 
-        messageEl.textContent = 'Check your email to confirm your subscription.';
-        messageEl.classList.add('success');
+        messageEl.textContent =
+          "[ok] Check your email to confirm your subscription.";
+        messageEl.classList.add("text-vim-link");
         form.reset();
       } catch {
-        messageEl.textContent = 'Something went wrong. Please try again later.';
-        messageEl.classList.add('error');
+        messageEl.textContent =
+          "[err] Something went wrong. Please try again later.";
+        messageEl.classList.add("text-vim-dim");
       } finally {
         btn.disabled = false;
         btn.textContent = originalBtnText;
@@ -69,106 +78,3 @@ const { hasBorderTop = false } = Astro.props;
     });
   }
 </script>
-
-<style lang="scss">
-  .newsletter-section {
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    &.has-border-top {
-      border-top: 1px dashed var(--comment);
-      padding-top: 2rem;
-      margin-top: 3rem;
-    }
-  }
-
-  .newsletter-container {
-    width: 100%;
-  }
-
-  .newsletter-desc {
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-
-    a {
-      font-size: inherit;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-
-      &:hover {
-        color: var(--cyan);
-      }
-    }
-  }
-
-  .input-group {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .newsletter-input {
-    flex: 1;
-    min-width: 200px;
-    padding: 0.5rem 0.75rem;
-    background: transparent;
-    border: 1px solid var(--foreground);
-    color: var(--foreground);
-    font-family: inherit;
-    font-size: 0.9rem;
-    border-radius: 4px;
-
-    &:focus {
-      outline: none;
-      border-color: var(--foreground);
-    }
-
-    &::placeholder {
-      color: var(--foreground);
-      opacity: 0.5;
-    }
-  }
-
-  .newsletter-btn {
-    padding: 0.4rem 1rem;
-    background: var(--foreground);
-    color: var(--background);
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: normal;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-      opacity: 0.9;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: wait;
-    }
-
-    @media (max-width: 480px) {
-      padding: 0.5rem 1rem;
-    }
-  }
-
-  .form-message {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-
-    &.success {
-      color: var(--green);
-    }
-
-    &.error {
-      color: var(--red);
-    }
-  }
-</style>

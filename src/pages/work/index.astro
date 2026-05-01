@@ -1,354 +1,140 @@
 ---
-import { Picture } from 'astro:assets';
-import BackButton from '../../components/BackButton.astro';
-import SEO from '../../components/SEO.astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import bebiAppImage from './_assets/bebi-app.png';
-import haandvaerkerImage from './_assets/haandvaerker-dk.png';
-import rateStuffImage from './_assets/rate-stuff-online.png';
+import { Picture } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PERSON_ID, SITE, absoluteUrl } from "../../utils/seo";
+import bebiAppImage from "./_assets/bebi-app.png";
+import haandvaerkerImage from "./_assets/haandvaerker-dk.png";
+import rateStuffImage from "./_assets/rate-stuff-online.png";
 
-const startDate = new Date('2019-03-01');
+const startDate = new Date("2019-03-01");
 const today = new Date();
 let years = today.getFullYear() - startDate.getFullYear();
 if (
   today.getMonth() < startDate.getMonth() ||
-  (today.getMonth() === startDate.getMonth() && today.getDate() < startDate.getDate())
+  (today.getMonth() === startDate.getMonth() &&
+    today.getDate() < startDate.getDate())
 ) {
   years--;
 }
 
-const seoMeta = {
-  title: 'Work',
-  description: `Check out my work experience as a Flutter Developer with ${years} years of experience building cross-platform mobile applications.`,
-  tags: ['sun envidiado', 'flutter developer', 'work experience', 'mobile developer', 'portfolio'],
-};
-
-const siteBase = Astro.site || 'https://sun-envidiado.com';
-const imageUrl = new URL('/default.png', siteBase).toString();
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  mainEntity: {
-    '@type': 'Person',
-    '@id': `${siteBase}/#person`,
-    name: 'Sun Envidiado',
-    url: siteBase,
-    image: imageUrl,
-    jobTitle: 'Flutter Developer',
-    description: seoMeta.description,
-  },
-};
-
-const experiences = [
-  {
-    period: 'March 2026 — Present',
-    company: 'MCS ',
-    role: 'Software Engineer',
-    description: `Native iOS applications with AI integration. Building intelligent features powered by LLMs into mobile experiences.`,
-  },
-  {
-    period: 'Jun 2025 — March 2026',
-    company: 'Miquido',
-    role: 'Flutter Developer',
-    description: `Cross-platform apps for fintech and healthcare. Integrated LLM APIs and AI features into Flutter applications.`,
-  },
-  {
-    period: 'Nov 2023 — Jun 2025',
-    company: 'Nextbank',
-    role: 'Flutter Developer',
-    description:
-      'Fintech apps for banking corporations. Built a custom Flutter plugin for liveness checks with native iOS/Android integration.',
-  },
-  {
-    period: 'Aug 2022 — Nov 2023',
-    company: 'Netsells (part of hedgehog lab)',
-    role: 'Mobile Engineer',
-    description:
-      'Mobile apps for medical and fintech. Built a Flutter plugin for document signing with native iOS/Android functionality.',
-  },
-  {
-    period: 'Jan 2021 — Aug 2022',
-    company: 'CRAFT-TEC Inc.',
-    role: 'Software Engineer',
-    description:
-      'Led Flutter team as full-stack engineer. Built backend APIs with Laravel and mentored developers.',
-  },
-  {
-    period: 'Mar 2019 — Jan 2021',
-    company: 'Various Organizations',
-    role: 'Web Developer',
-    description: 'Web projects with JavaScript, PHP, C#, and Shopify.',
-  },
-];
+const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
 
 const projects = [
   {
-    title: 'rate-stuff.online',
-    url: 'https://rate-stuff.online',
+    title: "rate-stuff.online",
+    url: "https://rate-stuff.online",
     image: rateStuffImage,
-    alt: 'Screenshot of rate-stuff.online',
+    alt: "Screenshot of rate-stuff.online",
     description:
-      'Built with React and TanStack Start, deployed on Cloudflare Workers. My deep dive into React and serverless.',
+      "Built with React and TanStack Start, deployed on Cloudflare Workers. My deep dive into React and serverless.",
   },
   {
-    title: 'Bebi App',
-    url: 'https://github.com/photosunthesis/bebi-app-flutter',
+    title: "Bebi App",
+    url: "https://github.com/photosunthesis/bebi-app-flutter",
     image: bebiAppImage,
-    alt: 'Screenshot of Bebi App',
-    description: 'A couples app with image sharing, shared calendar, and cycle tracking.',
+    alt: "Screenshot of Bebi App",
+    description:
+      "A couples app with image sharing, shared calendar, and cycle tracking.",
   },
   {
-    title: 'Haandvaerker.dk',
-    url: 'https://www.haandvaerker.dk/',
+    title: "Haandvaerker.dk",
+    url: "https://www.haandvaerker.dk/",
     image: haandvaerkerImage,
-    alt: 'Screenshot of Haandvaerker.dk',
+    alt: "Screenshot of Haandvaerker.dk",
     description:
-      'Platform connecting homeowners with craftsmen in Denmark. Built both Flutter apps and contributed to the backend.',
+      "Platform connecting homeowners with craftsmen in Denmark. Built both Flutter apps and contributed to the backend.",
   },
 ];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: absoluteUrl("/work", Astro.site),
+  mainEntity: {
+    "@id": PERSON_ID,
+    "@type": "Person",
+    name: SITE.name,
+    url: SITE.url,
+    jobTitle: "Software Engineer",
+    description,
+  },
+};
 ---
 
-<BaseLayout>
-  <SEO
-    slot="head"
-    title={seoMeta.title}
-    description={seoMeta.description}
-    tags={seoMeta.tags}
-    type="website"
-    schemas={[jsonLd]}
-  />
-  <div class="work-content">
-    <article class="work-article" aria-labelledby="work-title">
-      <BackButton />
+<BaseLayout
+  title="Work — Sun Envidiado"
+  description={description}
+  variant="doc"
+  jsonLd={jsonLd}
+>
+  <article class="leading-relaxed">
+    <h1 class="sr-only">Work</h1>
 
-      <h1 id="work-title" class="sr-only">Work</h1>
+    <section class="space-y-[1lh]">
+      <p>
+        I've been building software for {years}+ years, starting with web before
+        shifting to mobile. My current focus is iOS development with Swift.
+      </p>
+      <p>
+        Along the way, I developed skills in Flutter and Dart for cross-platform
+        apps, JavaScript (React and Vue), PHP (Laravel), C# (.NET), and the
+        Firebase and Cloudflare ecosystems.
+      </p>
+      <p>
+        You can view my complete resume <a
+          class="link"
+          href="/sun-envidiado-resume.pdf"
+          target="_blank">here</a
+        >.
+      </p>
+      <p>
+        If you'd like to get in touch, head over to the <a
+          class="link"
+          href="/contact">contact page</a
+        >.
+      </p>
+    </section>
 
-      <section class="intro-section">
-        <p>
-          I've been in software for {years}+ years, starting with web before shifting to mobile. My
-          current focus is Flutter and Dart for cross-platform apps on Android, iOS, and Web.
-        </p>
-        <p>
-          Along the way, I developed skills in JavaScript (React and Vue), PHP (Laravel), C# (.NET),
-          and the Firebase and Cloudflare ecosystems.
-        </p>
-        <p>
-          You can view my complete resume <a
-            href="/envidiado-resume-feb-2026.pdf"
-            target="_blank"
-            class="highlight">here</a
-          >.
-        </p>
-      </section>
-
-      <section class="experience-section">
-        <h2 class="section-title">Work Experience</h2>
-        <div class="experience-list">
-          {
-            experiences.map((exp) => (
-              <div class="experience-item">
-                <h3 class="experience-role">{exp.role}</h3>
-                <div class="experience-company-period">
-                  {exp.company} ({exp.period})
-                </div>
-                <p class="experience-description">{exp.description}</p>
-              </div>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="projects-section">
-        <h2 class="section-title">Project Showcase</h2>
-        <div class="projects-list">
-          {
-            projects.map((project) => (
-              <a href={project.url} class="project-item" target="_blank">
-                <div class="project-image-container">
-                  <Picture
-                    src={project.image}
-                    formats={['avif', 'webp']}
-                    fallbackFormat="jpg"
-                    widths={[200, 400, 600]}
-                    sizes="(max-width: 600px) 100vw, 200px"
-                    loading="lazy"
-                    alt={project.alt}
-                    class="project-image"
-                  />
-                </div>
-                <div class="project-details">
-                  <h2 class="project-title">
-                    {project.title} <span class="arrow">↗</span>
-                  </h2>
-                  <p class="project-description">{project.description}</p>
-                </div>
+    <section class="mt-12">
+      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">
+        Project Showcase
+      </h2>
+      <ul class="space-y-[2lh]">
+        {
+          projects.map((project) => (
+            <li class="grid grid-cols-1 gap-[1lh] md:grid-cols-[180px_1fr] md:gap-[2ch]">
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block aspect-4/3 w-full overflow-hidden rounded border border-neutral-800"
+              >
+                <Picture
+                  src={project.image}
+                  formats={["avif", "webp"]}
+                  fallbackFormat="jpg"
+                  widths={[200, 400, 600]}
+                  sizes="(max-width: 768px) 100vw, 200px"
+                  loading="lazy"
+                  alt={project.alt}
+                  class="h-full w-full object-cover"
+                />
               </a>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="contact-section">
-        <p>
-          If you'd like to get in touch, you can reach me through the <a href="/contact"
-            >contact page</a
-          >.
-        </p>
-      </section>
-    </article>
-  </div>
+              <div>
+                <a
+                  class="link font-semibold"
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.title} <span aria-hidden="true">↗</span>
+                </a>
+                <p class="mt-[0.25lh]">{project.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
 </BaseLayout>
-
-<style lang="scss">
-  .work-content {
-    max-width: 600px;
-    margin: 1.5rem;
-    color: var(--foreground);
-    text-align: left;
-    padding: 0 1rem;
-
-    @media (max-width: 600px) {
-      margin: 1.5rem 0;
-      padding: 0 1rem;
-    }
-  }
-
-  :global(.highlight) {
-    color: var(--cyan);
-    font-weight: 500;
-  }
-
-  .experience-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-top: 0.8rem;
-  }
-
-  .experience-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    position: relative;
-    padding-left: 1.5rem;
-
-    &::before {
-      content: '-';
-      position: absolute;
-      left: 0;
-      top: 0.4rem;
-      color: var(--comment);
-    }
-  }
-
-  .experience-company-period {
-    color: var(--comment);
-    margin-bottom: 0.15rem;
-    line-height: 1.5;
-  }
-
-  .experience-role {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--foreground);
-    margin: 0.1rem 0;
-  }
-
-  .experience-description {
-    color: var(--foreground);
-    line-height: 1.6;
-    margin: 0.2rem 0;
-  }
-
-  .projects-section {
-    margin-top: 2rem;
-  }
-
-  .projects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin-top: 1rem;
-    margin-bottom: 3rem;
-  }
-
-  .section-title {
-    margin-bottom: 1rem;
-    margin-top: 3rem;
-    font-weight: 500;
-  }
-
-  .project-item {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 2rem;
-    text-decoration: none;
-    color: inherit;
-    align-items: start;
-
-    &:hover {
-      .project-title {
-        text-decoration: underline;
-      }
-    }
-
-    @media (max-width: 600px) {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-  }
-
-  .project-image-container {
-    width: 100%;
-    aspect-ratio: 4/3;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: #333;
-  }
-
-  .project-image-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: #333;
-  }
-
-  .project-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .project-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .project-title {
-    font-size: 1.1rem;
-    line-height: 1.1;
-    font-weight: 500;
-    color: var(--cyan);
-    margin: -0.2rem 0 0 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: opacity 0.2s ease;
-  }
-
-  .arrow {
-    font-size: 0.9em;
-  }
-
-  .project-description {
-    color: var(--foreground);
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .contact-section {
-    margin-bottom: 2rem;
-  }
-</style>

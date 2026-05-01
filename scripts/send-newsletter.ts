@@ -1,17 +1,17 @@
-import 'dotenv/config';
-import fs from 'fs/promises';
-import path from 'path';
-import { Resend } from 'resend';
-import Parser from 'rss-parser';
-import { fileURLToPath } from 'url';
+import "dotenv/config";
+import fs from "fs/promises";
+import path from "path";
+import { Resend } from "resend";
+import Parser from "rss-parser";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const BLOG_SEGMENT_ID = process.env.BLOG_SEGMENT_ID;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SITE_URL = process.env.PUBLIC_SITE_URL || 'https://sun-envidiado.com';
-const BLOG_DIR = path.join(__dirname, '../src/content/blog');
+const SITE_URL = process.env.PUBLIC_SITE_URL || "https://sun-envidiado.com";
+const BLOG_DIR = path.join(__dirname, "../src/content/blog");
 const RSS_URL = `${SITE_URL}/rss.xml`;
 
 interface BlogMetadata {
@@ -23,8 +23,8 @@ interface BlogMetadata {
 
 async function getBlogMetadata(blogPath: string): Promise<BlogMetadata | null> {
   try {
-    const indexPath = path.join(blogPath, 'index.mdx');
-    const content = await fs.readFile(indexPath, 'utf-8');
+    const indexPath = path.join(blogPath, "index.mdx");
+    const content = await fs.readFile(indexPath, "utf-8");
 
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     if (!frontmatterMatch) return null;
@@ -34,15 +34,19 @@ async function getBlogMetadata(blogPath: string): Promise<BlogMetadata | null> {
     const titleMatch = frontmatter.match(/title:\s*("(.*)"|'(.*)')/);
     const title = titleMatch ? titleMatch[2] || titleMatch[3] : null;
 
-    const descriptionMatch = frontmatter.match(/description:\s*("(.*)"|'(.*)')/);
-    const description = descriptionMatch ? descriptionMatch[2] || descriptionMatch[3] : null;
+    const descriptionMatch = frontmatter.match(
+      /description:\s*("(.*)"|'(.*)')/,
+    );
+    const description = descriptionMatch
+      ? descriptionMatch[2] || descriptionMatch[3]
+      : null;
 
     const pubDateMatch = frontmatter.match(/pubDate:\s*("(.*)"|'(.*)')/);
     const pubDate = pubDateMatch ? pubDateMatch[2] || pubDateMatch[3] : null;
 
     const tagsMatch = frontmatter.match(/tags:\s*\[(.*?)\]/)?.[1];
     const tags = tagsMatch
-      ? tagsMatch.split(',').map((tag) => tag.trim().replace(/["']/g, ''))
+      ? tagsMatch.split(",").map((tag) => tag.trim().replace(/["']/g, ""))
       : [];
 
     if (!title || !description || !pubDate) return null;
@@ -65,7 +69,7 @@ async function getPublishedBlogs(): Promise<Set<string>> {
     for (const item of feed.items) {
       if (item.link) {
         const urlObj = new URL(item.link);
-        const slug = urlObj.pathname.split('/').filter(Boolean).pop();
+        const slug = urlObj.pathname.split("/").filter(Boolean).pop();
         if (slug) {
           publishedSlugs.add(slug);
         }
@@ -82,7 +86,9 @@ async function getPublishedBlogs(): Promise<Set<string>> {
   return publishedSlugs;
 }
 
-async function getNewBlogs(): Promise<Array<{ slug: string; metadata: BlogMetadata }>> {
+async function getNewBlogs(): Promise<
+  Array<{ slug: string; metadata: BlogMetadata }>
+> {
   const publishedSlugs = await getPublishedBlogs();
   const blogDirs = await fs.readdir(BLOG_DIR);
   const newBlogs: Array<{ slug: string; metadata: BlogMetadata }> = [];
@@ -90,7 +96,7 @@ async function getNewBlogs(): Promise<Array<{ slug: string; metadata: BlogMetada
   console.log(`📂 Scanning local blog directory: ${BLOG_DIR}`);
 
   for (const dir of blogDirs) {
-    if (dir.startsWith('.')) continue;
+    if (dir.startsWith(".")) continue;
 
     const blogPath = path.join(BLOG_DIR, dir);
 
@@ -112,18 +118,22 @@ async function getNewBlogs(): Promise<Array<{ slug: string; metadata: BlogMetada
   }
 
   return newBlogs.sort(
-    (a, b) => new Date(a.metadata.pubDate).getTime() - new Date(b.metadata.pubDate).getTime(),
+    (a, b) =>
+      new Date(a.metadata.pubDate).getTime() -
+      new Date(b.metadata.pubDate).getTime(),
   );
 }
 
 async function sendNewsletter(blog: { slug: string; metadata: BlogMetadata }) {
   if (!RESEND_API_KEY || !BLOG_SEGMENT_ID) {
-    console.warn('⚠️ Missing RESEND_API_KEY or BLOG_SEGMENT_ID. Skipping email sending.');
+    console.warn(
+      "⚠️ Missing RESEND_API_KEY or BLOG_SEGMENT_ID. Skipping email sending.",
+    );
     return;
   }
 
   const resend = new Resend(RESEND_API_KEY);
-  const baseUrl = SITE_URL.endsWith('/') ? SITE_URL.slice(0, -1) : SITE_URL;
+  const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
   const blogUrl = `${baseUrl}/blog/${blog.slug}`;
 
   const emailHtml = `
@@ -172,33 +182,35 @@ async function sendNewsletter(blog: { slug: string; metadata: BlogMetadata }) {
 }
 
 async function main() {
-  console.log('🔍 Checking for new blog posts to announce...');
+  console.log("🔍 Checking for new blog posts to announce...");
 
-  if (SITE_URL.includes('localhost')) {
+  if (SITE_URL.includes("localhost")) {
     console.log(
-      '⚠️ SITE_URL contains localhost. Running in dry-run mode (no emails will be sent).',
+      "⚠️ SITE_URL contains localhost. Running in dry-run mode (no emails will be sent).",
     );
   }
 
   const newBlogs = await getNewBlogs();
 
   if (newBlogs.length === 0) {
-    console.log('✅ No new blogs found (compared to RSS feed).');
+    console.log("✅ No new blogs found (compared to RSS feed).");
     return;
   }
 
-  console.log(`📧 Found ${newBlogs.length} new blog(s) that are not in the RSS feed:\n`);
+  console.log(
+    `📧 Found ${newBlogs.length} new blog(s) that are not in the RSS feed:\n`,
+  );
 
   for (const blog of newBlogs) {
     console.log(`   - ${blog.metadata.title} (${blog.slug})`);
   }
 
-  if (SITE_URL.includes('localhost')) {
-    console.log('\n🚫 Dry-run finished. No emails sent.');
+  if (SITE_URL.includes("localhost")) {
+    console.log("\n🚫 Dry-run finished. No emails sent.");
     return;
   }
 
-  console.log('\n📮 Sending newsletters...\n');
+  console.log("\n📮 Sending newsletters...\n");
 
   for (const blog of newBlogs) {
     try {
@@ -209,7 +221,7 @@ async function main() {
     }
   }
 
-  console.log('🎉 Newsletter check complete!');
+  console.log("🎉 Newsletter check complete!");
 }
 
 main().catch(console.error);

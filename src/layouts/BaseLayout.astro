@@ -1,14 +1,97 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-import '../styles/main.scss';
+import BackButton from "../components/BackButton.astro";
+import SEO from "../components/SEO.astro";
+import StatusBar from "../components/StatusBar.astro";
+import "../styles/global.css";
 
-const isProd = import.meta.env && import.meta.env.PROD;
+type Variant = "splash" | "doc";
+
+interface Props {
+  title: string;
+  description: string;
+  variant?: Variant;
+  ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  type?: "website" | "article";
+  pubDate?: string;
+  updatedDate?: string;
+  tags?: string[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  showBack?: boolean;
+  topPadding?: string;
+  wordCount?: number;
+  readingMinutes?: number;
+}
+
+const {
+  title,
+  description,
+  variant = "splash",
+  ogImage,
+  ogImageWidth,
+  ogImageHeight,
+  type = "website",
+  pubDate,
+  updatedDate,
+  tags,
+  noindex = false,
+  jsonLd,
+  showBack,
+  topPadding,
+  wordCount,
+  readingMinutes,
+} = Astro.props;
+
+const isHome = Astro.url.pathname === "/";
+const renderBack = showBack ?? !isHome;
+
+const schemas = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd
+    : [jsonLd]
+  : undefined;
+
+const isSplash = variant === "splash";
+const docTop = topPadding ?? "pt-[2lh]";
+const mainAlign = isSplash
+  ? "items-center justify-center"
+  : `items-start justify-center pb-[2lh] ${docTop}`;
+const contentWrap = isSplash ? "" : "w-full max-w-[70ch]";
+const bodyClass = isSplash
+  ? "h-screen overflow-hidden font-mono text-sm md:text-base"
+  : "min-h-screen font-mono text-sm md:text-base";
+const wrapperClass = isSplash
+  ? "flex h-full flex-col"
+  : "flex min-h-screen flex-col";
+
+const isProd = import.meta.env.PROD;
 ---
 
 <html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <SEO
+      title={title}
+      description={description}
+      type={type}
+      image={ogImage}
+      imageWidth={ogImageWidth}
+      imageHeight={ogImageHeight}
+      pubDate={pubDate}
+      updatedDate={updatedDate}
+      tags={tags}
+      noindex={noindex}
+      schemas={schemas}
+    />
+
     <slot name="head" />
-    <ClientRouter />
+
     {
       isProd && (
         <script
@@ -20,21 +103,34 @@ const isProd = import.meta.env && import.meta.env.PROD;
       )
     }
   </head>
-  <body>
-    <a class="skip-link" href="#main" aria-label="Skip to main content">Skip to content</a>
-    <main id="main">
-      <div class="content-wrapper">
-        <slot />
-      </div>
-    </main>
-    <div id="crt-overlay-container"></div>
+  <body class={bodyClass}>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <div class={wrapperClass}>
+      <main
+        id="main"
+        class:list={["relative flex-1", isSplash && "overflow-hidden"]}
+      >
+        <div
+          aria-hidden="true"
+          class="tilde-bg pointer-events-none absolute inset-y-0 left-2 hidden w-6 select-none md:block"
+        >
+        </div>
+
+        <div class:list={["flex h-full px-8 md:pr-8 md:pl-12", mainAlign]}>
+          <div class={contentWrap}>
+            {
+              renderBack && (
+                <div class="mb-[1lh]">
+                  <BackButton />
+                </div>
+              )
+            }
+            <slot />
+          </div>
+        </div>
+      </main>
+
+      <StatusBar wordCount={wordCount} readingMinutes={readingMinutes} />
+    </div>
   </body>
 </html>
-
-<style is:global>
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.06s;
-    animation-timing-function: ease-out;
-  }
-</style>

@@ -1,76 +1,41 @@
 ---
-import BackButton from '../components/BackButton.astro';
-import SEO from '../components/SEO.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { PERSON_ID } from '../utils/seo';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PERSON_ID } from "../utils/seo";
 
-const seoMeta = {
-  title: 'About',
-  description:
-    "I'm Sun Envidiado, a software developer from Manila who focuses on Flutter app development. Outside of programming, I play games, do karaoke, and cook. This is my corner of the internet where I share work projects, personal posts, and random thoughts.",
-  tags: [
-    'about sun envidiado',
-    'software developer manila',
-    'flutter developer',
-    'personal website',
-    'developer blog',
-  ],
-};
+const description =
+  "About Sun Envidiado — a software developer from the Philippines.";
 
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  mainEntity: { '@id': PERSON_ID },
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: { "@id": PERSON_ID },
 };
 ---
 
-<BaseLayout>
-  <SEO
-    slot="head"
-    title={seoMeta.title}
-    description={seoMeta.description}
-    tags={seoMeta.tags}
-    type="website"
-    schemas={[jsonLd]}
-  />
-  <div class="about-content">
-    <article class="about-article" aria-labelledby="about-title">
-      <h1 id="about-title" class="about-title sr-only">About Me</h1>
-      <BackButton />
-      <p>
-        My name is <span class="highlight">Sun Envidiado</span>. And yes, I am named after <i>the</i
-        > Sun. I'm a software developer from the Philippines, currently living in Metro Manila.
-      </p>
-      <p>
-        Outside of programming, you'll find me watching anime and films, playing videogames, doing
-        karaoke, or scrolling through TikTok for unhealthy amounts of time. I cook too, though I'm
-        barely decent at it. My dream is to one day have a proper kitchen with quality tools and
-        utensils so I can make Michelin-star meals.
-      </p>
-      <p>
-        The design of this website is inspired by vim and TUIs. I've always found them cool and
-        hacky and computer-y. Though ironically, I mainly use VS Code. This website is my small
-        corner on the internet where you can find a mix of software projects, personal posts, and
-        random thoughts about life, anime, games, and everything in between.
-      </p>
-    </article>
-  </div>
+<BaseLayout
+  title="About — Sun Envidiado"
+  description={description}
+  jsonLd={jsonLd}
+>
+  <article class="max-w-[70ch] space-y-[1lh] leading-relaxed">
+    <p>
+      My name is <span class="text-vim-link">Sun Envidiado</span>. And yes, I am
+      named after <em>the Sun</em>. I'm a software developer from the
+      Philippines, currently living in Metro Manila.
+    </p>
+    <p>
+      Outside of programming, you'll find me watching anime and films, playing
+      videogames, doing karaoke, or scrolling through TikTok for unhealthy
+      amounts of time. I cook too, though I'm barely decent at it. My dream is
+      to one day have a proper kitchen with quality tools and utensils so I can
+      make Michelin-star meals.
+    </p>
+    <p>
+      The design of this website is inspired by vim and TUIs. I've always found
+      them cool and hacky and computer-y (though ironically, I use VS Code to
+      build software). This website is my small corner on the internet where you
+      can find a mix of software projects, personal posts, and random thoughts
+      about life, anime, games, and everything in between.
+    </p>
+  </article>
 </BaseLayout>
-
-<style lang="scss">
-  .about-content {
-    max-width: 480px;
-    margin: 1.5rem 0;
-    color: var(--foreground);
-    text-align: left;
-
-    @media (max-width: 480px) {
-      margin: 1.5rem 1.5rem;
-    }
-  }
-
-  :global(.highlight) {
-    color: var(--orange);
-    font-weight: bold;
-  }
-</style>

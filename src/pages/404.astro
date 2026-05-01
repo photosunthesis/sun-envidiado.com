@@ -1,89 +1,48 @@
 ---
-import SEO from '../components/SEO.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const kaomojis = [
-  'ヽ(ー_ー )ノ',
-  'ヽ(´ー` )┌',
-  '┐(‘～` )┌',
-  'ヽ(　￣д￣)ノ',
-  '┐(￣ヘ￣)┌',
-  'ヽ(￣～￣　)ノ',
-  '╮(￣_￣)╭',
-  'ヽ(ˇヘˇ)ノ',
-  '┐(￣～￣)┌',
-  '╮(￣～￣)╭',
-  '┐( ´ д ` )┌',
-  '╮(︶︿︶)╭',
-  '┐(￣∀￣)┌',
-  '┐( ˘ ､ ˘ )┌',
-  '╮( ˘ ､ ˘ )╭',
-  '┐( ˘_˘ )┌',
-  '╮( ˘_˘ )╭',
-  '┐(￣ヮ￣)┌',
+  "ヽ(ー_ー )ノ",
+  "ヽ(´ー` )┌",
+  "┐(‘～` )┌",
+  "ヽ(　￣д￣)ノ",
+  "┐(￣ヘ￣)┌",
+  "ヽ(￣～￣　)ノ",
+  "╮(￣_￣)╭",
+  "ヽ(ˇヘˇ)ノ",
+  "┐(￣～￣)┌",
+  "╮(￣～￣)╭",
+  "┐( ´ д ` )┌",
+  "╮(︶︿︶)╭",
+  "┐(￣∀￣)┌",
+  "┐( ˘ ､ ˘ )┌",
+  "╮( ˘ ､ ˘ )╭",
+  "┐( ˘_˘ )┌",
+  "╮( ˘_˘ )╭",
+  "┐(￣ヮ￣)┌",
 ];
-
-const kaomoji = kaomojis[Math.floor(Math.random() * kaomojis.length)];
-
-const seoMeta = {
-  title: 'Error 404 - Page Not Found',
-  description: 'The page you are looking for does not exist.',
-  noIndex: true,
-};
 ---
 
-<BaseLayout>
-  <SEO
-    slot="head"
-    title={seoMeta.title}
-    description={seoMeta.description}
-    noIndex={seoMeta.noIndex}
-  />
-  <div class="not-found-container">
-    <h1 id="404-heading" class="not-found-heading">
-      <i class="not-found-kaomoji">{kaomoji}</i>
+<BaseLayout
+  title="404 — Page Not Found"
+  description="The page you are looking for does not exist."
+  noindex
+>
+  <article class="max-w-[60ch] leading-relaxed">
+    <h1 class="text-vim-link mb-[0.5lh] text-xl font-semibold">
+      404 <span id="kaomoji" class="text-vim-fg ml-[1ch]">{kaomojis[0]}</span>
     </h1>
+    <p>
+      The page you're looking for doesn't exist. Double-check the URL — it may
+      be a typo, or the page could have been removed.
+    </p>
+    <p class="mt-[1lh]">
+      <a class="link" href="/">← Back to homepage</a>
+    </p>
+  </article>
 
-    <p class="not-found-message" role="status" aria-live="polite" aria-labelledby="404-heading">
-      The page you're looking for doesn't exist. Double-check the URL; it may be a typo, or the page
-      could have been removed.
-    </p>
-    <p class="not-found-end">
-      <a href="/" aria-label="Go to homepage">← Back to homepage</a>
-    </p>
-  </div>
+  <script is:inline define:vars={{ kaomojis }}>
+    var el = document.getElementById("kaomoji");
+    if (el) el.textContent = kaomojis[Math.floor(Math.random() * kaomojis.length)];
+  </script>
 </BaseLayout>
-
-<style lang="scss">
-  .not-found-heading {
-    font-size: 2rem;
-    color: var(--cyan);
-  }
-
-  .not-found-kaomoji {
-    color: var(--code-fg);
-    font-style: normal;
-    padding-left: 0.5rem;
-    font-size: 1.8rem;
-  }
-
-  .not-found-message {
-    margin-top: 1rem;
-  }
-
-  .not-found-container {
-    max-width: 480px;
-    color: var(--foreground);
-    text-align: left;
-  }
-
-  .not-found-end a {
-    color: var(--cyan);
-    margin-bottom: 1rem;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-</style>

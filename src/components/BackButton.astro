@@ -1,54 +1,28 @@
 ---
 interface Props {
-  href?: string;
-  label?: string;
   class?: string;
 }
 
-const { href = '/', label = '← Back', class: className } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
-<div class:list={['back-button-wrapper', className]}>
-  <a href={href} aria-label="Go back or to homepage" class="js-back-button">{label}</a>
-</div>
+<a href="/" data-back class:list={["link", className]}>
+  ← Back
+</a>
 
 <script>
-  const handleBackClick = (e: Event) => {
-    if (window.history.length > 1) {
+  document.querySelectorAll("a[data-back]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      // Only intercept if we have a same-origin referrer to fall back to.
+      // Otherwise the <a href="/"> default takes over and we go home.
+      if (window.history.length <= 1 || !document.referrer) return;
+      try {
+        if (new URL(document.referrer).origin !== window.location.origin) return;
+      } catch {
+        return;
+      }
       e.preventDefault();
       window.history.back();
-    }
-  };
-
-  const bindBackButtons = () => {
-    document.querySelectorAll('a.js-back-button').forEach((button) => {
-      button.removeEventListener('click', handleBackClick);
-      button.addEventListener('click', handleBackClick);
     });
-  };
-
-  bindBackButtons();
-  document.addEventListener('astro:page-load', bindBackButtons);
+  });
 </script>
-
-<style lang="scss">
-  .back-button-wrapper {
-    padding-bottom: 1rem;
-
-    a {
-      color: var(--comment);
-      padding: 0;
-      text-decoration: none;
-      cursor: pointer;
-      font-family: inherit;
-      background: none;
-      border: none;
-      display: inline-block;
-
-      &:hover {
-        color: var(--cyan);
-        text-decoration: underline;
-      }
-    }
-  }
-</style>

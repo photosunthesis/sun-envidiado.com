@@ -1,0 +1,74 @@
+---
+interface Props {
+  wordCount?: number;
+  readingMinutes?: number;
+}
+
+const { wordCount, readingMinutes } = Astro.props;
+
+const rawPath = Astro.url.pathname
+  .replace(/\.html$/, "")
+  .replace(/\/index$/, "")
+  .replace(/\/+$/, "");
+const statusPath = rawPath === "" ? "~" : `~${rawPath}`;
+
+const hasStats =
+  typeof wordCount === "number" && typeof readingMinutes === "number";
+const formattedWords = hasStats ? wordCount.toLocaleString("en-US") : "";
+---
+
+<footer
+  class="bg-vim-status text-vim-status-fg sticky bottom-0 flex items-center gap-[2ch] px-2 py-0.5 whitespace-nowrap"
+  aria-hidden="true"
+>
+  <span class="min-w-0 truncate">{statusPath}</span>
+  <span id="status-mode" class="ml-auto hidden md:inline">-- NORMAL --</span>
+  {
+    hasStats && (
+      <span class="hidden md:inline">
+        {formattedWords}w · {readingMinutes} min
+      </span>
+    )
+  }
+  <span id="status-pos" class="ml-auto md:ml-0">All</span>
+</footer>
+
+<script is:inline>
+  (function () {
+    var posEl = document.getElementById("status-pos");
+    var modeEl = document.getElementById("status-mode");
+
+    if (posEl) {
+      var ticking = false;
+      function compute() {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        if (max <= 1) return "All";
+        var y = window.scrollY || window.pageYOffset || 0;
+        if (y <= 0) return "Top";
+        if (y >= max - 1) return "Bot";
+        return Math.round((y / max) * 100) + "%";
+      }
+      function update() {
+        ticking = false;
+        posEl.textContent = compute();
+      }
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", update);
+    }
+
+    if (modeEl) {
+      document.addEventListener("selectionchange", function () {
+        var sel = window.getSelection();
+        var hasSel = !!sel && sel.toString().trim().length > 0;
+        modeEl.textContent = hasSel ? "-- VISUAL --" : "-- NORMAL --";
+      });
+    }
+  })();
+</script>

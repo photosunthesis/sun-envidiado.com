@@ -1,14 +1,14 @@
 ---
-title: 'React Is Actually Not That Bad'
-pubDate: '2026-01-26'
+title: "React Is Actually Not That Bad"
+pubDate: "2026-01-26"
 description: "After years of avoiding React, I finally tried it with TanStack Start. From rewiring my brain for hooks to building a serverless app on Cloudflare, here's how a modern stack changed my mind."
-tags: ['react', 'tanstack', 'serverless', 'cloudflare', 'typescript']
-cover: 'react-is-actually-not-that-bad/_assets/cover.jpg'
-coverAlt: 'A person giving a thumbs up with a laptop and monitor displaying the TanStack Start homepage in the background'
+tags: ["react", "tanstack", "serverless", "cloudflare", "typescript"]
+cover: "react-is-actually-not-that-bad/_assets/cover.jpg"
+coverAlt: "A person giving a thumbs up with a laptop and monitor displaying the TanStack Start homepage in the background"
 ---
 
-import { Picture } from 'astro:assets';
-import RateStuffOnline from './_assets/rate-stuff-online.png';
+import { Picture } from "astro:assets";
+import RateStuffOnline from "./_assets/rate-stuff-online.png";
 
 More than half a decade in software development and I've mostly been building web apps and mobile apps. In all that time, I've never used React even though it feels like literally everyone uses it. I went through C# and .NET, PHP and Laravel, now Flutter. I've even built Flutter web apps (Flutter for mobile apps is great, but for web? it's not as fun). I used Vue.js for my capstone project back in college, so I know my way around JavaScript and the web platform.
 
@@ -52,7 +52,7 @@ I wrote an article lowkey trashing React because setting up a project was overwh
 
 <Picture
   src={RateStuffOnline}
-  formats={['avif', 'webp']}
+  formats={["avif", "webp"]}
   fallbackFormat="jpg"
   widths={[400, 600, 900, 1200]}
   sizes="(max-width: 600px) 100vw, 500px"
@@ -121,7 +121,7 @@ You can chain middleware (auth, rate limiting), validate inputs with Zod, and ac
 
 ```typescript
 // Server: Define the function (src/domains/ratings/functions/create.ts)
-export const createRatingFn = createServerFn({ method: 'POST' })
+export const createRatingFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware, actionRateLimitMiddleware])
   .inputValidator(createRatingSchema)
   .handler(async ({ data, context }) => {
@@ -139,7 +139,7 @@ export function useCreateRatingMutation() {
     mutationFn: (data: CreateRatingInput) => createRatingMutationFn({ data }),
     onSuccess: (res) => {
       if (res.success) {
-        queryClient.invalidateQueries({ queryKey: ['ratings'] });
+        queryClient.invalidateQueries({ queryKey: ["ratings"] });
       }
     },
   });
@@ -150,10 +150,10 @@ const { mutate: createRating, isPending } = useCreateRatingMutation();
 
 const handleSubmit = (data) => {
   createRating({
-    stuffName: 'Helldivers II',
+    stuffName: "Helldivers II",
     score: 10,
-    content: 'Best horde shooter hands down',
-    tags: ['game', 'gaming'],
+    content: "Best horde shooter hands down",
+    tags: ["game", "gaming"],
   });
 };
 ```

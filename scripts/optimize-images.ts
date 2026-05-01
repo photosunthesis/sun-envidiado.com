@@ -1,14 +1,14 @@
-import glob from 'fast-glob';
-import fs from 'fs/promises';
-import sharp from 'sharp';
+import glob from "fast-glob";
+import fs from "fs/promises";
+import sharp from "sharp";
 
 const MAX_DIMENSION = 1280;
 
 async function optimizeImages() {
-  console.log('🔍 Scanning for images...');
+  console.log("🔍 Scanning for images...");
 
-  const files = await glob(['src/**/*.{png,jpg,jpeg,webp,gif}'], {
-    ignore: ['**/node_modules/**'],
+  const files = await glob(["src/**/*.{png,jpg,jpeg,webp,gif}"], {
+    ignore: ["**/node_modules/**"],
   });
 
   console.log(`found ${files.length} images.`);
@@ -29,25 +29,27 @@ async function optimizeImages() {
       }
 
       if (metadata.width > MAX_DIMENSION || metadata.height > MAX_DIMENSION) {
-        console.log(`✨ Optimizing ${file} (${metadata.width}x${metadata.height})...`);
+        console.log(
+          `✨ Optimizing ${file} (${metadata.width}x${metadata.height})...`,
+        );
 
         let pipeline = image.resize({
           width: MAX_DIMENSION,
           height: MAX_DIMENSION,
-          fit: 'inside',
+          fit: "inside",
           withoutEnlargement: true,
         });
 
-        if (metadata.format === 'jpeg' || metadata.format === 'jpg') {
+        if (metadata.format === "jpeg" || metadata.format === "jpg") {
           pipeline = pipeline.jpeg({ quality: 80, mozjpeg: true });
-        } else if (metadata.format === 'png') {
+        } else if (metadata.format === "png") {
           pipeline = pipeline.png({ quality: 80, compressionLevel: 9 });
-        } else if (metadata.format === 'webp') {
+        } else if (metadata.format === "webp") {
           pipeline = pipeline.webp({ quality: 80 });
-        } else if (metadata.format === 'avif') {
+        } else if (metadata.format === "avif") {
           pipeline = pipeline.avif({ quality: 80 });
-        } else if (metadata.format === 'gif') {
-          pipeline = pipeline.gif({ effort: 7 }); 
+        } else if (metadata.format === "gif") {
+          pipeline = pipeline.gif({ effort: 7 });
         }
 
         const buffer = await pipeline.toBuffer();
@@ -63,7 +65,7 @@ async function optimizeImages() {
     }
   }
 
-  console.log('\n🎉 Optimization complete!');
+  console.log("\n🎉 Optimization complete!");
   console.log(`   Processed: ${processedCount}`);
   console.log(`   Skipped:   ${skippedCount}`);
   console.log(`   Errors:    ${errorCount}`);

@@ -1,14 +1,6 @@
-# Ignore artifacts:
 dist
 .astro
-
-# Standard
-**/.git
-**/.svn
-**/.hg
-**/node_modules
-
-# lockfiles
+node_modules
+.wrangler
+worker-configuration.d.ts
 pnpm-lock.yaml
-yarn.lock
-package-lock.json

@@ -1,60 +1,20 @@
 ---
-import SEO from '../components/SEO.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-const seoMeta = {
-  title: 'Subscription Confirmed',
-  description: 'You have successfully subscribed to the newsletter.',
-  noIndex: true,
-};
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout>
-  <SEO slot="head" title={seoMeta.title} description={seoMeta.description} />
-  <div class="success-content">
-    <h2 class="success-title">(￣▽￣)／</h2>
-    <p class="success-message">
-      Subscription confirmed; you'll be notified via email whenever I publish a new blog.
+<BaseLayout
+  title="Subscription Confirmed — Sun Envidiado"
+  description="You have successfully subscribed to the newsletter."
+  noindex
+>
+  <article class="max-w-[60ch] leading-relaxed">
+    <h1 class="text-vim-link mb-[0.5lh] text-xl font-semibold">(￣▽￣)／</h1>
+    <p>
+      Subscription confirmed. You'll be notified via email whenever I publish a
+      new blog post.
     </p>
-    <footer class="success-footer">
-      <a href="/" aria-label="Go to homepage">← Back to homepage</a>
-    </footer>
-  </div>
+    <p class="mt-[1lh]">
+      <a class="link" href="/">← Back to homepage</a>
+    </p>
+  </article>
 </BaseLayout>
-
-<style lang="scss">
-  .success-content {
-    max-width: 480px;
-    margin: 1.5rem;
-    color: var(--foreground);
-    text-align: left;
-    padding: 0 1rem;
-
-    @media (max-width: 480px) {
-      margin: 1.5rem 0;
-      padding: 0 1rem;
-    }
-  }
-
-  .success-title {
-    color: var(--code-fg);
-    font-style: normal;
-    font-size: 1.8rem;
-  }
-
-  .success-message {
-    margin-bottom: 1rem;
-  }
-
-  .success-footer a {
-    color: var(--cyan);
-    white-space: nowrap;
-    overflow-wrap: anywhere;
-    padding-top: 1rem;
-    line-height: 1.5;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-</style>

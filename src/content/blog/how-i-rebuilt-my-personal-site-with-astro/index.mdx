@@ -1,21 +1,21 @@
 ---
-title: 'How I rebuilt my personal site with Astro'
-pubDate: '2025-09-19'
+title: "How I rebuilt my personal site with Astro"
+pubDate: "2025-09-19"
 description: "I rebuilt this site with Astro after wrestling with Flutter on the web and getting bogged down by React's extra layers. Astro gave me an HTML-first workflow, faster static pages, and better SEO, basically less config, more coding."
 tags:
   [
-    'astro',
-    'flutter',
-    'react',
-    'migration',
-    'staticSite',
-    'seo',
-    'blog',
-    'webPerformance',
-    'personalSite',
+    "astro",
+    "flutter",
+    "react",
+    "migration",
+    "staticSite",
+    "seo",
+    "blog",
+    "webPerformance",
+    "personalSite",
   ]
-cover: 'how-i-rebuilt-my-personal-site-with-astro/_assets/cover.webp'
-coverAlt: 'Computer screen showing code'
+cover: "how-i-rebuilt-my-personal-site-with-astro/_assets/cover.webp"
+coverAlt: "Computer screen showing code"
 ---
 
 My website started its life in Flutter. It was simple enough: home, about, and a contact page. Nothing wild. I always meant to add a blog, but I kept putting it off because, well, Flutter on the web works, but it feels like you're fighting the medium.
@@ -61,10 +61,10 @@ The killer feature is how it handles content. Blog posts are literally just Mark
 
 ```markdown
 ---
-title: 'My Post'
-date: '2025-09-19'
-description: 'Just a regular blog post'
-tags: ['web', 'astro']
+title: "My Post"
+date: "2025-09-19"
+description: "Just a regular blog post"
+tags: ["web", "astro"]
 ---
 
 # This is just markdown
@@ -102,6 +102,6 @@ React isn't "bad," obviously. If I were building a dashboard or a complex intera
 
 You can check out the source on <a href="https://github.com/photosunthesis/sun-envidiado-website-astro" target="_blank" rel="noopener noreferrer" title="View the sun-envidiado-website-astro project on GitHub">GitHub</a>.
 
-**Edit (2026-01-27)** 
+**Edit (2026-01-27)**
 
 I actually ended up migrating the blog posts from `src/pages` to `src/content` for Astro's Content Collections. Why? RSS. I wanted to serve full-content feeds so you don't have to leave your reader, and to do that programmatically with Astro's Container API, collections are the way to go. Plus, now my frontmatter is strictly typed with Zod, so I can't break the build by typo-ing a date. Totally worth the refactor.

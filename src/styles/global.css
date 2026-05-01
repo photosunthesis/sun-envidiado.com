@@ -1,0 +1,131 @@
+@import "tailwindcss";
+@import "@fontsource-variable/jetbrains-mono";
+
+@theme {
+  --font-mono:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  --color-vim-bg: #0a0a0a;
+  --color-vim-fg: #a3a3a3;
+  --color-vim-dim: #525252;
+  --color-vim-link: #fafafa;
+  --color-vim-status: #262626;
+  --color-vim-status-fg: #d4d4d4;
+}
+
+:root {
+  color-scheme: dark;
+  background-color: var(--color-vim-bg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background-color: var(--color-vim-bg);
+  color: var(--color-vim-fg);
+  font-family: var(--font-mono);
+}
+
+.link {
+  color: var(--color-vim-link);
+  outline: none;
+  text-decoration: none;
+}
+.link:hover,
+.link:focus {
+  text-decoration: underline;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  z-index: 50;
+  background: var(--color-vim-status);
+  color: var(--color-vim-link);
+  padding: 0.25rem 0.75rem;
+  transform: translateY(-200%);
+  transition: transform 0.1s ease-out;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: none;
+}
+
+/* Tilde column: repeating SVG tile so it auto-fills any parent height
+   (viewport on splash, document height on scrollable pages). */
+.tilde-bg {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='18'><text x='1' y='13' font-family='ui-monospace, Menlo, Consolas, monospace' font-size='14' fill='%23525252'>~</text></svg>");
+  background-repeat: repeat-y;
+  background-position: 0 0.25rem;
+}
+
+.post-body > * + * {
+  margin-top: 1lh;
+}
+.post-body a {
+  color: var(--color-vim-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.post-body picture,
+.post-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.post-body pre {
+  background: var(--color-vim-status) !important;
+  padding: 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.875em;
+}
+.post-body code {
+  background: var(--color-vim-status);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.post-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+.post-body figcaption {
+  font-size: 0.8em;
+  color: var(--color-vim-dim);
+  text-align: center;
+  margin-top: 0.5lh;
+}
+.post-body h2 {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--color-vim-link);
+}
+.post-body h3 {
+  font-size: 1.125em;
+  font-weight: 600;
+  color: var(--color-vim-link);
+}
+.post-body h4 {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--color-vim-link);
+}
+.post-body blockquote {
+  border-left: 2px solid var(--color-vim-dim);
+  padding-left: 1ch;
+  color: var(--color-vim-dim);
+}
+.post-body hr {
+  border: 0;
+  border-top: 1px solid var(--color-vim-dim);
+  margin: 2lh 0;
+}

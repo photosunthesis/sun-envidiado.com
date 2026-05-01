@@ -1,15 +1,21 @@
 ---
-import BackButton from '../../components/BackButton.astro';
-import Newsletter from '../../components/Newsletter.astro';
-import SEO from '../../components/SEO.astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { PERSON_ID } from '../../utils/seo';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  PERSON_ID,
+  PERSON_SCHEMA,
+  WEBSITE_ID,
+  WEBSITE_SCHEMA,
+  absoluteUrl,
+} from "../../utils/seo";
 
-import { getCollection } from 'astro:content';
-
-const posts = (await getCollection('blog')).sort(
+const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const monthDay = (d: Date) =>
+  `${d.toLocaleString("en-US", { month: "short" })} ${pad(d.getDate())}`;
 
 const grouped = posts.reduce(
   (acc, p) => {
@@ -24,143 +30,61 @@ const grouped = posts.reduce(
   {} as Record<number, { title: string; pubDate: Date; url: string }[]>,
 );
 
-const postList = posts.map((p) => ({
-  title: p.data.title,
-  pubDate: p.data.pubDate,
-  url: `/blog/${p.id}`,
-}));
+const years = Object.keys(grouped)
+  .map(Number)
+  .sort((a, b) => b - a);
 
-const seoMeta = {
-  title: 'Blog',
-  description:
-    'Random thoughts from Sun about coding, gaming, life updates, and whatever else crosses my mind. No formal structure, just honest musings about tech and everything in between.',
-  tags: [
-    'sun envidiado blog',
-    'developer blog',
-    'coding thoughts',
-    'gaming blog',
-    'personal blog',
-    'tech musings',
-  ],
-};
+const description =
+  "Random thoughts from Sun about coding, gaming, life updates, and whatever else crosses my mind.";
 
-const siteBase = (Astro.site || 'https://sun-envidiado.com').toString().replace(/\/$/, '');
+const blogUrl = absoluteUrl("/blog", Astro.site);
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Blog',
-  '@id': `${siteBase}/blog#blog`,
-  name: seoMeta.title,
-  description: seoMeta.description,
-  url: `${siteBase}/blog`,
-  author: { '@id': PERSON_ID },
-  publisher: { '@id': PERSON_ID },
-  blogPost: postList.map((p) => ({
-    '@type': 'BlogPosting',
-    headline: p.title,
-    url: new URL(p.url, siteBase).toString(),
-    datePublished: p.pubDate.toISOString(),
-    author: { '@id': PERSON_ID },
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": `${blogUrl}#blog`,
+  name: "Blog",
+  description,
+  url: blogUrl,
+  author: { "@id": PERSON_ID },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": WEBSITE_ID },
+  blogPost: posts.map((p) => ({
+    "@type": "BlogPosting",
+    headline: p.data.title,
+    url: absoluteUrl(`/blog/${p.id}`, Astro.site),
+    datePublished: p.data.pubDate.toISOString(),
+    author: { "@id": PERSON_ID },
   })),
 };
 ---
 
-<BaseLayout>
-  <SEO
-    slot="head"
-    title={seoMeta.title}
-    description={seoMeta.description}
-    tags={seoMeta.tags}
-    type="website"
-    schemas={[jsonLd]}
-  />
-  <div class="blog-content">
-    <header class="blog-header">
-      <h1 id="blog-title" class="sr-only">Blog</h1>
-      <BackButton />
-    </header>
+<BaseLayout
+  title="Blog — Sun Envidiado"
+  description={description}
+  variant="doc"
+  topPadding="pt-[18vh]"
+  jsonLd={[WEBSITE_SCHEMA, PERSON_SCHEMA, blogSchema]}
+>
+  <h1 class="sr-only">Blog</h1>
 
-    <Newsletter />
-
-    <div class="posts-wrapper">
-      {
-        Object.keys(grouped)
-          .sort((a, b) => Number(b) - Number(a))
-          .map((year, index) => (
-            <section class="year-group">
-              <h2 class="year-heading" id={`year-${year}`}>
-                {year}
-              </h2>
-              <ul class="year-list" aria-labelledby={`year-${year}`}>
-                {grouped[Number(year)].map((post) => (
-                  <li class="post-row" data-blog-index={index} data-blog-url={post.url}>
-                    <a class="post-link" href={post.url} rel="bookmark">
-                      {post.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))
-      }
-    </div>
-  </div>
+  {
+    years.map((year) => (
+      <section class="mt-2 mb-[1lh]">
+        <h2 class="text-vim-dim mb-[0.5lh] text-base md:text-lg">{year}</h2>
+        <ul class="space-y-[0.5lh]">
+          {grouped[year].map((post) => (
+            <li class="flex gap-[2ch]">
+              <span class="text-vim-dim shrink-0">
+                {monthDay(post.pubDate)}
+              </span>
+              <a class="link" href={post.url} rel="bookmark">
+                {post.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
 </BaseLayout>
-
-<style lang="scss">
-  .blog-content {
-    max-width: 500px;
-    text-align: left;
-    width: 100%;
-
-    @media (max-width: 480px) {
-      padding: 1.5rem 1.5rem;
-    }
-  }
-
-  .blog-content-start {
-    color: var(--foreground);
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-
-  .year-heading {
-    margin: 1.5rem 0 1rem;
-    color: var(--comment);
-    text-align: left;
-    opacity: 0.5;
-  }
-
-  .year-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-  .posts-wrapper {
-    margin-top: 2.5rem;
-  }
-
-  .post-row {
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-    gap: 0.35rem;
-    padding: 0.6rem 0.5rem;
-    margin: 0 -0.5rem;
-  }
-
-  .post-link {
-    color: var(--foreground);
-    text-decoration: none;
-    text-align: left;
-    flex: 1 1 auto;
-
-    &:hover {
-      color: var(--cyan);
-      text-decoration: underline;
-    }
-  }
-</style>
