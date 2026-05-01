@@ -44,7 +44,8 @@ const {
   readingMinutes,
 } = Astro.props;
 
-const isHome = Astro.url.pathname === "/";
+const isHome =
+  Astro.url.pathname === "/" || Astro.url.pathname === "/index.html";
 const renderBack = showBack ?? !isHome;
 
 const schemas = jsonLd
