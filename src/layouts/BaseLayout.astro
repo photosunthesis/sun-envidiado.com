@@ -57,7 +57,7 @@ const schemas = jsonLd
 const isSplash = variant === "splash";
 const docTop = topPadding ?? "pt-[2lh]";
 const mainAlign = isSplash
-  ? "items-center justify-center"
+  ? "items-center justify-center pb-[10vh] md:pb-0"
   : `items-start justify-center pb-[2lh] ${docTop}`;
 const contentWrap = isSplash ? "" : "w-full max-w-[70ch]";
 const bodyClass = isSplash

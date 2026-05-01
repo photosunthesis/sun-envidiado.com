@@ -2,7 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { PERSON_SCHEMA, WEBSITE_SCHEMA } from "../utils/seo";
 
-const tagline = "I'm a mediocre programmer, epic pro gamer, and a karaoke menace.";
+const tagline =
+  "I'm a mediocre software developer, epic pro gamer, and a karaoke menace.";
 const description = `Sun Envidiado — ${tagline}. Welcome to my tiny corner on the internet.`;
 
 const sections = [
@@ -29,22 +30,22 @@ const sections = [
     />
     <h1 class="text-vim-link text-center font-semibold">Sun Envidiado</h1>
     <p
-      class="mt-[1lh] text-center min-[325px]:text-justify min-[325px]:[text-align-last:center]"
+      class="mt-[1lh] text-center min-[375px]:text-justify min-[375px]:[text-align-last:center]"
     >
       {tagline} Anyway, welcome to the website.
     </p>
     <nav class="mt-[1lh]" aria-label="Site sections">
       <ul
-        class="space-y-2 font-mono min-[325px]:grid min-[325px]:w-full min-[325px]:grid-cols-[auto_auto_1fr_auto] min-[325px]:gap-x-[1.5ch] min-[325px]:space-y-0 sm:gap-x-[2.5ch]"
+        class="space-y-1 font-mono min-[375px]:grid min-[375px]:w-full min-[375px]:grid-cols-[auto_auto_1fr_auto] min-[375px]:space-y-0 min-[375px]:gap-x-[clamp(0.75ch,2vw,2.5ch)]"
       >
         {
           sections.map((s) => (
-            <li class="min-[325px]:contents">
+            <li class="min-[375px]:contents">
               <span>{`go to `}</span>
               <a class="link" href={s.href}>
                 {s.label}
               </a>
-              <span aria-hidden="true" class="hidden min-[325px]:block" />
+              <span aria-hidden="true" class="hidden min-[375px]:block" />
               <span>{` ${s.desc}.`}</span>
             </li>
           ))
