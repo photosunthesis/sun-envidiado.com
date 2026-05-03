@@ -6,16 +6,19 @@ import bebiAppImage from "./_assets/bebi-app.png";
 import rateStuffImage from "./_assets/rate-stuff-online.png";
 import twentyFourToTwelveImage from "./_assets/24-to-12.png";
 
-const startDate = new Date("2019-03-01");
-const today = new Date();
-let years = today.getFullYear() - startDate.getFullYear();
-if (
-  today.getMonth() < startDate.getMonth() ||
-  (today.getMonth() === startDate.getMonth() &&
-    today.getDate() < startDate.getDate())
-) {
-  years--;
-}
+// rendered per request so `years` (and the meta/JSON-LD it feeds) stays current.
+export const prerender = false;
+
+const now = new Date();
+const startDateString = "2019-03-01";
+const startDate = new Date(startDateString);
+const beforeAnniversary =
+  now.getMonth() < startDate.getMonth() ||
+  (now.getMonth() === startDate.getMonth() &&
+    now.getDate() < startDate.getDate());
+
+const years =
+  now.getFullYear() - startDate.getFullYear() - (beforeAnniversary ? 1 : 0);
 
 const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
 
@@ -74,7 +77,9 @@ const jsonLd = {
       <p>
         I like building software. The debugging and refactoring and polishing
         until something actually feels right is the kind of work I haven't
-        gotten tired of, and I've been at it for {years}+ years.
+        gotten tired of, and I've been at it for <time
+          datetime={startDateString}>{years}</time
+        >+ years.
       </p>
       <p>
         I started with Vue.js on the web, then picked up C# (.NET) and PHP
