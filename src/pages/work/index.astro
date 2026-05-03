@@ -3,8 +3,8 @@ import { Picture } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { PERSON_ID, SITE, absoluteUrl } from "../../utils/seo";
 import bebiAppImage from "./_assets/bebi-app.png";
-import haandvaerkerImage from "./_assets/haandvaerker-dk.png";
 import rateStuffImage from "./_assets/rate-stuff-online.png";
+import twentyFourToTwelveImage from "./_assets/24-to-12.png";
 
 const startDate = new Date("2019-03-01");
 const today = new Date();
@@ -22,11 +22,11 @@ const description = `Software engineer with ${years}+ years of experience — cu
 const projects = [
   {
     title: "rate-stuff.online",
-    url: "https://rate-stuff.online",
+    url: "https://github.com/photosunthesis/rate-stuff.online",
     image: rateStuffImage,
     alt: "Screenshot of rate-stuff.online",
     description:
-      "Built with React and TanStack Start, deployed on Cloudflare Workers. My deep dive into React and serverless.",
+      "A website for rating and reviewing anything you can think of. Built with React, TanStack Start, and TypeScript on Cloudflare Workers — my deep dive into the modern serverless stack.",
   },
   {
     title: "Bebi App",
@@ -34,15 +34,15 @@ const projects = [
     image: bebiAppImage,
     alt: "Screenshot of Bebi App",
     description:
-      "A couples app with image sharing, shared calendar, and cycle tracking.",
+      "A Flutter app for couples — shared photo albums, a shared calendar, and cycle tracking, with a Firebase backend. A personal project for my partner and me.",
   },
   {
-    title: "Haandvaerker.dk",
-    url: "https://www.haandvaerker.dk/",
-    image: haandvaerkerImage,
-    alt: "Screenshot of Haandvaerker.dk",
+    title: "24-to-12",
+    url: "https://github.com/photosunthesis/24-to-12",
+    image: twentyFourToTwelveImage,
+    alt: "Screenshot of the 24to12 web app",
     description:
-      "Platform connecting homeowners with craftsmen in Denmark. Built both Flutter apps and contributed to the backend.",
+      "A small web app that converts 24-hour time to 12-hour time, because I cannot do the subtraction in my head. Built in vanilla JavaScript over a single morning.",
   },
 ];
 
@@ -72,33 +72,35 @@ const jsonLd = {
 
     <section class="space-y-[1lh]">
       <p>
-        I've been building software for {years}+ years, starting with web before
-        shifting to mobile. My current focus is iOS development with Swift.
+        I like building software. The debugging and refactoring and polishing
+        until something actually feels right is the kind of work I haven't
+        gotten tired of, and I've been at it for {years}+ years.
       </p>
       <p>
-        Along the way, I developed skills in Flutter and Dart for cross-platform
-        apps, JavaScript (React and Vue), PHP (Laravel), C# (.NET), and the
-        Firebase and Cloudflare ecosystems.
+        I started with Vue.js on the web, then picked up C# (.NET) and PHP
+        (Laravel) on the backend, then moved into mobile with Flutter and Dart;
+        currently I'm focused on native iOS development with Swift. JavaScript,
+        TypeScript, React, TanStack, Firebase, and Cloudflare have all been part
+        of the stack along the way. These days, I've been integrating AI in my
+        workflow, mainly Claude Code, both for shipping software and for
+        automating plenty of things that have nothing to do with code.
       </p>
       <p>
-        You can view my complete resume <a
+        If you want more details, you can find them in <a
           class="link"
           href="/sun-envidiado-resume.pdf"
-          target="_blank">here</a
-        >.
-      </p>
-      <p>
-        If you'd like to get in touch, head over to the <a
-          class="link"
-          href="/contact">contact page</a
-        >.
+          target="_blank">my resume</a
+        >, and the <a class="link" href="/contact">contact page</a> is right there
+        if you'd like to get in touch.
       </p>
     </section>
 
     <section class="mt-12">
-      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">
-        Project Showcase
-      </h2>
+      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">Projects</h2>
+      <p class="mb-[1lh]">
+        Here are some projects I've built outside of work; some polished, some
+        scrappy, all made because I wanted to.
+      </p>
       <ul class="space-y-[2lh]">
         {
           projects.map((project) => (
