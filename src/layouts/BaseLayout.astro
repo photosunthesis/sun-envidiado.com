@@ -21,6 +21,7 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   showBack?: boolean;
   topPadding?: string;
+  centerVertical?: boolean;
   wordCount?: number;
   readingMinutes?: number;
 }
@@ -40,6 +41,7 @@ const {
   jsonLd,
   showBack,
   topPadding,
+  centerVertical = false,
   wordCount,
   readingMinutes,
 } = Astro.props;
@@ -58,8 +60,14 @@ const isSplash = variant === "splash";
 const docTop = topPadding ?? "pt-[2lh]";
 const mainAlign = isSplash
   ? "items-center justify-center pb-[10vh] md:pb-0"
-  : `items-start justify-center pb-[2lh] ${docTop}`;
-const contentWrap = isSplash ? "" : "w-full max-w-[70ch]";
+  : centerVertical
+    ? "flex-col items-center justify-center py-[2lh]"
+    : `items-start justify-center pb-[2lh] ${docTop}`;
+const contentWrap = isSplash
+  ? ""
+  : centerVertical
+    ? "w-full max-w-[70ch] my-auto"
+    : "w-full max-w-[70ch]";
 const bodyClass = isSplash
   ? "h-screen overflow-hidden font-mono text-sm md:text-base"
   : "min-h-screen font-mono text-sm md:text-base";
@@ -109,7 +117,10 @@ const isProd = import.meta.env.PROD;
     <div class={wrapperClass}>
       <main
         id="main"
-        class:list={["relative flex-1", isSplash && "overflow-hidden"]}
+        class:list={[
+          "relative flex flex-1 flex-col",
+          isSplash && "overflow-hidden",
+        ]}
       >
         <div
           aria-hidden="true"
@@ -117,7 +128,7 @@ const isProd = import.meta.env.PROD;
         >
         </div>
 
-        <div class:list={["flex h-full px-8 md:pr-8 md:pl-12", mainAlign]}>
+        <div class:list={["flex flex-1 px-8 md:pr-8 md:pl-12", mainAlign]}>
           <div class={contentWrap}>
             {
               renderBack && (
