@@ -2,8 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { PERSON_SCHEMA, WEBSITE_SCHEMA } from "../utils/seo";
 
-const tagline =
-  "I'm a mediocre software developer, epic pro gamer, and a karaoke menace.";
+const tagline = "I'm a software developer, gamer, and karaoke menace.";
 const description = `Sun Envidiado — ${tagline}. Welcome to my tiny corner on the internet.`;
 
 const sections = [
@@ -19,7 +18,7 @@ const sections = [
   description={description}
   jsonLd={[WEBSITE_SCHEMA, PERSON_SCHEMA]}
 >
-  <article class="w-full max-w-[44ch] leading-relaxed">
+  <article class="w-full max-w-[40ch] leading-relaxed">
     <img
       src="/sun-logo.svg"
       alt=""
@@ -37,7 +36,7 @@ const sections = [
 
     <nav class="mt-[1lh]" aria-label="Site sections">
       <ul
-        class="space-y-1 font-mono min-[375px]:grid min-[375px]:w-full min-[375px]:grid-cols-[auto_auto_1fr_auto] min-[375px]:space-y-0 min-[375px]:gap-x-[clamp(0.75ch,2vw,2.5ch)]"
+        class="mx-auto w-fit space-y-1 font-mono whitespace-nowrap min-[375px]:grid min-[375px]:grid-cols-[auto_auto_auto] min-[375px]:space-y-0 min-[375px]:gap-x-[clamp(0.75ch,1vw,2.5ch)]"
       >
         {
           sections.map((s) => (
@@ -46,7 +45,6 @@ const sections = [
               <a class="link" href={s.href}>
                 {s.label}
               </a>
-              <span aria-hidden="true" class="hidden min-[375px]:block" />
               <span>{` ${s.desc}.`}</span>
             </li>
           ))
