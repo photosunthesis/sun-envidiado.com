@@ -12,6 +12,7 @@
   --color-vim-link: #fafafa;
   --color-vim-status: #262626;
   --color-vim-status-fg: #d4d4d4;
+  --color-vim-code: #141414;
 }
 
 :root {
@@ -81,14 +82,14 @@ body {
   margin-right: auto;
 }
 .post-body pre {
-  background: var(--color-vim-status) !important;
+  background: var(--color-vim-code) !important;
   padding: 1em;
   border-radius: 4px;
   overflow-x: auto;
   font-size: 0.875em;
 }
 .post-body code {
-  background: var(--color-vim-status);
+  background: var(--color-vim-code);
   padding: 0.1em 0.35em;
   border-radius: 3px;
   font-size: 0.9em;
@@ -128,4 +129,24 @@ body {
   border: 0;
   border-top: 1px solid var(--color-vim-dim);
   margin: 2lh 0;
+}
+.post-body ul,
+.post-body ol {
+  padding-left: 2.5ch;
+}
+.post-body ul {
+  list-style: disc;
+}
+.post-body ol {
+  list-style: decimal;
+}
+.post-body li::marker {
+  color: var(--color-vim-dim);
+}
+.post-body li + li {
+  margin-top: 0.25lh;
+}
+.post-body li > ul,
+.post-body li > ol {
+  margin-top: 0.25lh;
 }
