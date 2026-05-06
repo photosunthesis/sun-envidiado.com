@@ -1,6 +1,7 @@
 ---
 title: "How I rebuilt my personal site with Astro"
 pubDate: "2025-09-19"
+updatedDate: "2026-05-06"
 description: "I rebuilt this site with Astro after wrestling with Flutter on the web and getting bogged down by React's extra layers. Astro gave me an HTML-first workflow, faster static pages, and better SEO, basically less config, more coding."
 tags:
   [
@@ -40,29 +41,53 @@ It sounded like the way web development used to feel, before we started sending 
 
 A weekend later? I had the entire site ported, plus the blog section I'd been procrastinating on for months. It just clicked.
 
+## The design: a love letter to vim and TUIs
+
+Full disclosure, I don't actually use Vim. I write all of this in VS Code like a perfectly normal person. That said, I do spend a lot of my day in the terminal using git, tmux, Claude Code, a bunch of other CLI stuff, and something about vim and TUIs has always felt cool and hacky and delightfully computer-y to me, and I wanted that energy on my website.
+
+So the whole thing is dressed up like a vim buffer:
+
+- Monospace everywhere (JetBrains Mono).
+- A near-black background with muted greys for body text and brighter foregrounds for links, just like a dim colorscheme.
+- A sticky status bar at the bottom of every page with the current path (`~/blog`), a `-- NORMAL --` / `-- VISUAL --` indicator that flips when you select text, and a `Top` / `Bot` / percentage scroll position. It's purely cosmetic, but it makes me smile.
+- Navigation links written as Ex commands (`:about`, `:blog`, `:contact`, `:work`), because that's how I'd actually open them in my head.
+
+It's a weird flex for a personal site, but the constraint was useful. Once I committed to "looks like a vim buffer," a lot of design decisions got easier. No marketing hero, no gradients, no glassmorphism, just text on a dark background.
+
 ## How it's set up
 
 The structure is super clean. It doesn't feel like an "app"; it feels like a website.
 
 ```text
 src/
-├─ components/          # reusable UI bits
+├─ components/          # BackButton, Newsletter, SEO, StatusBar
+├─ content/
+│   └─ blog/            # markdown/MDX posts, one folder per post
+├─ content.config.ts    # Zod-typed Content Collections schema
 ├─ layouts/
 │   └─ BaseLayout.astro # the master template
 ├─ pages/
 │   ├─ index.astro      # homepage
-│   ├─ blog/            # where the markdown lives
-│   └─ ...              # etc.
-├─ styles/              # SCSS
-└─ utils/               # plain TS helpers
+│   ├─ about.astro
+│   ├─ contact.astro
+│   ├─ blog/            # listing + dynamic [...id].astro route
+│   ├─ work/
+│   ├─ api/             # newsletter subscribe + verify endpoints
+│   ├─ rss.xml.ts       # full-content RSS feed
+│   ├─ robots.txt.ts
+│   └─ llms.txt.ts
+├─ styles/
+│   └─ global.css       # Tailwind v4 + a few custom tokens
+└─ utils/
+    └─ seo.ts           # JSON-LD + canonical URL helpers
 ```
 
-The killer feature is how it handles content. Blog posts are literally just Markdown files. No CMS to configure, no database, no complex JSX-to-HTML pipelines.
+The killer feature is how it handles content. Blog posts are literally just Markdown (or MDX) files inside a Content Collection. No CMS to configure, no database, no complex JSX-to-HTML pipelines.
 
 ```markdown
 ---
 title: "My Post"
-date: "2025-09-19"
+pubDate: "2025-09-19"
 description: "Just a regular blog post"
 tags: ["web", "astro"]
 ---
@@ -72,21 +97,24 @@ tags: ["web", "astro"]
 And it works exactly like you'd expect.
 ```
 
-That YAML block at the top (frontmatter) handles all the metadata. Astro just reads it. I didn't have to write a parser or build a custom API to fetch my own posts.
+That YAML block at the top (frontmatter) handles all the metadata. `content.config.ts` runs it through a Zod schema at build time, so I can't accidentally publish a post without a date or with a misspelled field. The build just refuses.
 
 Here's a quick breakdown of the moving parts:
 
-- **Components**: I use these for little self-contained pieces, like the command bar or that spinning ASCII sun on the homepage. They're just reusable blocks of HTML/CSS/JS.
-- **Layouts**: `BaseLayout.astro` does the heavy lifting for the HTML skeleton, meta tags, basic structure, styles. Every page just wraps itself in this.
-- **Pages**: This is the magic part. The file system _is_ the router. `index.astro` is home. `about.astro` is `/about`. The `blog/` folder holds the markdown files, and Astro turns them into routes automatically.
-- **Styles**: Standard SCSS setup. Variables in one place, base styles in another. It's simple and it works.
-- **Utils**: Just some Typescript helpers. I have a `seo.ts` file that automates the meta tags so I don't forget them.
+- **Components**: small, self-contained pieces. `StatusBar` is the vim-mode footer, `Newsletter` is the email signup, `SEO` handles meta tags and Open Graph, `BackButton` is a one-liner I reuse on subpages.
+- **Layouts**: `BaseLayout.astro` does the heavy lifting, the HTML skeleton, meta tags via the `SEO` component, the status bar, JSON-LD, the lot. Every page just wraps itself in this.
+- **Pages**: the file system _is_ the router. `index.astro` is home. `about.astro` is `/about`. The `blog/[...id].astro` file uses `getStaticPaths` over the `blog` collection to generate one route per post.
+- **Content**: posts live under `src/content/blog`, each in its own folder so images can sit right next to `index.mdx` and get optimized by Astro's image pipeline.
+- **Styles**: Tailwind v4 driven from a single `global.css`, with a small set of custom design tokens (the `vim-bg`, `vim-fg`, `vim-link` colors) defined via `@theme`. No SCSS, no PostCSS config, no preprocessor babysitting.
+- **Utils**: small TypeScript helpers. `seo.ts` builds canonical URLs and the shared Person/Website JSON-LD I drop into every page.
+
+A few extras worth mentioning: the site is deployed to Cloudflare via `@astrojs/cloudflare` and `wrangler`, the RSS feed is full-content (so you don't have to leave your reader), there's a sitemap from `@astrojs/sitemap`, and the newsletter is a tiny Resend-backed flow with a double opt-in, all running on the same Cloudflare Worker.
 
 ## Why it stuck
 
 Astro just fit the problem I was solving. I wanted a personal site, not a Single Page Application. I didn't need client-side routing or complex state management; I needed HTML that loads fast.
 
-The "frontmatter" feature is a godsend for blogs. I get type safety on my frontmatter (so I can't accidentally publish a post without a date), and it handles all the build-time generation.
+The Content Collections feature is a godsend for blogs. I get type safety on my frontmatter (so I can't accidentally publish a post without a date), and it handles all the build-time generation.
 
 It feels like making a website in the good old days. You're writing actual HTML, CSS, and JS, but with the power of modern tooling. I stopped fighting the tools and started writing content again. Development is fast, simple, and honest.
 
@@ -100,8 +128,4 @@ React isn't "bad," obviously. If I were building a dashboard or a complex intera
 - **Content-focused site?** Astro.
 - **Flutter web?** Look, I love Flutter, but... maybe let's keep it on mobile for now.
 
-You can check out the source on <a href="https://github.com/photosunthesis/sun-envidiado-website-astro" target="_blank" rel="noopener noreferrer" title="View the sun-envidiado-website-astro project on GitHub">GitHub</a>.
-
-**Edit (2026-01-27)**
-
-I actually ended up migrating the blog posts from `src/pages` to `src/content` for Astro's Content Collections. Why? RSS. I wanted to serve full-content feeds so you don't have to leave your reader, and to do that programmatically with Astro's Container API, collections are the way to go. Plus, now my frontmatter is strictly typed with Zod, so I can't break the build by typo-ing a date. Totally worth the refactor.
+You can check out the source on <a href="https://github.com/photosunthesis/sun-envidiado.com" target="_blank" rel="noopener noreferrer" title="View the sun-envidiado.com project on GitHub">GitHub</a>.
