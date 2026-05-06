@@ -22,6 +22,45 @@ const years =
 
 const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
 
+const skills = [
+  {
+    label: "Frontend & Mobile",
+    items: [
+      "Swift & SwiftUI",
+      "Flutter & Dart",
+      "iOS & Android",
+      "TypeScript, React, TanStack",
+      "Vue.js, jQuery",
+      "HTML/CSS, Responsive Web",
+      "Razor Pages, Laravel Blade",
+    ],
+  },
+  {
+    label: "Backend & Database",
+    items: [
+      "C# & .NET",
+      "Entity Framework",
+      "PHP & Laravel",
+      "RESTful APIs",
+      "Firebase (Auth, Firestore)",
+      "Cloudflare (Workers, R2)",
+      "PostgreSQL, MySQL, MSSQL",
+    ],
+  },
+  {
+    label: "Architecture & DevOps",
+    items: [
+      "SOLID Principles",
+      "Domain-Driven Design",
+      "Repository & Service Patterns",
+      "CI/CD Pipelines",
+      "GitHub Actions, Azure DevOps",
+      "Git, Docker, Fastlane",
+      "LLM integration",
+    ],
+  },
+];
+
 const projects = [
   {
     title: "rate-stuff.online",
@@ -75,29 +114,48 @@ const jsonLd = {
 
     <section class="space-y-[1lh]">
       <p>
-        I like building software. The debugging and refactoring and polishing
-        until something actually feels right is the kind of work I haven't
-        gotten tired of, and I've been at it for <time
-          datetime={startDateString}>{years}</time
-        >+ years.
+        I've been building software for over <time datetime={startDateString}
+          >{years}</time
+        >+ years, engineering systems across the web, backend, and mobile.
       </p>
       <p>
-        I started with Vue.js on the web, then picked up C# (.NET) and PHP
-        (Laravel) on the backend, then moved into mobile with Flutter and Dart;
-        currently I'm focused on native iOS development with Swift. JavaScript,
-        TypeScript, React, TanStack, Firebase, and Cloudflare have all been part
-        of the stack along the way. These days, I've been integrating AI in my
-        workflow, mainly Claude Code, both for shipping software and for
-        automating plenty of things that have nothing to do with code.
+        I started with Vue.js on the web, picked up C# (.NET) and PHP (Laravel)
+        on the backend, then moved into mobile with Flutter and Dart. Right now,
+        I'm building iOS apps with Swift.
       </p>
       <p>
-        If you want more details, you can find them in <a
+        I've worked across fintech, healthcare, and a handful of other domains,
+        tightening up CI/CD pipelines, shipping production iOS and Android apps,
+        and architecting backends along the way. The full timeline (companies,
+        dates, the long version) lives in <a
           class="link"
           href="/sun-envidiado-resume.pdf"
           target="_blank">my resume</a
-        >, and the <a class="link" href="/contact">contact page</a> is right there
-        if you'd like to get in touch.
+        >.
       </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">Skills</h2>
+      <div class="grid grid-cols-1 gap-[1lh] md:grid-cols-3 md:gap-[2ch]">
+        {
+          skills.map((group) => (
+            <div>
+              <h3 class="mb-[0.5lh] font-semibold">{group.label}</h3>
+              <ul class="space-y-[0.25lh]">
+                {group.items.map((item) => (
+                  <li class="flex gap-[1ch]">
+                    <span class="text-vim-dim" aria-hidden="true">
+                      ·
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
     </section>
 
     <section class="mt-12">
