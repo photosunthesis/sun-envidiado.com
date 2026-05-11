@@ -123,7 +123,7 @@ body {
 .post-body blockquote {
   border-left: 2px solid var(--color-vim-dim);
   padding-left: 1ch;
-  color: var(--color-vim-dim);
+  color: var(--color-vim-fg);
 }
 .post-body hr {
   border: 0;
