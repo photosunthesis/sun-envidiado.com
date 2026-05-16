@@ -16,7 +16,8 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "newsletter": "tsx scripts/send-newsletter.ts",
-    "optimize:images": "tsx scripts/optimize-images.ts"
+    "optimize:images": "tsx scripts/optimize-images.ts",
+    "bearblog": "tsx scripts/bearblog-export.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.2.2",

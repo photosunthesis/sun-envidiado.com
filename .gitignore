@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# bearblog crosspost exports
+bearblog-out/
+
 # generated types
 .astro/
 

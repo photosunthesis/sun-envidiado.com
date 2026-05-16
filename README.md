@@ -62,7 +62,17 @@ src/
 
 scripts/
 ├─ optimize-images.ts   # image optimization
-└─ send-newsletter.ts   # newsletter dispatch (Resend)
+├─ send-newsletter.ts   # newsletter dispatch (Resend)
+└─ bearblog-export.ts   # export posts for cross-posting to Bear Blog
+```
+
+### Cross-posting 🐻
+
+Blog posts are also cross-posted to [sun-envidiado.bearblog.dev](https://sun-envidiado.bearblog.dev/). Use `scripts/bearblog-export.ts` to convert a post's Astro frontmatter and MDX body into Bear Blog's plaintext format:
+
+```bash
+pnpm tsx scripts/bearblog-export.ts <slug>
+# output: bearblog-out/<slug>.txt — paste into Bear's editor
 ```
 
 ### License 🪪
