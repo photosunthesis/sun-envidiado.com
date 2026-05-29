@@ -34,11 +34,25 @@ body {
 .link {
   color: var(--color-vim-link);
   outline: none;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 150ms ease-out;
 }
 .link:hover,
 .link:focus {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.action {
+  color: var(--color-vim-dim);
+  outline: none;
+  text-decoration: none;
+  font-size: 0.875em;
+  transition: color 150ms ease-out;
+}
+.action:hover,
+.action:focus {
+  color: var(--color-vim-link);
 }
 
 .skip-link {
