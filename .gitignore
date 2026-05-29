@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 # Wrangler
 .wrangler/
+
+# Claude Code
+.claude/
