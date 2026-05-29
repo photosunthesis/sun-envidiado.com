@@ -16,6 +16,7 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "newsletter": "tsx scripts/send-newsletter.ts",
+    "preview:emails": "tsx scripts/preview-emails.ts --open",
     "optimize:images": "tsx scripts/optimize-images.ts",
     "bearblog": "tsx scripts/bearblog-export.ts"
   },

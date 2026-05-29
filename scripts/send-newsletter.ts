@@ -4,6 +4,7 @@ import path from "path";
 import { Resend } from "resend";
 import Parser from "rss-parser";
 import { fileURLToPath } from "url";
+import { newPostEmail } from "../src/emails/new-post";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -136,33 +137,11 @@ async function sendNewsletter(blog: { slug: string; metadata: BlogMetadata }) {
   const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
   const blogUrl = `${baseUrl}/blog/${blog.slug}`;
 
-  const emailHtml = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #222; max-width: 600px; padding: 20px; line-height: 1.6;">
-      <p style="font-size: 16px; color: #333; margin-bottom: 24px;">
-        I just published a new blog post!
-      </p>
-      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #09090b;">${blog.metadata.title}</h3>
-      <p style="font-size: 16px; color: #666; margin-bottom: 24px; font-style: italic; border-left: 2px solid #e4e4e7; padding-left: 16px;">
-        "${blog.metadata.description}"
-      </p>
-      <div style="margin: 32px 0;">
-        <a href="${blogUrl}" style="background-color: #09090b; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block; font-size: 15px;">Read Full Article</a>
-      </div>
-      <p style="font-size: 14px; color: #666; margin-bottom: 24px;">
-        Or copy and paste this link into your browser: <br>
-        <a href="${blogUrl}" style="color: #666; text-decoration: underline;">${blogUrl}</a>
-      </p>
-      
-      <div style="margin-top: 48px;">
-        <p style="margin: 0; font-size: 16px; color: #333; font-weight: 600;">
-          Sun Envidiado
-        </p>
-        <p style="margin: 16px 0 0; font-size: 13px; color: #a1a1aa;">
-          If you'd like to stop receiving these emails, you can <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color: #a1a1aa; text-decoration: underline;">unsubscribe here</a>.
-        </p>
-      </div>
-    </div>
-  `;
+  const emailHtml = newPostEmail({
+    title: blog.metadata.title,
+    description: blog.metadata.description,
+    url: blogUrl,
+  });
 
   console.log(`   ✉️ Sending email for: ${blog.metadata.title}`);
 

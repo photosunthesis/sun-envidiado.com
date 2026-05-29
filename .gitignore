@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# email preview output
+.preview/
+
 # bearblog crosspost exports
 bearblog-out/
 
