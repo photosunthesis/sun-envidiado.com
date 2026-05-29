@@ -10,10 +10,8 @@ const { hasDivider = false, class: className } = Astro.props;
 {hasDivider && <p class="text-vim-dim mt-[2lh] mb-[2lh]">---</p>}
 <section class:list={["w-full", className]}>
   <p class="mb-[0.75lh]">
-    Subscribe to get an email when I publish a new post (or use <a
-      class="link"
-      href="/rss.xml">RSS</a
-    >). No spam. I promise!
+    Subscribe to get an email when I publish a new post. No spam. I promise! Or
+    use <a class="link" href="/rss.xml">RSS</a>.
   </p>
 
   <form id="newsletter-form" class="flex flex-wrap items-center gap-[1ch]">
