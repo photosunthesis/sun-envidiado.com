@@ -2,7 +2,6 @@ import "dotenv/config";
 import fs from "fs/promises";
 import path from "path";
 import { Resend } from "resend";
-import Parser from "rss-parser";
 import { fileURLToPath } from "url";
 import { newPostEmail } from "../src/emails/new-post";
 
@@ -13,7 +12,7 @@ const BLOG_SEGMENT_ID = process.env.BLOG_SEGMENT_ID;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const SITE_URL = process.env.PUBLIC_SITE_URL || "https://sun-envidiado.com";
 const BLOG_DIR = path.join(__dirname, "../src/content/blog");
-const RSS_URL = `${SITE_URL}/rss.xml`;
+const SLUGS_URL = `${SITE_URL}/api/blog-slugs.json`;
 
 interface BlogMetadata {
   title: string;
@@ -59,38 +58,24 @@ async function getBlogMetadata(blogPath: string): Promise<BlogMetadata | null> {
   }
 }
 
-async function getPublishedBlogs(): Promise<Set<string>> {
-  const parser = new Parser();
-  const publishedSlugs = new Set<string>();
-
+async function getPublishedSlugs(): Promise<Set<string> | null> {
   try {
-    console.log(`📡 Fetching RSS feed from ${RSS_URL}...`);
-    const feed = await parser.parseURL(RSS_URL);
-
-    for (const item of feed.items) {
-      if (item.link) {
-        const urlObj = new URL(item.link);
-        const slug = urlObj.pathname.split("/").filter(Boolean).pop();
-        if (slug) {
-          publishedSlugs.add(slug);
-        }
-      }
-    }
-    console.log(`✅ Found ${publishedSlugs.size} published posts in RSS feed.`);
+    const res = await fetch(SLUGS_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const slugs = (await res.json()) as string[];
+    console.log(`✅ Found ${slugs.length} published posts.`);
+    return new Set(slugs);
   } catch (error) {
-    console.warn(
-      `⚠️ Could not fetch or parse RSS feed (${RSS_URL}). Assuming this is a first deployment or feed is broken.`,
-    );
-    console.warn(`Details: ${(error as Error).message}`);
+    // If we can't see what's live, we can't tell what's new — better to send
+    // nothing than to risk re-announcing every post.
+    console.warn(`⚠️ Couldn't reach ${SLUGS_URL}: ${(error as Error).message}`);
+    return null;
   }
-
-  return publishedSlugs;
 }
 
-async function getNewBlogs(): Promise<
-  Array<{ slug: string; metadata: BlogMetadata }>
-> {
-  const publishedSlugs = await getPublishedBlogs();
+async function getNewBlogs(
+  publishedSlugs: Set<string>,
+): Promise<Array<{ slug: string; metadata: BlogMetadata }>> {
   const blogDirs = await fs.readdir(BLOG_DIR);
   const newBlogs: Array<{ slug: string; metadata: BlogMetadata }> = [];
 
@@ -169,16 +154,20 @@ async function main() {
     );
   }
 
-  const newBlogs = await getNewBlogs();
-
-  if (newBlogs.length === 0) {
-    console.log("✅ No new blogs found (compared to RSS feed).");
+  const publishedSlugs = await getPublishedSlugs();
+  if (!publishedSlugs) {
+    console.log("🚫 Can't tell what's already published. Skipping.");
     return;
   }
 
-  console.log(
-    `📧 Found ${newBlogs.length} new blog(s) that are not in the RSS feed:\n`,
-  );
+  const newBlogs = await getNewBlogs(publishedSlugs);
+
+  if (newBlogs.length === 0) {
+    console.log("✅ No new blogs found.");
+    return;
+  }
+
+  console.log(`📧 Found ${newBlogs.length} new blog(s) to announce:\n`);
 
   for (const blog of newBlogs) {
     console.log(`   - ${blog.metadata.title} (${blog.slug})`);
