@@ -41,6 +41,17 @@ export function absoluteUrl(path: string, site?: URL | string): string {
   return new URL(path, site ?? SITE.url).toString();
 }
 
+// With build.format "file", prerendered pathnames end in ".html"; canonicals
+// must use the clean URL the server serves without redirecting.
+export function canonicalUrl(pathname: string, site?: URL | string): string {
+  const path =
+    pathname
+      .replace(/\.html$/, "")
+      .replace(/\/index$/, "")
+      .replace(/\/+$/, "") || "/";
+  return absoluteUrl(path, site);
+}
+
 export function buildTitle(rawTitle?: string): string {
   if (!rawTitle || rawTitle === SITE.name) return SITE.name;
   if (rawTitle.includes(`— ${SITE.name}`)) return rawTitle;

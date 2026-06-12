@@ -10,6 +10,7 @@ import {
   WEBSITE_ID,
   WEBSITE_SCHEMA,
   absoluteUrl,
+  canonicalUrl,
 } from "../../utils/seo";
 
 export async function getStaticPaths() {
@@ -60,7 +61,7 @@ if (coverImage) {
   coverPreloadSrcset = variants.join(", ");
 }
 
-const canonical = absoluteUrl(Astro.url.pathname, Astro.site);
+const canonical = canonicalUrl(Astro.url.pathname, Astro.site);
 const ogImage = coverImage
   ? absoluteUrl(coverImage.src, Astro.site)
   : undefined;

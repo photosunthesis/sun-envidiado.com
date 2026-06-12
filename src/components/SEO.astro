@@ -1,6 +1,12 @@
 ---
 import { SEO as AstroSEO } from "astro-seo";
-import { SITE, WEBSITE_SCHEMA, PERSON_SCHEMA, absoluteUrl } from "../utils/seo";
+import {
+  SITE,
+  WEBSITE_SCHEMA,
+  PERSON_SCHEMA,
+  absoluteUrl,
+  canonicalUrl,
+} from "../utils/seo";
 
 interface Props {
   title: string;
@@ -30,7 +36,7 @@ const {
   schemas,
 } = Astro.props;
 
-const canonical = absoluteUrl(Astro.url.pathname, Astro.site);
+const canonical = canonicalUrl(Astro.url.pathname, Astro.site);
 const ogImage = image.startsWith("http")
   ? image
   : absoluteUrl(image, Astro.site);
