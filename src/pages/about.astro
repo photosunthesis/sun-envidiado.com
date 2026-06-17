@@ -1,14 +1,18 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { PERSON_ID } from "../utils/seo";
+import { PERSON_ID, PERSON_NODE } from "../utils/seo";
 
 const description =
   "About Sun Envidiado — a software developer from the Philippines.";
 
+// Google rejects this unless the author's details sit right next to the page
+// info, so both go in one block.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  mainEntity: { "@id": PERSON_ID },
+  "@graph": [
+    { "@type": "ProfilePage", mainEntity: { "@id": PERSON_ID } },
+    PERSON_NODE,
+  ],
 };
 ---
 

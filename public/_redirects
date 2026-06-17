@@ -1,1 +1,5 @@
-# Cloudflare Redirects
+# Permanently send duplicate addresses to the real one so Google treats them as
+# the same page. (The default only does this temporarily, which Google ignores.)
+/index.html  /        301
+/*.html      /:splat  301
+/*/          /:splat  301

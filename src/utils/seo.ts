@@ -11,8 +11,9 @@ export const SITE = {
 export const PERSON_ID = `${SITE.url}/#person`;
 export const WEBSITE_ID = `${SITE.url}/#website`;
 
-export const PERSON_SCHEMA = {
-  "@context": "https://schema.org",
+// The author's details. PERSON_NODE goes inside larger data; PERSON_SCHEMA is
+// the standalone version.
+export const PERSON_NODE = {
   "@type": "Person",
   "@id": PERSON_ID,
   name: SITE.name,
@@ -24,6 +25,11 @@ export const PERSON_SCHEMA = {
     "https://github.com/photosunthesis",
     "https://www.linkedin.com/in/sunenvidiado/",
   ],
+} as const;
+
+export const PERSON_SCHEMA = {
+  "@context": "https://schema.org",
+  ...PERSON_NODE,
 } as const;
 
 export const WEBSITE_SCHEMA = {

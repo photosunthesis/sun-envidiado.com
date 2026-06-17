@@ -52,6 +52,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      filter: (page) => !page.endsWith("/blog-subscription-success"),
       async serialize(item) {
         const pathname = new URL(item.url).pathname.replace(/\/$/, "");
         const dates = (await getBlogPostDates())[pathname];
