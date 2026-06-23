@@ -7,9 +7,11 @@ cover: "commuting-and-the-weird-peace-i-found-in-it/_assets/cover.jpg"
 coverAlt: "An LRT train in Manila"
 ---
 
-import { Picture } from "astro:assets";
+import ThumbHashPicture from "../../../components/ThumbHashPicture.astro";
 import busInterior from "./_assets/bus.jpg";
+import busInteriorHash from "./_assets/bus.jpg?thumbhash";
 import lrtStation from "./_assets/lrt-station.jpg";
+import lrtStationHash from "./_assets/lrt-station.jpg?thumbhash";
 
 Okay so commuting in Metro Manila objectively sucks. The traffic is a nightmare, public transport is not that reliable, the roads are bad, and sometimes you genuinely question your time management skills. But then you realize no, it's not you, the system is just terrible and you're doing your best to make it work for you. Sometimes it does, sometimes it doesn't.
 
@@ -19,8 +21,9 @@ There's this weird peace I find in the middle of all the chaos and I still can't
 
 ## Being a Nobody
 
-<Picture
+<ThumbHashPicture
   src={lrtStation}
+  thumbhash={lrtStationHash}
   formats={["avif", "webp"]}
   fallbackFormat="jpg"
   widths={[400, 600, 900, 1200]}
@@ -38,8 +41,9 @@ I spend half the time zoning out, looking out the window, watching the city pass
 
 ## Strangers
 
-<Picture
+<ThumbHashPicture
   src={busInterior}
+  thumbhash={busInteriorHash}
   formats={["avif", "webp"]}
   fallbackFormat="jpg"
   widths={[400, 600, 900, 1200]}

@@ -144,5 +144,32 @@ const isProd = import.meta.env.PROD;
 
       <StatusBar wordCount={wordCount} readingMinutes={readingMinutes} />
     </div>
+
+    <noscript>
+      <style>
+        [data-lqip] img {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
+
+    <script is:inline>
+      // Fade each blur-placeholder image in once it loads. A plain onload
+      // attribute misses images already cached/complete before it attaches,
+      // which left the placeholder stuck — so check `complete` first.
+      (() => {
+        const reveal = (img) => {
+          img.style.opacity = "1";
+        };
+        for (const img of document.querySelectorAll("[data-lqip] img")) {
+          if (img.complete) {
+            reveal(img);
+          } else {
+            img.addEventListener("load", () => reveal(img), { once: true });
+            img.addEventListener("error", () => reveal(img), { once: true });
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

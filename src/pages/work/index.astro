@@ -180,6 +180,7 @@ const jsonLd = {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-lqip
                 class="block aspect-4/3 w-full overflow-hidden rounded border border-neutral-800"
                 style={`background-image: url('${project.placeholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`}
               >
@@ -191,8 +192,7 @@ const jsonLd = {
                   sizes="(max-width: 768px) 100vw, 200px"
                   loading="lazy"
                   alt={project.alt}
-                  class="h-full w-full object-cover opacity-0 transition-opacity duration-500 ease-out"
-                  onload="this.style.opacity='1'"
+                  class="h-full w-full object-cover opacity-0 transition-opacity duration-500 ease-out motion-reduce:transition-none"
                 />
               </a>
               <div>

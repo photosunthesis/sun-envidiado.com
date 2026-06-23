@@ -54,7 +54,9 @@ if (cover) {
     coverPlaceholder = await getThumbHashPlaceholder(
       `${process.cwd()}/src/content/blog/${cover.replace(/^\.\//, "")}`,
     );
-  } catch {}
+  } catch {
+    // No placeholder is fine — the image just loads without a blur-up.
+  }
 }
 
 const COVER_WIDTHS = [400, 600, 900];
@@ -145,14 +147,14 @@ const formatDate = (d: Date) =>
     {
       coverImage && (
         <span
+          data-lqip
           class="mb-[1lh] block overflow-hidden rounded"
           style={coverPlaceholder
             ? `background-image: url('${coverPlaceholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`
             : `background-color: var(--color-vim-code);`}
         >
           <Picture
-            class="block h-auto w-full opacity-0 transition-opacity duration-500 ease-out"
-            onload="this.style.opacity='1'"
+            class="block h-auto w-full opacity-0 transition-opacity duration-500 ease-out motion-reduce:transition-none"
             src={coverImage}
             formats={["avif", "webp"]}
             fallbackFormat="jpg"

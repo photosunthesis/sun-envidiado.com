@@ -7,8 +7,9 @@ cover: "im-leaving-instagram/_assets/cover.jpg"
 coverAlt: "Person covering the camera lens"
 ---
 
-import { Picture } from "astro:assets";
+import ThumbHashPicture from "../../../components/ThumbHashPicture.astro";
 import inThePool from "./_assets/in_the_pool.jpg";
+import inThePoolHash from "./_assets/in_the_pool.jpg?thumbhash";
 
 \*Not actually leaving, just not posting anymore.
 
@@ -26,8 +27,9 @@ Now I mostly just tap through stories, but even that feels like wading through c
 
 I just wanted a quiet place to dump photos and life updates for the people who actually care. Instagram isn't built for that anymore. It's built for retention metrics and ad serve times. So I'm doing it here instead. No algorithm shuffling the deck, no ads selling me drop-shipped garbage. Just my stuff, in order, the way it should be.
 
-<Picture
+<ThumbHashPicture
   src={inThePool}
+  thumbhash={inThePoolHash}
   formats={["avif", "webp"]}
   fallbackFormat="jpg"
   widths={[400, 600, 900, 1200]}
