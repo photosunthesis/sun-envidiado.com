@@ -12,6 +12,7 @@ import {
   absoluteUrl,
   canonicalUrl,
 } from "../../utils/seo";
+import { getThumbHashPlaceholder } from "../../utils/thumbhash";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -45,6 +46,15 @@ if (cover) {
   const imagePath = `/src/content/blog/${cover.replace(/^\.\//, "")}`;
   const loader = images[imagePath];
   if (loader) coverImage = (await loader()).default;
+}
+
+let coverPlaceholder: string | undefined;
+if (cover) {
+  try {
+    coverPlaceholder = await getThumbHashPlaceholder(
+      `${process.cwd()}/src/content/blog/${cover.replace(/^\.\//, "")}`,
+    );
+  } catch {}
 }
 
 const COVER_WIDTHS = [400, 600, 900];
@@ -134,17 +144,25 @@ const formatDate = (d: Date) =>
   <article aria-labelledby="post-title">
     {
       coverImage && (
-        <Picture
-          class="mb-[1lh] block h-auto w-full rounded"
-          src={coverImage}
-          formats={["avif", "webp"]}
-          fallbackFormat="jpg"
-          widths={COVER_WIDTHS}
-          sizes={COVER_SIZES}
-          loading="eager"
-          fetchpriority="high"
-          alt={coverAlt!}
-        />
+        <span
+          class="mb-[1lh] block overflow-hidden rounded"
+          style={coverPlaceholder
+            ? `background-image: url('${coverPlaceholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`
+            : `background-color: var(--color-vim-code);`}
+        >
+          <Picture
+            class="block h-auto w-full opacity-0 transition-opacity duration-500 ease-out"
+            onload="this.style.opacity='1'"
+            src={coverImage}
+            formats={["avif", "webp"]}
+            fallbackFormat="jpg"
+            widths={COVER_WIDTHS}
+            sizes={COVER_SIZES}
+            loading="eager"
+            fetchpriority="high"
+            alt={coverAlt!}
+          />
+        </span>
       )
     }
     <header class="mb-[1lh]">

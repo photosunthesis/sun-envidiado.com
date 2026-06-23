@@ -5,6 +5,11 @@ import { PERSON_ID, SITE, absoluteUrl } from "../../utils/seo";
 import bebiAppImage from "./_assets/bebi-app.png";
 import rateStuffImage from "./_assets/rate-stuff-online.png";
 import twentyFourToTwelveImage from "./_assets/24-to-12.png";
+import {
+  BEBI_HASH,
+  RATE_STUFF_HASH,
+  TWENTY_FOUR_HASH,
+} from "./_thumbhashes";
 
 // rendered per request so `years` (and the meta/JSON-LD it feeds) stays current.
 export const prerender = false;
@@ -66,6 +71,7 @@ const projects = [
     title: "rate-stuff.online",
     url: "https://github.com/photosunthesis/rate-stuff.online",
     image: rateStuffImage,
+    placeholder: RATE_STUFF_HASH,
     alt: "Screenshot of rate-stuff.online",
     description:
       "A website for rating and reviewing anything you can think of. Built with React, TanStack Start, and TypeScript on Cloudflare Workers — my deep dive into the modern serverless stack.",
@@ -74,6 +80,7 @@ const projects = [
     title: "Bebi App",
     url: "https://github.com/photosunthesis/bebi-app-flutter",
     image: bebiAppImage,
+    placeholder: BEBI_HASH,
     alt: "Screenshot of Bebi App",
     description:
       "A Flutter app for couples — shared photo albums, a shared calendar, and cycle tracking, with a Firebase backend. A personal project for my partner and me.",
@@ -82,6 +89,7 @@ const projects = [
     title: "24-to-12",
     url: "https://github.com/photosunthesis/24-to-12",
     image: twentyFourToTwelveImage,
+    placeholder: TWENTY_FOUR_HASH,
     alt: "Screenshot of the 24to12 web app",
     description:
       "A small web app that converts 24-hour time to 12-hour time, because I cannot do the subtraction in my head. Built in vanilla JavaScript over a single morning.",
@@ -173,6 +181,7 @@ const jsonLd = {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="block aspect-4/3 w-full overflow-hidden rounded border border-neutral-800"
+                style={`background-image: url('${project.placeholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`}
               >
                 <Picture
                   src={project.image}
@@ -182,7 +191,8 @@ const jsonLd = {
                   sizes="(max-width: 768px) 100vw, 200px"
                   loading="lazy"
                   alt={project.alt}
-                  class="h-full w-full object-cover"
+                  class="h-full w-full object-cover opacity-0 transition-opacity duration-500 ease-out"
+                  onload="this.style.opacity='1'"
                 />
               </a>
               <div>
