@@ -40,13 +40,14 @@ async function optimizeImages() {
           withoutEnlargement: true,
         });
 
-        if (metadata.format === "jpeg" || metadata.format === "jpg") {
+        if (metadata.format === "jpeg") {
           pipeline = pipeline.jpeg({ quality: 80, mozjpeg: true });
         } else if (metadata.format === "png") {
           pipeline = pipeline.png({ quality: 80, compressionLevel: 9 });
         } else if (metadata.format === "webp") {
           pipeline = pipeline.webp({ quality: 80 });
-        } else if (metadata.format === "avif") {
+        } else if (metadata.format === "heif") {
+          // sharp reports AVIF/HEIC input as "heif"
           pipeline = pipeline.avif({ quality: 80 });
         } else if (metadata.format === "gif") {
           pipeline = pipeline.gif({ effort: 7 });

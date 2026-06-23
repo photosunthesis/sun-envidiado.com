@@ -1,0 +1,10 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+
+# eslint-plugin-jsx-a11y@6.10.2 (latest) still caps its eslint peer at ^9, but
+# runs fine under eslint 10 — verified clean. Silence the spurious peer warning.
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-jsx-a11y>eslint: "10"
