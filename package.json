@@ -28,7 +28,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@tailwindcss/vite": "^4.3.1",
-    "astro": "^7.0.0",
+    "astro": "^7.0.1",
     "astro-seo": "^1.1.0",
     "jose": "^6.2.3",
     "resend": "^6.14.0",
@@ -39,18 +39,18 @@
     "@astrojs/check": "^0.9.9",
     "@eslint/js": "^10.0.1",
     "astro-eslint-parser": "^2.0.0",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
     "eslint": "^10.5.0",
     "eslint-plugin-astro": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "fast-glob": "^3.3.3",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "sharp": "^0.35.2",
     "tsx": "^4.22.4",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.61.1",
-    "wrangler": "^4.103.0"
+    "typescript-eslint": "^8.62.0",
+    "wrangler": "^4.104.0"
   }
 }
