@@ -1,0 +1,99 @@
+---
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { thumbHashFromPath } from "../utils/thumbhash";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt?: string;
+  loading?: "lazy" | "eager";
+  class?: string;
+}
+
+const {
+  src,
+  alt = "",
+  class: className,
+  loading = "lazy",
+  ...rest
+} = Astro.props;
+
+// Markdown ![]() resolves a local image to ImageMetadata; remote/unresolved stays a string.
+const meta =
+  typeof src === "object" && src !== null
+    ? (src as ImageMetadata & { fsPath?: string })
+    : null;
+
+// fsPath is served by the asset Proxy's get-trap and is invisible to `"fsPath" in src`,
+// so read it directly rather than testing for the key.
+const fsPath = meta?.fsPath ?? null;
+const ref = fsPath ?? meta?.src ?? (typeof src === "string" ? src : "");
+
+// GIFs and SVGs must skip sharp (it drops animation frames / rasterizes), so no thumbhash.
+const passthrough = !meta || /\.(gif|svg)(\?|$)/i.test(ref);
+const thumbhash =
+  passthrough || !fsPath ? null : await thumbHashFromPath(fsPath);
+
+const imgClass = [
+  "block h-auto w-full opacity-0 transition-opacity duration-500 ease-out motion-reduce:transition-none",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+
+// Cap the box at the image's own width and lock its aspect-ratio so the blur reserves
+// the exact final space (no layout shift, no thumbhash spilling past the image).
+const box =
+  (meta
+    ? `max-width:${meta.width}px;aspect-ratio:${meta.width}/${meta.height};`
+    : "") +
+  "background-size:cover;background-position:center;background-color:var(--color-vim-code);";
+---
+
+{
+  meta && thumbhash ? (
+    <span
+      data-lqip
+      class="mx-auto block"
+      style={`background-image:url('${thumbhash}');${box}`}
+    >
+      <Picture
+        src={meta}
+        alt={alt}
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        widths={[400, 800, 1200]}
+        sizes="(min-width: 768px) 720px, 100vw"
+        loading={loading}
+        class={imgClass}
+        {...rest}
+      />
+    </span>
+  ) : meta ? (
+    <span data-lqip class="mx-auto block" style={box}>
+      <img
+        src={meta.src}
+        width={meta.width}
+        height={meta.height}
+        alt={alt}
+        loading={loading}
+        class={imgClass}
+        {...rest}
+      />
+    </span>
+  ) : (
+    <span
+      data-lqip
+      class="mx-auto block"
+      style="background-color:var(--color-vim-code);"
+    >
+      <img
+        src={src as string}
+        alt={alt}
+        loading={loading}
+        class={imgClass}
+        {...rest}
+      />
+    </span>
+  )
+}

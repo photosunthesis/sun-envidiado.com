@@ -1,18 +1,12 @@
 ---
+import type { ImageMetadata } from "astro";
 import { Picture } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { PERSON_ID, SITE, absoluteUrl } from "../../utils/seo";
+import { thumbHashFromPath } from "../../utils/thumbhash";
 import bebiAppImage from "./_assets/bebi-app.png";
 import rateStuffImage from "./_assets/rate-stuff-online.png";
 import twentyFourToTwelveImage from "./_assets/24-to-12.png";
-import {
-  BEBI_HASH,
-  RATE_STUFF_HASH,
-  TWENTY_FOUR_HASH,
-} from "./_thumbhashes";
-
-// rendered per request so `years` (and the meta/JSON-LD it feeds) stays current.
-export const prerender = false;
 
 const now = new Date();
 const startDateString = "2019-03-01";
@@ -26,6 +20,12 @@ const years =
   now.getFullYear() - startDate.getFullYear() - (beforeAnniversary ? 1 : 0);
 
 const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
+
+const [rateStuffHash, bebiAppHash, twentyFourHash] = await Promise.all(
+  [rateStuffImage, bebiAppImage, twentyFourToTwelveImage].map((img) =>
+    thumbHashFromPath((img as ImageMetadata & { fsPath: string }).fsPath),
+  ),
+);
 
 const skills = [
   {
@@ -71,7 +71,7 @@ const projects = [
     title: "rate-stuff.online",
     url: "https://github.com/photosunthesis/rate-stuff.online",
     image: rateStuffImage,
-    placeholder: RATE_STUFF_HASH,
+    placeholder: rateStuffHash,
     alt: "Screenshot of rate-stuff.online",
     description:
       "A website for rating and reviewing anything you can think of. Built with React, TanStack Start, and TypeScript on Cloudflare Workers — my deep dive into the modern serverless stack.",
@@ -80,7 +80,7 @@ const projects = [
     title: "Bebi App",
     url: "https://github.com/photosunthesis/bebi-app-flutter",
     image: bebiAppImage,
-    placeholder: BEBI_HASH,
+    placeholder: bebiAppHash,
     alt: "Screenshot of Bebi App",
     description:
       "A Flutter app for couples — shared photo albums, a shared calendar, and cycle tracking, with a Firebase backend. A personal project for my partner and me.",
@@ -89,7 +89,7 @@ const projects = [
     title: "24-to-12",
     url: "https://github.com/photosunthesis/24-to-12",
     image: twentyFourToTwelveImage,
-    placeholder: TWENTY_FOUR_HASH,
+    placeholder: twentyFourHash,
     alt: "Screenshot of the 24to12 web app",
     description:
       "A small web app that converts 24-hour time to 12-hour time, because I cannot do the subtraction in my head. Built in vanilla JavaScript over a single morning.",
@@ -122,8 +122,9 @@ const jsonLd = {
 
     <section class="space-y-[1lh]">
       <p>
-        I've been building software for over <time datetime={startDateString}
-          >{years}</time
+        I've been building software for over <time
+          datetime={startDateString}
+          id="yoe">{years}</time
         >+ years, engineering systems across the web, backend, and mobile.
       </p>
       <p>
@@ -212,4 +213,20 @@ const jsonLd = {
       </ul>
     </section>
   </article>
+
+  <script>
+    // years is baked at build; refresh it on load so it rolls over without a redeploy.
+    const el = document.getElementById("yoe");
+    if (el) {
+      const start = new Date("2019-03-01");
+      const now = new Date();
+      const before =
+        now.getMonth() < start.getMonth() ||
+        (now.getMonth() === start.getMonth() &&
+          now.getDate() < start.getDate());
+      el.textContent = String(
+        now.getFullYear() - start.getFullYear() - (before ? 1 : 0),
+      );
+    }
+  </script>
 </BaseLayout>

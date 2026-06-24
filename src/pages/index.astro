@@ -1,4 +1,5 @@
 ---
+import SunLogo from "../assets/sun-logo.svg";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { PERSON_SCHEMA, WEBSITE_SCHEMA } from "../utils/seo";
 
@@ -19,12 +20,10 @@ const sections = [
   jsonLd={[WEBSITE_SCHEMA, PERSON_SCHEMA]}
 >
   <article class="w-full max-w-[40ch] leading-relaxed">
-    <img
-      src="/sun-logo.svg"
-      alt=""
+    <SunLogo
       aria-hidden="true"
-      width="48"
-      height="48"
+      width={48}
+      height={48}
       class="mx-auto mb-[0.5lh] block h-12 w-12"
     />
 

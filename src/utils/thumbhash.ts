@@ -1,7 +1,13 @@
 import sharp from "sharp";
 import { rgbaToThumbHash, thumbHashToRGBA } from "thumbhash";
 
-export async function getThumbHashPlaceholder(fsPath: string): Promise<string> {
+// Same image can be referenced by cover + body in one build; hash it once.
+const cache = new Map<string, string>();
+
+export async function thumbHashFromPath(fsPath: string): Promise<string> {
+  const cached = cache.get(fsPath);
+  if (cached) return cached;
+
   const { data, info } = await sharp(fsPath)
     .resize(100, 100, { fit: "inside" })
     .ensureAlpha()
@@ -17,5 +23,7 @@ export async function getThumbHashPlaceholder(fsPath: string): Promise<string> {
     .png()
     .toBuffer();
 
-  return `data:image/png;base64,${png.toString("base64")}`;
+  const uri = `data:image/png;base64,${png.toString("base64")}`;
+  cache.set(fsPath, uri);
+  return uri;
 }

@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 import { Picture, getImage } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import Newsletter from "../../components/Newsletter.astro";
+import MarkdownImage from "../../components/MarkdownImage.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   PERSON_ID,
@@ -12,7 +13,7 @@ import {
   absoluteUrl,
   canonicalUrl,
 } from "../../utils/seo";
-import { getThumbHashPlaceholder } from "../../utils/thumbhash";
+import { thumbHashFromPath } from "../../utils/thumbhash";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -51,7 +52,7 @@ if (cover) {
 let coverPlaceholder: string | undefined;
 if (cover) {
   try {
-    coverPlaceholder = await getThumbHashPlaceholder(
+    coverPlaceholder = await thumbHashFromPath(
       `${process.cwd()}/src/content/blog/${cover.replace(/^\.\//, "")}`,
     );
   } catch {
@@ -149,9 +150,11 @@ const formatDate = (d: Date) =>
         <span
           data-lqip
           class="mb-[1lh] block overflow-hidden rounded"
-          style={coverPlaceholder
-            ? `background-image: url('${coverPlaceholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`
-            : `background-color: var(--color-vim-code);`}
+          style={
+            coverPlaceholder
+              ? `background-image: url('${coverPlaceholder}'); background-size: cover; background-position: center; background-color: var(--color-vim-code);`
+              : `background-color: var(--color-vim-code);`
+          }
         >
           <Picture
             class="block h-auto w-full opacity-0 transition-opacity duration-500 ease-out motion-reduce:transition-none"
@@ -188,7 +191,7 @@ const formatDate = (d: Date) =>
     </header>
 
     <div class="post-body">
-      <Content />
+      <Content components={{ img: MarkdownImage }} />
     </div>
 
     <Newsletter hasDivider />
