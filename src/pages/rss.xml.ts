@@ -41,6 +41,9 @@ export const GET: APIRoute = async (context) => {
     description:
       "Random thoughts from Sun about coding, gaming, life updates, and whatever else crosses my mind.",
     site: context.site?.toString() || "https://sun-envidiado.com",
+    // Match the site's no-trailing-slash URLs so the feed lists the real pages
+    // instead of slashed links that just redirect (which Google flags).
+    trailingSlash: false,
     items,
     xmlns: { atom: "http://www.w3.org/2005/Atom" },
     customData: `<language>en-us</language><atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />`,
