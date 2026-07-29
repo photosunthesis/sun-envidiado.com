@@ -135,10 +135,19 @@ body {
   font-weight: 600;
   color: var(--color-vim-link);
 }
+/* A ">" column down the left edge instead of a bar. Sized in ch/lh so it keeps
+   step with the text, and rounded so the bottom chevron is never sliced in half. */
 .post-body blockquote {
-  border-left: 2px solid var(--color-vim-dim);
-  padding-left: 1ch;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' preserveAspectRatio='xMidYMid meet'><path d='M2 1L8 5L2 9' fill='none' stroke='%23525252' stroke-width='2'/></svg>");
+  background-repeat: no-repeat round;
+  background-size: 1.25ch 0.75lh;
+  padding-left: 3.5ch;
   color: var(--color-vim-fg);
+}
+/* The spacing rule above only reaches direct children of .post-body, so
+   anything nested in a quote needs its own. */
+.post-body blockquote > * + * {
+  margin-top: 1lh;
 }
 .post-body hr {
   border: 0;
