@@ -1,0 +1,139 @@
+---
+title: "Great power, no responsibility"
+pubDate: "2026-07-29"
+description: "Everybody at work got the same superpower and almost nobody picked up the responsibility. Three stories about coworkers who handed the thinking over and forwarded me whatever came out."
+tags:
+  ["ai", "software-development", "code-review", "work", "personal", "opinion"]
+cover: "great-power-no-responsibility/_assets/uncle_ben_spiderman.jpg"
+coverAlt: "Uncle Ben sitting in a car talking to Peter Parker in Spider-Man"
+---
+
+My coworkers have become a bit of a pain to work with.
+
+Not in the usual ways. I mean, yes, those too, but you get those anywhere you work, forever. This one is newer, and it isn't subtle. Nobody hides it, and somehow nobody says anything about it either.
+
+It's how they use generative AI.
+
+## Superpowers come with a catch
+
+Coding with generative AI feels like a superpower. I sit down with it and I feel unstoppable. Boilerplate I used to spend an hour on is done in a minute. Unfamiliar codebases open up faster. That one regex I always have to look up? Solved. Debugging barely feels like debugging now. I paste the logs in and that's it, no googling, no reading through Stack Overflow or GitHub issues, no picking apart a stack trace line by line.
+
+But _with great power comes great responsibility_ (never been a better week to quote it, the new Spider-Man movie is out, that's Uncle Ben at the top of this post, and I'm seeing it this weekend). Everybody memorized the first half of that quote, but nobody wants to hold up their end of the second.
+
+And I'll admit, I lean on it a little too much sometimes. Okk, maybe lots of times. I'll be deep in an ultracode session with Claude Code, watching it fan out a fleet of agents across tasks, while I'm already in a second or third terminal tab prompting and planning the next thing. Switching between terminals. Two, three jobs in flight at once. Feeling like an absolute machine.
+
+Then I get a feeling in my gut. Like, something's wrong. So I pause. Hands off the keyboard. Sit back.
+
+So what did I actually just build? Not what I asked for, what I got, half the time I can't answer that, which is exactly the problem. So I go read the output, all of it, slow, the way I would if I'd typed every line myself. Because in three months when this breaks, they're going to ask me about this, not Claude. And I have to be able to answer.
+
+That's the responsibility part, and it's not a noble thing, I'm just tryna save my ass. I don't want to be the one standing in front of a broken service with no idea how it works.
+
+So I keep my end of the responsibility pretty straightforward. I read and test the code an LLM writes for me before anybody else has to, and I read the diff myself before I ask it what I missed; that way it's a second pair of eyes and never the first. Held up imperfectly most days, but held up.
+
+At work, though, almost nobody else is holding up theirs. Whatever comes out of the box gets forwarded to me unchecked, and I end up being the first person to actually look at it.
+
+A version of that is a question I asked in an MS Teams chat.
+
+## Yes or no
+
+I asked somebody at work a simple question.
+
+> What's the API endpoint for this thing, and is it working?
+
+Simple query. I know there's an endpoint, I just don't know which one, and it isn't mine to take a peek at. Somebody in the backend team settles it with a simple response. _Yes, here it is_ or _No, not working._
+
+The typing indicator comes on. It stays on long enough that I give up and start something else.
+
+Then it finally comes through.
+
+> Great question! Endpoint availability depends on a few factors, so let's break this down.
+>
+> **1. Locating the endpoint.** API routes are typically declared in your routing configuration.
+>
+> **2. Confirming availability.** Issue a request and inspect the status code. A 200 indicates success.
+>
+> **3. A note on environments.** An endpoint may be reachable in one environment and not another.
+>
+> Would you like me to walk you through writing a curl command?
+
+In chat. In response to me asking which URL to hit and whether it was up.
+
+Like. _Bro._
+
+I asked for an API endpoint and a yes or no but instead I got a whole ass thesis. And no actual answer, because they never checked. They didn't do one single thing on the list they just sent me.
+
+And the LLM could have actually answered me. They have Claude too. It could have grepped the routes, curled the thing, and handed them a status code before they finished reading that first bullet. They didn't ask it to check anything. They just copied and pasted my question, then immediately forwarded me whatever it spat out.
+
+And this wasn't a one off. My question goes in, whatever comes out gets pasted back, and that's the entire process. Every. Single. Time.
+
+So now I write my questions differently. I have to add specific instructions somewhere in my messages. Answer in one line. No steps, no tradeoffs, no options. Done, not done, or in progress. Tell it to me straight.
+
+And it isn't only about getting the answer out of them. Half of what I slip in there is to force honesty. If you haven't checked, say you haven't checked. If you don't know, say you don't know. Don't fill the gap with something that sounds right, because a confident wrong answer costs me an afternoon, and I'm always the one who finds out.
+
+And that's basically is a prompt. I'm writing prompts. For a person. I'm aiming past them at whatever they're going to paste it into, low key prompt injecting my own coworkers so their generative AI hands me something short and true and actually helpful.
+
+And it works. I hate that it works. I get straighter answers out of people I've sat in standup with for months when I write to them like a system prompt, and I really wish I didn't have to.
+
+## "AI has a point though"
+
+A question is the easy case. There's a real answer sitting at the end of it, and if I have to write around somebody to get at it, fine, I'll write around them.
+
+Then it started happening in places where there's nothing to go look up.
+
+A colleague and I got into a bit of a disagreement over a some feature. They wanted to add something into the app that I thought was a bad idea. I had a reason for thinking it was a bad idea, and they had a reason for thinking it was a good idea.
+
+So we argued. Properly. I brought the times I'd built something like this and watched where it went wrong. They brought theirs, and it was good. The kind of disagreement where somebody might actually change their mind.
+
+And then the screenshots started coming in.
+
+Screenshots of chats from Claude, dropped into the thread, because highlighting and copying was apparently too much effort. This pissed me off, because I was trying to have a conversation with them, not with Claude.
+
+So I poked at it. _Fine, go ask your LLM how you'd even implement this,_ I told them. Which was rhetorical, by the way. The proposal fell apart the second anybody described how it would get built.
+
+They came back with the implementation plan.
+
+Another response pasted straight from Claude, of course, and it was bad. Wrong in ways anybody who had ever touched the codebase would catch in four seconds. So I told them I wasn't reading all that, because it was obviously AI.
+
+And they said _it has a point though._
+
+Like, are you for real right now?
+
+What do they mean _it_? I wasn't arguing with _it_, I was arguing with them! They had the opinion twenty minutes ago, back when they were saying things I had to stop and think about.
+
+That's when I realized it. They hadn't outsourced the answer, they'd outsourced their side of the disagreement. Every time I pushed, they went and got reinforcements, then stood behind them like they'd come up with it.
+
+And they weren't embarrassed. Not even a little bit. Because look, the AI agrees. They treated it like a referee, and it agreed with them. They didn't have to defend their position, they just had to find somebody that would. And they did. Not a person, but a literal machine. And they're treating it like it's _the_ authority on the matter. And that pisses me of so much.
+
+I could not care less what Claude thinks about their proposal. Of course the AI is gonna take their side. They asked it to!
+
+I wanted to hear from them. They had a real reason for those additions, and that reason was worth arguing with. Whatever they got from Claude was not.
+
+## "Hey Claude, review this PR"
+
+That proposal was still theirs, at least. Their document, their side, their call how much of the thinking they felt like doing themselves.
+
+But then, the same thing started happening in PR reviews. And now I dread PR reviews.
+
+Reviewing PRs is a chore. I do it still, and I get why you'd rather not. What I dread is opening my own PR to see what got left on it, because I already know what I'm going to find. Somebody typed "hey claude review this pr" and sent back whatever came out.
+
+And at first this was fine. I wanna be fair, because in the beginning people were using it the way you're supposed to. They ran it, they read what came back, they passed along the parts that held up. It catches real bugs. It spots the off by one that three people read past. A little pedantic for my taste, but that's fine, some devs I know review exactly like that.
+
+Then people stopped reading before they posted their review. Comments about things that weren't in the diff. Comments about things that were in the diff and were not wrong. Comments that were confidently and provably incorrect about how our own code works.
+
+And the whole time, missing the thing that actually mattered. Which honestly makes sense given what the model was handed. The code read fine. It built, it passed, the naming was clean, the structure was reasonable. And it still understood the code wrong. That is not a bug you catch by reading a diff. That's a bug you catch by knowing what the feature was supposed to do in the first place, and it understood it wrong, because it was never told what the feature was supposed to do. It was just handed the code and asked to review it.
+
+And the tone doesn't help. Pedantic and certain, flatly declaring my code wrong. A person could have checked that, or softened it, or not posted it. Instead it sits in my thread under a human name, incorrect, and I'm the only one who has read it. So now I get to explain why comment four is nonsense.
+
+Now look at how it is now. Somebody has AI write the code. Somebody has it write the description. Somebody has it review the code. An ouroboros of AI automation, and at every step a person waved it through without reading it. Somewhere in there is the one bug only a person was ever going to find, sailing straight through with nobody looking for it.
+
+## You're still the expert
+
+This happens at work, the one place I don't get to opt out of. I message somebody I've worked with for months, and what comes back has been through a machine on the way, and I can feel the hole where they used to be.
+
+Look, I get the pull. It's so nice to hand your work to something that just does it. No friction, no staring at the problem, no sitting in the discomfort of not knowing yet. Some days I lose to that too.
+
+So this isn't about using less AI. Use as much as you want, I do, probably more than most of you. Just stay on the hook for it. Read it before you send it. Know what you shipped. Be the one who can answer for it in three months when it breaks, because that's going to be you either way.
+
+You're still the expert. You were in the meeting. You watched it break in staging. You know why that hacky fix is there because you are the reason it's there. Nothing about that changed when the tool showed up.
+
+I really hope nobody I work with knows this blog exists. If one of you found it and made it this far, hi. This is about somebody else, obviously.
