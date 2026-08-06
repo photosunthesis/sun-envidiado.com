@@ -86,7 +86,7 @@ A few months later and I came back to fix something that was quietly bugging me.
 
 The script was diffing against my live `rss.xml`. Which works fine. But that feed rebuilds every single post from scratch on every deploy, just so the newsletter can glance at a list of slugs. That is a lot of rendering to answer one tiny question: what is already live? And it only gets slower the more I write.
 
-So I split that job out. Now there is a dead simple endpoint at `/api/blog-slugs.json` that returns nothing but the slugs. The newsletter reads that instead of the whole feed. The RSS feed stays exactly as it was, so anyone subscribed in their reader notices nothing.
+So I split that job out. Now there is a simple endpoint at `/api/blog-slugs.json` that returns nothing but the slugs. The newsletter reads that instead of the whole feed. The RSS feed stays exactly as it was, so anyone subscribed in their reader notices nothing.
 
 While I was in there I also made it fail safe. If the script can't reach the endpoint for whatever reason, it now sends nothing instead of assuming every post is new and blasting my whole list with a fresh copy of everything I have ever written. Past me did not have that guardrail. I would rather not find out the hard way.
 
