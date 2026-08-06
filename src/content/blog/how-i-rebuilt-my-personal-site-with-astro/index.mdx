@@ -19,9 +19,9 @@ cover: "how-i-rebuilt-my-personal-site-with-astro/_assets/cover.webp"
 coverAlt: "Computer screen showing code"
 ---
 
-My website started its life in Flutter. It was simple enough: home, about, and a contact page. Nothing wild. I always meant to add a blog, but I kept putting it off because, well, Flutter on the web works, but it feels like you're fighting the medium.
+My website started its life in Flutter. It was simple enough: home, about, and a contact page. Nothing wild. I always meant to add a blog, but I kept putting it off because, well, Flutter on the web works, but it doesn't work well.
 
-It's fantastic for apps, don't get me wrong. But for a content site? You're dealing with packages that break on web, weird `dart:io` issues, text rendering quirks, and SEO that feels like a hackathon project. For a simple portfolio, the friction just wasn't worth it. I pulled the plug and decided to rebuild with actual web tech.
+It's fantastic for apps, don't get me wrong. But for a content site? You're dealing with packages that break on web, weird `dart:io` issues, text rendering and scrolling quirks, and SEO that feels like a hackathon project. For a simple portfolio and blog, the friction just wasn't worth it. I pulled the plug and decided to rebuild with actual web tech.
 
 ## The React Trap
 
@@ -39,11 +39,11 @@ Frustrated, I started digging for alternatives and caught a mention of Astro in 
 
 It sounded like the way web development used to feel, before we started sending 2MB of JavaScript to clear a div. I was skeptical, but curious.
 
-A weekend later? I had the entire site ported, plus the blog section I'd been procrastinating on for months. It just clicked.
+A weekend later? I had the entire site ported, plus the blog section I'd been procrastinating on for months. It was faster, simpler, and more enjoyable than I expected.
 
 ## The design: a love letter to vim and TUIs
 
-Full disclosure, I don't actually use Vim. I write all of this in VS Code like a perfectly normal person. That said, I do spend a lot of my day in the terminal using git, tmux, Claude Code, a bunch of other CLI stuff, and something about vim and TUIs has always felt cool and hacky and delightfully computer-y to me, and I wanted that energy on my website.
+Full disclosure, I don't actually use Vim. I write all of this in VS Code like a perfectly normal person. That said, I do spend a lot of my day in the terminal using git, tmux, Claude Code, and a bunch of other CLI stuff. And something about vim and TUIs has always felt cool and hacky and delightfully computer-y to me, and I wanted that energy on my website.
 
 So the whole thing is dressed up like a vim buffer:
 
@@ -122,10 +122,6 @@ It feels like making a website in the good old days. You're writing actual HTML,
 
 I went into this assume React was the default answer. I was wrong.
 
-React isn't "bad," obviously. If I were building a dashboard or a complex interactive app, I'd pick it up in a heartbeat. But for a blog? A portfolio? A documentation site? It's overkill.
-
-- **Big, state-heavy app?** React/Vue/Svelte.
-- **Content-focused site?** Astro.
-- **Flutter web?** Look, I love Flutter, but... maybe let's keep it on mobile for now.
+React isn't "bad," obviously. If I were building a dashboard or a complex interactive app, I'd pick it up in a heartbeat. But for a blog? A portfolio? A documentation site? I think it's overkill. But Astro? It's a breath of fresh air. This feels like making a website back when the web was simpler, but with all the modern conveniences.
 
 You can check out the source on <a href="https://github.com/photosunthesis/sun-envidiado.com" target="_blank" rel="noopener noreferrer" title="View the sun-envidiado.com project on GitHub">GitHub</a>.
