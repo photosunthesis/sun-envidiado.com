@@ -18,24 +18,46 @@ type Frontmatter = {
   cover?: string;
 };
 
+function unquote(s: string): string {
+  return s.trim().replace(/^['"]|['"]$/g, "");
+}
+
 function parseFrontmatter(raw: string): { fm: Frontmatter; body: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) throw new Error("No frontmatter block found");
   const [, fmRaw, body] = match;
   const fm: Record<string, unknown> = {};
-  for (const line of fmRaw.split(/\r?\n/)) {
-    const m = line.match(/^(\w+):\s*(.*)$/);
+  const lines = fmRaw.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^(\w+):\s*(.*)$/);
     if (!m) continue;
-    const [, key, rawVal] = m;
-    const val = rawVal.trim();
-    if (val.startsWith("[") && val.endsWith("]")) {
+    const [, key] = m;
+    let val = m[2].trim();
+
+    // Prettier pushes long arrays onto their own line, and YAML also allows
+    // "- item" lists, so gather anything indented under the key first.
+    const items: string[] = [];
+    while (
+      (val === "" || (val.startsWith("[") && !val.endsWith("]"))) &&
+      i + 1 < lines.length &&
+      lines[i + 1].trim() !== "" &&
+      !/^\w+:/.test(lines[i + 1])
+    ) {
+      const next = lines[++i].trim();
+      if (next.startsWith("- ")) items.push(unquote(next.slice(2)));
+      else val = `${val} ${next}`.trim();
+    }
+
+    if (items.length) {
+      fm[key] = items;
+    } else if (val.startsWith("[") && val.endsWith("]")) {
       fm[key] = val
         .slice(1, -1)
         .split(",")
-        .map((s) => s.trim().replace(/^['"]|['"]$/g, ""))
+        .map((s) => unquote(s))
         .filter(Boolean);
     } else {
-      fm[key] = val.replace(/^['"]|['"]$/g, "");
+      fm[key] = unquote(val);
     }
   }
   return { fm: fm as Frontmatter, body: body.trim() };
@@ -99,7 +121,7 @@ async function main() {
   }
 
   const publishedDate = new Date(fm.pubDate).toISOString().slice(0, 10);
-  const tags = (fm.tags ?? []).join(", ");
+  const tags = Array.isArray(fm.tags) ? fm.tags.join(", ") : "";
   const rawDescription = (fm.description ?? "").replace(/\s+/g, " ").trim();
   const description = truncateAtWord(rawDescription, 200);
   if (description !== rawDescription) {
