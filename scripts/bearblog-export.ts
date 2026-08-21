@@ -72,7 +72,9 @@ function transformBody(body: string): { body: string; warnings: string[] } {
     warnings.push("Body contains JSX-looking tags — review before pasting");
   }
   if (/^---\s*$/m.test(out)) {
-    warnings.push("Body contains '---' horizontal rules — fine in markdown, but double-check rendering");
+    warnings.push(
+      "Body contains '---' horizontal rules — fine in markdown, but double-check rendering",
+    );
   }
   return { body: out, warnings };
 }
@@ -89,7 +91,9 @@ async function fetchOgImage(slug: string): Promise<string | null> {
     const res = await fetch(`${SITE}/blog/${slug}`);
     if (!res.ok) return null;
     const html = await res.text();
-    const m = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i);
+    const m = html.match(
+      /<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i,
+    );
     return m?.[1] ?? null;
   } catch {
     return null;
@@ -140,7 +144,8 @@ async function main() {
     tags && `tags: ${tags}`,
     ogImage
       ? `meta_image: ${ogImage}`
-      : fm.cover && `# meta_image: TODO — grab og:image from ${SITE}/blog/${slug} once live`,
+      : fm.cover &&
+        `# meta_image: TODO — grab og:image from ${SITE}/blog/${slug} once live`,
   ].filter(Boolean);
 
   const footer = `\n\n---\n\n*I'm Sun Envidiado, and if you wandered in from somewhere, my home is at [sun-envidiado.com](${SITE}).*`;
@@ -151,12 +156,22 @@ async function main() {
   writeFileSync(outFile, output, "utf-8");
 
   console.log(`Wrote ${outFile}`);
-  console.log("\nIn Bear's new-post editor at bearblog.dev/<your-blog>/dashboard/posts/new/:");
-  console.log("  1. Copy the lines ABOVE the ___ → paste into the top header field");
-  console.log("  2. Copy the lines BELOW the ___ → paste into the body textarea");
-  console.log("  3. (Don't paste the ___ line itself anywhere.) Click Publish.");
+  console.log(
+    "\nIn Bear's new-post editor at bearblog.dev/<your-blog>/dashboard/posts/new/:",
+  );
+  console.log(
+    "  1. Copy the lines ABOVE the ___ → paste into the top header field",
+  );
+  console.log(
+    "  2. Copy the lines BELOW the ___ → paste into the body textarea",
+  );
+  console.log(
+    "  3. (Don't paste the ___ line itself anywhere.) Click Publish.",
+  );
   if (!ogImage && fm.cover) {
-    console.log("  (cover image: live post not reachable — meta_image left as TODO)");
+    console.log(
+      "  (cover image: live post not reachable — meta_image left as TODO)",
+    );
   }
   if (warnings.length) {
     console.log("\nWarnings:");

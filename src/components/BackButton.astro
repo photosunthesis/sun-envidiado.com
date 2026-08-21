@@ -6,9 +6,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<a href="/" data-back class:list={["action", className]}>
-  [BACK]
-</a>
+<a href="/" data-back class:list={["action", className]}> [BACK] </a>
 
 <script>
   document.querySelectorAll("a[data-back]").forEach((el) => {
@@ -17,7 +15,8 @@ const { class: className } = Astro.props;
       // Otherwise the <a href="/"> default takes over and we go home.
       if (window.history.length <= 1 || !document.referrer) return;
       try {
-        if (new URL(document.referrer).origin !== window.location.origin) return;
+        if (new URL(document.referrer).origin !== window.location.origin)
+          return;
       } catch {
         return;
       }

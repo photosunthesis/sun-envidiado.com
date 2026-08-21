@@ -43,6 +43,7 @@ const kaomojis = [
 
   <script is:inline define:vars={{ kaomojis }}>
     var el = document.getElementById("kaomoji");
-    if (el) el.textContent = kaomojis[Math.floor(Math.random() * kaomojis.length)];
+    if (el)
+      el.textContent = kaomojis[Math.floor(Math.random() * kaomojis.length)];
   </script>
 </BaseLayout>

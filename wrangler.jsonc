@@ -3,9 +3,7 @@
   "name": "personal-website-astro",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-01-27",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist/client",
   },
