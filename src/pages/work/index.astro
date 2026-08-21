@@ -7,6 +7,7 @@ import { thumbHashFromPath } from "../../utils/thumbhash";
 import bebiAppImage from "./_assets/bebi-app.png";
 import rateStuffImage from "./_assets/rate-stuff-online.png";
 import twentyFourToTwelveImage from "./_assets/24-to-12.png";
+import zomboidImage from "./_assets/zomboid.png";
 
 const now = new Date();
 const startDateString = "2019-03-01";
@@ -21,11 +22,13 @@ const years =
 
 const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
 
-const [rateStuffHash, bebiAppHash, twentyFourHash] = await Promise.all(
-  [rateStuffImage, bebiAppImage, twentyFourToTwelveImage].map((img) =>
-    thumbHashFromPath((img as ImageMetadata & { fsPath: string }).fsPath),
-  ),
-);
+const [rateStuffHash, bebiAppHash, twentyFourHash, zomboidHash] =
+  await Promise.all(
+    [rateStuffImage, bebiAppImage, twentyFourToTwelveImage, zomboidImage].map(
+      (img) =>
+        thumbHashFromPath((img as ImageMetadata & { fsPath: string }).fsPath),
+    ),
+  );
 
 const skills = [
   {
@@ -84,6 +87,15 @@ const projects = [
     alt: "Screenshot of Bebi App",
     description:
       "A Flutter app for couples — shared photo albums, a shared calendar, and cycle tracking, with a Firebase backend. A personal project for my partner and me.",
+  },
+  {
+    title: "zomboid-b42-server",
+    url: "https://github.com/photosunthesis/zomboid-b42-server",
+    image: zomboidImage,
+    placeholder: zomboidHash,
+    alt: "Screenshot of the zomboid-b42-server repository",
+    description:
+      "A Docker Compose setup for self-hosting a Project Zomboid server so my friends can join without me touching my router. Containers, a playit.gg tunnel, and automated world backups.",
   },
   {
     title: "24-to-12",
@@ -170,8 +182,8 @@ const jsonLd = {
     <section class="mt-12">
       <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">Projects</h2>
       <p class="mb-[1lh]">
-        Here are some projects I've built outside of work; some polished, some
-        scrappy, all made because I wanted to.
+        Almost everything I've built for a company is under NDA, so I can't show
+        any of it here. These are the personal projects I can.
       </p>
       <ul class="space-y-[2lh]">
         {
