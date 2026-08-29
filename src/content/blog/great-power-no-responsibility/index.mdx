@@ -10,27 +10,27 @@ coverAlt: "Uncle Ben sitting in a car talking to Peter Parker in Spider-Man"
 
 My coworkers have become a bit of a pain to work with.
 
-Not in the usual ways. I mean, yes, those too, but you get those anywhere you work, forever. This one is newer, and it isn't subtle. Nobody hides it, and somehow nobody says anything about it either.
+Not in the usual ways. I mean, yes, those too, but those are inescapable. This one is newer, and it isn't subtle. Nobody hides it, and somehow nobody says anything about it either.
 
-It's how they use generative AI.
+It's how they use AI.
 
 ## Superpowers come with a catch
 
-AI assisted programming feels like a superpower. I sit down with it and I feel unstoppable. Boilerplate I used to spend an hour on is done in a minute. Unfamiliar codebases open up faster. That one regex I always have to look up? Solved. Debugging barely feels like debugging now. I paste the logs in and that's it, no googling, no reading through Stack Overflow or GitHub issues, no picking apart a stack trace line by line.
+AI assisted programming feels like a superpower. I sit down and build software and I feel unstoppable. Boilerplate I used to spend an hour on is done in a minute. Unfamiliar codebases open up faster. No more looking up regex patterns. Debugging barely feels like debugging now. I paste the logs in and that's it, no googling, no reading through Stack Overflow or GitHub issues, no picking apart a stack trace line by line.
 
 But _with great power comes great responsibility_ (perfect week to be quoting that cuz I'm seeing the new Spider-Man movie this weekend). Everybody memorized the first half of that quote, but nobody wants to hold up their end of the second.
 
-And I'll admit, I lean on it a little too much sometimes. Okk, maybe lots of times. I'll be deep in an ultracode session with Claude Code, watching it fan out a fleet of agents across tasks, while I'm already in a second or third terminal tab prompting and planning the next thing. Switching between terminals. Two, three jobs in flight at once. Feeling like an absolute machine.
+And I'll admit, I lean on it a little too much sometimes. Okk, maybe lots of times. I'll be deep in an ultracode session with Claude Code, watching it fan out a fleet of agents across tasks, while I'm already in a second or third terminal tab prompting and planning the next thing. Switching between terminals. Two, three jobs in flight at once and I feel like an absolute machine.
 
-Then I get a feeling in my gut. Like, something's wrong. So I pause. Hands off the keyboard. Sit back.
+Then I get a feeling in my gut. So I pause. Hands off the keyboard. Sit back and contemplate.
 
-So what did I actually just build? Not what I asked for, what I got, half the time I can't answer that, which is exactly the problem. So I go read the output, all of it, slow, the way I would if I'd typed every line myself. Because in three months when this breaks, they're going to ask me about this, not Claude. And I have to be able to answer.
+So what did I actually just build? What I asked for or what I got, half the time I can't answer that, which is exactly the problem. So I go read the output slowly, the way I would if I'd typed every line myself. Because in three months when this breaks, they're going to ask me about this, not Claude. And I have to be able to answer.
 
-That's the responsibility part, and it's not a noble thing, I'm just tryna save my ass. I don't want to be the one standing in front of a broken service with no idea how it works.
+That's the responsibility part, and it's not a noble thing, I'm just tryna save my ass. I don't want to be the one standing in front of a broken code with no idea how it works.
 
-So I keep my end of the responsibility pretty straightforward. I read and test the code an LLM writes for me before anybody else has to, and I read the diff myself before I ask it what I missed; that way it's a second pair of eyes and never the first. Held up imperfectly most days, but held up.
+That's how I keep my end of the responsibility. I read and test the code an LLM writes for me before anybody else has to, and I read the diff myself before I ask it what I missed; that way it's a second pair of eyes and never the first. Held up imperfectly sometimes, but held up.
 
-At work, though, almost nobody else is holding up theirs. Whatever comes out of the chat window gets forwarded to me unchecked, and I end up being the first person to actually look at it.
+But at work, almost nobody else is holding up theirs. Whatever comes out of the AI gets forwarded to me unchecked, and I end up being the first person to actually look at it.
 
 A version of that is a question I asked in an MS Teams chat.
 
@@ -40,7 +40,7 @@ I asked somebody at work a simple question.
 
 > What's the API endpoint for this thing, and is it working?
 
-Simple query. I know there's an endpoint, I just don't know which one, and it isn't mine to take a peek at. Somebody in the backend team settles it with a simple response. _Yes, here it is_ or _No, not working._
+It's a simple question. I know there's an endpoint, I just don't know which one, and it isn't mine to take a peek at. Somebody in the backend team settles it with a simple response. _Yes, here it is_ or _No, not working._
 
 The typing indicator comes on. It stays on long enough that I give up and start something else.
 
@@ -60,17 +60,15 @@ In chat. In response to me asking which URL to hit and whether it was up.
 
 Like. _Bro._
 
-I asked for an API endpoint and a yes or no but instead I got a whole ass thesis. And no actual answer, because they never checked. They didn't do one single thing on the list they just sent me.
+I asked for an API endpoint and a yes or no but instead I got a wall of text and no actual answer, because they never checked. They didn't do one single thing on the list they just sent me.
 
 And the LLM could have actually answered me. They have Claude too. It could have grepped the routes, curled the thing, and handed them a status code before they finished reading that first bullet. They didn't ask it to check anything. They just copied and pasted my question, then immediately forwarded me whatever it spat out.
 
 And this wasn't a one off. My question goes in, whatever comes out gets pasted back, and that's the entire process. Every. Single. Time.
 
-So now I write my questions differently. I have to add specific instructions somewhere in my messages. Answer in one line. No steps, no tradeoffs, no options. Done, not done, or in progress. Tell it to me straight.
+So now I write my questions with specific instructions somewhere in my messages. _Answer in one line. No steps, no tradeoffs, no options. Done, not done, or in progress. Tell it to me straight._ And it isn't only about getting the answer out of them. Half of what I slip in there is to force honesty. _If you haven't checked, say you haven't checked. If you don't know, say you don't know._
 
-And it isn't only about getting the answer out of them. Half of what I slip in there is to force honesty. If you haven't checked, say you haven't checked. If you don't know, say you don't know. Don't fill the gap with something that sounds right, because a confident wrong answer costs me an afternoon, and I'm always the one who finds out.
-
-And that's basically is a prompt. I'm writing prompts. For a person. I'm aiming past them at whatever they're going to paste it into, low key prompt injecting my own coworkers so their LLM hands me something short and true and actually helpful.
+And that's basically a prompt. I'm writing prompts. For a person. I'm aiming past them at whatever they're going to paste it into and prompt injecting my own coworkers so their LLM hands me something short and true and actually helpful.
 
 And it works. I hate that it works. I get straighter answers out of people I've sat in standup with for months when I write to them like a system prompt, and I really wish I didn't have to.
 
