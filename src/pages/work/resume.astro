@@ -1,0 +1,568 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/inter/wght-italic.css";
+import { nowrapHyphenated as nb } from "../../utils/text";
+
+// Standalone print document: no BaseLayout, no global.css, no site font.
+// Prerendering is already this site's default; the export makes it explicit.
+export const prerender = true;
+
+// The resume content lives here so there is one file to find and edit.
+// Any text field may contain inline HTML (<b>, <i>, <a>); the template
+// renders these fields raw. Section labels are sentence case here; the CSS
+// uppercases them.
+
+interface ResumeBullet {
+  label?: string; // bold prefix, rendered as "Label: text"
+  text: string;
+}
+
+interface ResumeEntry {
+  title: string; // "Software Engineer at MCS Inc., Makati City, Philippines"
+  date?: string; // "Mar 2026 - Present"
+  intro?: string; // paragraph under the title
+  bullets?: ResumeBullet[];
+}
+
+interface ResumeSection {
+  label: string; // "EXPERIENCE", rendered uppercase by CSS not by data
+  intro?: string; // optional paragraph before the entries
+  entries?: ResumeEntry[];
+  skills?: string[]; // if present, rendered as ONE comma separated run
+}
+
+interface Resume {
+  name: string;
+  role: string;
+  contact: string[]; // one array entry per line; entries may contain <a> markup
+  summary?: string;
+  sections: ResumeSection[];
+}
+
+const resume: Resume = {
+  name: "Sun Adriann B. Envidiado",
+  role: "Software Engineer",
+  contact: [
+    "Metro Manila, Philippines",
+    "<a href='tel:+639617518739'>+63 96 1751 8739</a> · <a href='mailto:sun.adriann@icloud.com'>sun.adriann@icloud.com</a>",
+    "<a href='https://sun-envidiado.com/'>sun-envidiado.com</a> · <a href='https://github.com/photosunthesis'>github.com/photosunthesis</a> · <a href='https://www.linkedin.com/in/sunenvidiado/'>linkedin.com/in/sunenvidiado</a>",
+  ],
+  summary:
+    "Senior software engineer with 7+ years across native iOS, Flutter, and backend work in C#/.NET and PHP/Laravel. Experience spans fintech, healthcare, and consumer mobility products, with LLMs integrated directly into production apps and deep CI/CD and cloud fluency.",
+  sections: [
+    {
+      label: "Experience",
+      entries: [
+        {
+          title: "Software Engineer at MCS Inc., Makati City, Philippines",
+          date: "Mar 2026 - Present",
+          intro:
+            "Drove the technical direction of the iOS codebase for a healthcare app, working within an iOS team and setting the architecture the app was rebuilt on. Swift throughout, covering LLM-backed product features and release automation alongside the refactoring work.",
+          bullets: [
+            {
+              label: "Architectural Direction",
+              text: "Set the architectural standards and review practices the iOS team built against, driving the technical decisions on the codebase.",
+            },
+            {
+              label: "Refactoring & Re-architecture",
+              text: "Refactored and re-architected the app into reusable modules so code and architectural decisions could be shared across products, using SwiftUI and Swift Package Manager.",
+            },
+            {
+              label: "LLM Product Features",
+              text: "Architected and integrated large language model capabilities into the app, delivering context-aware features and real-time in-app support, and used Claude Code to accelerate development, debugging, and code generation across the full lifecycle.",
+            },
+            {
+              label: "Release Automation",
+              text: "Built the automated release pipeline that took manual steps out of shipping, on Fastlane, Azure DevOps, GitHub Actions, and Xcode Cloud.",
+            },
+          ],
+        },
+        {
+          title: "Flutter Developer at Nextbank, Remote",
+          date: "Nov 2023 - Mar 2026",
+          intro:
+            "Secure, high-transaction iOS and Android fintech applications built with Flutter inside monorepo architectures, delivered alongside security and compliance stakeholders across regulated banking, lending, and remittance products.",
+          bullets: [
+            {
+              label: "Native Security Integrations",
+              text: "Implemented biometric face liveness detection and fraud mitigation by writing custom Flutter plugins over the platform-specific native SDKs, bridged through Method Channels, to support regulatory compliance.",
+            },
+            {
+              label: "In-App AI Support",
+              text: "Built the in-app AI assistance experience end to end, from evaluating providers through prompt and response handling, so users could get real-time help inside financial workflows. Integrated ChatGPT and other LLMs into production.",
+            },
+            {
+              label: "Shared Codebase Consolidation",
+              text: "Re-architected a codebase shared across multiple banking apps in one monorepo, cutting duplicate code, shortening new-feature delivery, and lifting release frequency for the teams working in it. Structured with BLoC, Riverpod, Provider, and GetIt.",
+            },
+            {
+              label: "Secure Delivery",
+              text: "Delivered high-transaction banking and lending products with end-to-end data protection across critical financial workflows.",
+            },
+          ],
+        },
+        {
+          title: "Mobile Engineer at Netsells (part of hedgehog lab), Remote",
+          date: "Aug 2022 - Nov 2023",
+          intro:
+            "Cross-platform iOS and Android applications for medical and fintech clients, built in a cross-functional agency team, with backend contributions in Laravel and PHP.",
+          bullets: [
+            {
+              label: "Native Plugin Work",
+              text: "Built a custom document signing plugin bridging native iOS and Android functionality to meet a client-specific requirement, through Method Channels.",
+            },
+            {
+              label: "Full-Stack Contribution",
+              text: "Contributed to Laravel and PHP backend services alongside the mobile work, covering both ends of client projects rather than one.",
+            },
+            {
+              label: "Concurrent Client Delivery",
+              text: "Shipped production-quality work across several concurrent agency clients while holding one consistent code quality standard, on architectures built with BLoC, Riverpod, and Provider.",
+            },
+          ],
+        },
+        {
+          title: "Software Engineer at CRAFT-TEC Inc., Cebu City",
+          date: "Mar 2021 - Aug 2022",
+          intro:
+            "Mobile lead on a four person team, two Flutter developers and two backend developers. Owned most of the stack: the majority of the Flutter codebase, the PHP and Laravel services behind the apps, and the CI/CD, release, and deployment work that shipped both.",
+          bullets: [
+            {
+              label: "Flutter Architecture & Ownership",
+              text: "Architected the Flutter apps and wrote the majority of the mobile codebase, setting the structure and conventions the team built on across several concurrent projects.",
+            },
+            {
+              label: "Technical Leadership",
+              text: "Mentored the other Flutter developer and ran code review and architectural direction for the mobile codebase.",
+            },
+            {
+              label: "CI/CD, Releases & Deployments",
+              text: "Built and maintained the CI/CD pipelines for both the Flutter apps and the Laravel backend on Bitbucket Pipelines, and managed releases and deployments across the stack.",
+            },
+            {
+              label: "Backend and API Work",
+              text: "Designed and integrated Laravel APIs between the mobile clients and backend services, cutting application load times by 20%.",
+            },
+          ],
+        },
+        {
+          title: "Software Engineer at SystemsCore Inc. & Freelance, Cebu City",
+          date: "Mar 2019 - Mar 2021",
+          intro:
+            "Enterprise systems in C# and .NET Core plus full-stack web delivery, at SystemsCore and for freelance clients. This role is also where the team's early CI/CD, version control, and automated testing practices came from.",
+          bullets: [
+            {
+              label: ".NET & C# Development",
+              text: "Built enterprise systems in C# and .NET Core with Entity Framework and the repository pattern, keeping data access and business logic cleanly separated so the systems stayed maintainable as they grew.",
+            },
+            {
+              label: "Web Systems Development",
+              text: "Delivered full-stack web systems end to end in JavaScript and Razor Pages, backed by Firebase Firestore, Authentication, and Cloud Functions for the cloud-backed features.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Skills",
+      skills: [
+        "Flutter & Dart",
+        "Android Development, Kotlin, Jetpack Compose",
+        "PHP & Laravel",
+        "Vue.js, JQuery",
+        "Docker, OrbStack, Apple Container",
+        "Cloudflare (Workers, R2, Hyperdrive)",
+        "CI/CD Pipelines (GitHub Actions, BitBucket Pipelines, Azure DevOps)",
+        "iOS Development, SwiftUI & UIKit",
+        "C# & .NET, Entity Framework",
+        "JavaScript, React & TanStack",
+        "HTML/CSS",
+        "Firebase (Auth, Firestore, Cloud Functions)",
+        "PostgreSQL, MySQL, MSSQL",
+        "Clean/Domain Driven Architecture, SOLID Principles",
+      ],
+    },
+    {
+      label: "Education",
+      entries: [
+        {
+          title:
+            "Bachelor of Science in Information Technology, Cristal e-College, Tagbilaran City, Bohol",
+          date: "Graduated 2019",
+        },
+      ],
+    },
+    {
+      label: "Software projects",
+      intro:
+        "Most of my professional software work is covered under NDA and isn't publicly shareable, but here are a few personal projects that showcase my skills outside of client and employer work",
+      entries: [
+        {
+          title: "rate-stuff.online",
+          intro:
+            "Built a <a href='https://rate-stuff.online/'>full-stack social platform</a> for creating, rating, and discovering items of interest, featuring real-time updates, image uploads, and a personalized explore feed. Developed with TypeScript, React 19, TanStack Start/Router/Query, and Tailwind CSS, deployed on Cloudflare Workers at the edge. Backend architected with PostgreSQL (via CockroachDB and Cloudflare Hyperdrive) and Drizzle ORM, with real-time functionality via PartyKit WebSockets, plus integrated auth, image CDN, transactional email, and SEO optimization.",
+        },
+        {
+          title: "Bebi App (for Couples)",
+          intro:
+            "Built a <a href='https://github.com/photosunthesis/bebi-app-flutter'>cross-platform couples app</a> for staying connected through shared calendars, daily photo stories, AI-powered cycle tracking insights, and real-time location sharing. Developed with Flutter and Dart using BLoC, go_router, and get_it/injectable for a clean, scalable architecture. Powered by Firebase (Firestore, Auth, Cloud Functions, Analytics, Crashlytics) with media on Cloudflare R2, and integrated Gemini AI for personalized insights.",
+        },
+        {
+          title: "sun-envidiado.com",
+          intro:
+            "Built a <a href='https://sun-envidiado.com/'>personal portfolio and blog</a> with a retro terminal-inspired design, featuring ASCII art animation, MDX blog posts, a double opt-in email newsletter, and an RSS feed. Developed with Astro (hybrid SSR/static) and SCSS with a custom retro bitmap font and terminal UI. Implemented a serverless newsletter system with JWT-based verification via Resend and Cloudflare Workers, plus SEO optimizations including structured data and an auto-generated sitemap.",
+        },
+      ],
+    },
+  ],
+};
+
+// `summary` is a top level field rather than a section, but ATS parsers look
+// for a SUMMARY heading, so it is rendered as the first section under this.
+const summaryLabel = "Summary";
+
+const isProd = import.meta.env.PROD;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- Chrome and Safari use the document title as the default filename when
+         saving to PDF. Plain hyphen on purpose: some systems choke on dashes. -->
+    <title>{resume.name} - Resume</title>
+    <!-- noindex: this page prints a phone number and email address in plain
+         text, and a resume is something to hand out deliberately rather than
+         have aggregators scrape. To index it, delete this tag and remove
+         "/work/resume" from the sitemap filter in astro.config.mjs. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <!-- Same analytics snippet BaseLayout adds to every page. -->
+    {
+      isProd && (
+        <script
+          is:inline
+          defer
+          src="https://umami.sun-envidiado.com/script.js"
+          data-website-id="bbd2687f-9a6a-4aa4-8813-f5f431278ef6"
+        />
+      )
+    }
+  </head>
+  <body>
+    <!-- Screen only, hidden in print. Two things this page cannot control:
+         the user still has to pick "Save as PDF" as the destination, and
+         untick "Headers and footers" or the file gets the URL and date printed
+         on it. When public/resume.pdf exists, replace the button with
+         <a href="/resume.pdf" download> for a real one click download. -->
+    <div class="toolbar">
+      <button type="button" class="print" data-print>Download PDF</button>
+    </div>
+
+    <!-- Layout table on purpose: thead and tfoot repeat on every printed sheet,
+         which is the only way to get the same top and bottom whitespace on
+         every page while keeping @page margin at 0 (so a background could
+         reach the paper edge). Horizontal padding lives on the body cell
+         because it repeats across pages on its own. -->
+    <table class="sheet" role="presentation">
+      <thead>
+        <tr><td class="margin"></td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="doc">
+            <header>
+              <h1 class="name" set:html={nb(resume.name)} />
+              <p class="role" set:html={nb(resume.role)} />
+              <div class="contact">
+                {resume.contact.map((line) => <p set:html={nb(line)} />)}
+              </div>
+            </header>
+
+            {
+              resume.summary && (
+                <section class="section">
+                  <h2 class="label">{summaryLabel}</h2>
+                  <div class="section-body">
+                    <p class="p lead" set:html={nb(resume.summary)} />
+                  </div>
+                </section>
+              )
+            }
+
+            {
+              resume.sections.map((section) => (
+                <section class="section">
+                  <h2 class="label">{section.label}</h2>
+                  <div class="section-body">
+                    {section.intro && (
+                      <p class="p lead" set:html={nb(section.intro)} />
+                    )}
+                    {section.entries?.map((entry) => (
+                      <article class="entry">
+                        <h3 class="title" set:html={nb(entry.title)} />
+                        {entry.date && (
+                          <p class="date" set:html={nb(entry.date)} />
+                        )}
+                        {entry.intro && (
+                          <p class="p" set:html={nb(entry.intro)} />
+                        )}
+                        {entry.bullets && (
+                          <ul class="bullets">
+                            {entry.bullets.map((bullet) => (
+                              <li
+                                set:html={
+                                  bullet.label
+                                    ? `<b>${nb(bullet.label)}:</b> ${nb(bullet.text)}`
+                                    : nb(bullet.text)
+                                }
+                              />
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                    ))}
+                    {section.skills && (
+                      <p
+                        class="p lead skills"
+                        set:html={nb(section.skills.join(", "))}
+                      />
+                    )}
+                  </div>
+                </section>
+              ))
+            }
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td class="margin"></td></tr>
+      </tfoot>
+    </table>
+
+    <script>
+      document
+        .querySelector("[data-print]")
+        ?.addEventListener("click", () => window.print());
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* Global on purpose: this page owns its whole document, and scoped styles
+     cannot reach the <a>/<b> markup or the .nb spans injected via set:html. */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  :root {
+    --color-ink: #1f1f1f;
+    --color-muted: #737373;
+    --sheet-width: 595.28pt;
+    --margin-y: 39pt;
+    --margin-x: 40pt;
+    --indent: 12pt;
+  }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--color-ink);
+    font-family:
+      "Inter Variable",
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+    font-size: 10pt;
+    letter-spacing: -0.4pt;
+    orphans: 1;
+    widows: 1;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  .nb {
+    white-space: nowrap;
+  }
+
+  /* Repeating page margins: see the comment on the table in the markup. */
+  .sheet {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .sheet td {
+    padding: 0;
+    vertical-align: top;
+  }
+  .sheet .margin {
+    height: var(--margin-y);
+  }
+  .sheet > tbody > tr > .doc {
+    padding: 0 var(--margin-x);
+  }
+
+  .name {
+    margin: 0;
+    font-size: 16pt;
+    font-weight: 700;
+    line-height: 1.21;
+  }
+  .role {
+    margin: 1pt 0 0;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.235;
+  }
+  .contact {
+    margin-top: 4pt;
+    font-size: 8pt;
+    line-height: 1.425;
+  }
+  .contact p {
+    margin: 0;
+  }
+
+  .section {
+    margin-top: 18pt;
+  }
+  /* Everything under a section heading sits a little to the right of it. */
+  .section-body {
+    padding-left: var(--indent);
+  }
+  .label {
+    margin: 0 0 2pt;
+    font-size: 10.5pt;
+    font-weight: 700;
+    line-height: 1.21;
+    letter-spacing: 0.6pt;
+    text-transform: uppercase;
+    break-after: avoid;
+  }
+
+  /* Any entry that follows something (a section intro or another entry). */
+  .section-body > * + .entry {
+    margin-top: 9pt;
+  }
+  .title {
+    margin: 0;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.235;
+    break-after: avoid;
+  }
+  .date {
+    margin: 5.4pt 0 0;
+    color: var(--color-muted);
+    font-size: 8pt;
+    line-height: 1.21;
+    break-after: avoid;
+  }
+
+  .p {
+    margin: 6.6pt 0 0;
+    font-size: 10pt;
+    line-height: 1.349;
+  }
+  .lead {
+    margin-top: 2pt;
+  }
+  .skills {
+    break-inside: avoid;
+  }
+
+  .bullets {
+    margin: 5.1pt 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .bullets li {
+    position: relative;
+    padding-left: 23.1pt;
+    font-size: 10pt;
+    line-height: 1.349;
+  }
+  .bullets li::before {
+    content: "\2022";
+    position: absolute;
+    left: 14.2pt;
+  }
+
+  /* Screen affordances: the print button, and the document kept at A4 width. */
+  @media screen {
+    body {
+      padding: 24px 16px 48px;
+    }
+    .toolbar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 1;
+    }
+    .print {
+      padding: 9px 16px;
+      border: 0;
+      /* corner-shape is progressive: browsers without it keep the radius. */
+      border-radius: 14px;
+      corner-shape: squircle;
+      background: var(--color-ink);
+      color: #fff;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: opacity 150ms ease-out;
+    }
+    .print:hover {
+      opacity: 0.85;
+    }
+    .print:active {
+      opacity: 0.7;
+    }
+    .print:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 2px;
+    }
+    .sheet {
+      max-width: var(--sheet-width);
+      margin: 0 auto;
+    }
+  }
+
+  /* Phones: the print margins waste too much of a narrow screen. */
+  @media screen and (max-width: 640px) {
+    :root {
+      --margin-x: 12pt;
+    }
+    body {
+      padding: 24px 0 48px;
+    }
+  }
+
+  @media print {
+    .toolbar {
+      display: none;
+    }
+    /* Underlines are a screen affordance; the PDF keeps links unmarked. */
+    a {
+      text-decoration: none;
+    }
+  }
+</style>

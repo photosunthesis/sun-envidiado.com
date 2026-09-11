@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
+/** @type {Record<string, { pubDate?: string; updatedDate?: string }> | null} */
 let blogPostDates = null;
 async function getBlogPostDates() {
   if (blogPostDates) return blogPostDates;
@@ -52,7 +53,11 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith("/blog-subscription-success"),
+      // noindex pages stay out of the sitemap; the integration never reads
+      // the robots meta, so they have to be listed here by name.
+      filter: (page) =>
+        !page.endsWith("/blog-subscription-success") &&
+        !page.endsWith("/work/resume"),
       async serialize(item) {
         const pathname = new URL(item.url).pathname.replace(/\/$/, "");
         const dates = (await getBlogPostDates())[pathname];
