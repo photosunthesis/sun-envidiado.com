@@ -1,6 +1,9 @@
 ---
-import "@fontsource-variable/inter";
-import "@fontsource-variable/inter/wght-italic.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/400-italic.css";
+import { yearsOfExperience } from "../../utils/experience";
 import { nowrapHyphenated as nb } from "../../utils/text";
 
 // Standalone print document: no BaseLayout, no global.css, no site font.
@@ -18,7 +21,9 @@ interface ResumeBullet {
 }
 
 interface ResumeEntry {
-  title: string; // "Software Engineer at MCS Inc., Makati City, Philippines"
+  // Kept apart so a parser reads a job title and an employer, not one run.
+  title: string; // "Software Engineer"
+  org?: string; // "MCS Inc. · Makati City, Philippines"
   date?: string; // "Mar 2026 - Present"
   intro?: string; // paragraph under the title
   bullets?: ResumeBullet[];
@@ -29,6 +34,7 @@ interface ResumeSection {
   intro?: string; // optional paragraph before the entries
   entries?: ResumeEntry[];
   skills?: string[]; // if present, rendered as ONE comma separated run
+  dashes?: boolean; // false hides the dash beside each entry title
 }
 
 interface Resume {
@@ -39,93 +45,110 @@ interface Resume {
   sections: ResumeSection[];
 }
 
+const years = yearsOfExperience();
+
 const resume: Resume = {
   name: "Sun Adriann B. Envidiado",
-  role: "Software Engineer",
+  role: "Software Engineer, Full-Stack",
   contact: [
-    "Metro Manila, Philippines",
-    "<a href='tel:+639617518739'>+63 96 1751 8739</a> · <a href='mailto:sun.adriann@icloud.com'>sun.adriann@icloud.com</a>",
-    "<a href='https://sun-envidiado.com/'>sun-envidiado.com</a> · <a href='https://github.com/photosunthesis'>github.com/photosunthesis</a> · <a href='https://www.linkedin.com/in/sunenvidiado/'>linkedin.com/in/sunenvidiado</a>",
+    "Metro Manila, PH · <a href='https://sun-envidiado.com/' target='_blank' rel='noopener'>sun-envidiado.com</a>",
+    "<a href='tel:+639617518739'>+63 961 751 8739</a> · <a href='mailto:sun.adriann@icloud.com'>sun.adriann@icloud.com</a>",
+    "<a href='https://github.com/photosunthesis' target='_blank' rel='noopener'>github.com/photosunthesis</a> · <a href='https://www.linkedin.com/in/sunenvidiado/' target='_blank' rel='noopener'>linkedin.com/in/sunenvidiado</a>",
   ],
-  summary:
-    "Senior software engineer with 7+ years across native iOS, Flutter, and backend work in C#/.NET and PHP/Laravel. Experience spans fintech, healthcare, and consumer mobility products, with LLMs integrated directly into production apps and deep CI/CD and cloud fluency.",
+  summary: `Software engineer with <span data-yoe>${years}</span>+ years of experience, five of them in Flutter, now on native Swift and SwiftUI for an iOS health coaching app. Production work in native iOS (Swift, SwiftUI, UIKit), Android through Flutter plugins written in Kotlin, backends in C#/.NET and PHP/Laravel, and web front ends in JavaScript, React, and Vue. Fintech, healthcare, and consumer products, where security and compliance requirements shaped the work, with LLMs in production apps and CI/CD owned on GitHub Actions and Azure DevOps. Builds and ships production features daily with Claude Code and Google Gemini in the loop for engineering, debugging, and code review.`,
   sections: [
     {
       label: "Experience",
       entries: [
         {
-          title: "Software Engineer at MCS Inc., Makati City, Philippines",
+          title: "Software Engineer",
+          org: "MCS Inc. · Makati City, Philippines",
           date: "Mar 2026 - Present",
           intro:
-            "Drove the technical direction of the iOS codebase for a healthcare app, working within an iOS team and setting the architecture the app was rebuilt on. Swift throughout, covering LLM-backed product features and release automation alongside the refactoring work.",
+            "Owns the iOS codebase for a health coaching app and leads its technical direction inside an iOS team, setting the architecture the app was rebuilt on. The work is Swift and SwiftUI across LLM-backed product features, activity tracking, and release automation, alongside the re-architecture itself.",
           bullets: [
             {
               label: "Architectural Direction",
-              text: "Set the architectural standards and review practices the iOS team built against, driving the technical decisions on the codebase.",
+              text: "Set the architectural standards and review practices the iOS team builds against.",
             },
             {
               label: "Refactoring & Re-architecture",
-              text: "Refactored and re-architected the app into reusable modules so code and architectural decisions could be shared across products, using SwiftUI and Swift Package Manager.",
+              text: "Re-architected the app into reusable SwiftUI modules with Swift Package Manager so code could be shared across products.",
             },
             {
               label: "LLM Product Features",
-              text: "Architected and integrated large language model capabilities into the app, delivering context-aware features and real-time in-app support, and used Claude Code to accelerate development, debugging, and code generation across the full lifecycle.",
+              text: "Integrated a large language model (LLM) into the app for context-aware guidance and real-time in-app support, and built, debugged, and reviewed the work with Claude Code in the loop.",
+            },
+            {
+              label: "Run & Walk Tracking",
+              text: "Built the run and walk tracker end to end: live GPS route recording with pace, distance, and duration, a route map per session, and a full activity history, with workouts saved to Apple Health, built on Core Location, HealthKit, and Core Motion.",
             },
             {
               label: "Release Automation",
-              text: "Built the automated release pipeline that took manual steps out of shipping, on Fastlane, Azure DevOps, GitHub Actions, and Xcode Cloud.",
+              text: "Built the automated release pipeline that took manual steps out of shipping, on Fastlane and Azure DevOps.",
             },
           ],
         },
         {
-          title: "Flutter Developer at Nextbank, Remote",
+          title: "Flutter Developer",
+          org: "Nextbank · Remote",
           date: "Nov 2023 - Mar 2026",
           intro:
-            "Secure, high-transaction iOS and Android fintech applications built with Flutter inside monorepo architectures, delivered alongside security and compliance stakeholders across regulated banking, lending, and remittance products.",
+            "Built secure, high-transaction iOS and Android fintech apps in a Flutter monorepo, delivering them alongside security and compliance stakeholders across regulated banking, lending, and remittance products.",
           bullets: [
             {
               label: "Native Security Integrations",
-              text: "Implemented biometric face liveness detection and fraud mitigation by writing custom Flutter plugins over the platform-specific native SDKs, bridged through Method Channels, to support regulatory compliance.",
+              text: "Implemented biometric face liveness detection and fraud mitigation by writing custom Flutter plugins in Swift and Kotlin over the platform-specific native SDKs, bridged through Method Channels, to support regulatory compliance.",
             },
             {
               label: "In-App AI Support",
-              text: "Built the in-app AI assistance experience end to end, from evaluating providers through prompt and response handling, so users could get real-time help inside financial workflows. Integrated ChatGPT and other LLMs into production.",
+              text: "Built the in-app AI support end to end, from evaluating providers through prompt and response handling, so users could get real-time help inside financial workflows, with OpenAI and other LLM providers in production.",
+            },
+            {
+              label: "CI/CD Pipelines",
+              text: "Built and maintained the GitHub Actions pipelines that built and shipped the apps.",
             },
             {
               label: "Shared Codebase Consolidation",
-              text: "Re-architected a codebase shared across multiple banking apps in one monorepo, cutting duplicate code, shortening new-feature delivery, and lifting release frequency for the teams working in it. Structured with BLoC, Riverpod, Provider, and GetIt.",
-            },
-            {
-              label: "Secure Delivery",
-              text: "Delivered high-transaction banking and lending products with end-to-end data protection across critical financial workflows.",
+              text: "Re-architected a codebase shared across multiple banking apps in one monorepo, cutting duplicate code, shortening new-feature delivery, and lifting release frequency for the teams working in it, on an architecture structured with BLoC and GetIt.",
             },
           ],
         },
         {
-          title: "Mobile Engineer at Netsells (part of hedgehog lab), Remote",
+          title: "Mobile Engineer",
+          org: "Netsells (part of hedgehog lab) · Remote",
           date: "Aug 2022 - Nov 2023",
           intro:
-            "Cross-platform iOS and Android applications for medical and fintech clients, built in a cross-functional agency team, with backend contributions in Laravel and PHP.",
+            "Delivered cross-platform iOS and Android apps for medical and fintech clients as part of a cross-functional agency team, and contributed to the Laravel and PHP services behind them.",
           bullets: [
             {
               label: "Native Plugin Work",
-              text: "Built a custom document signing plugin bridging native iOS and Android functionality to meet a client-specific requirement, through Method Channels.",
+              text: "Built a custom document signing plugin in Swift and Kotlin over the native iOS and Android SDKs, bridged through Method Channels.",
+            },
+            {
+              label: "In-App Payments",
+              text: "Implemented in-app payments for a client product through a Braintree integration, from the checkout flow through payment processing.",
+            },
+            {
+              label: "CI/CD Pipelines",
+              text: "Built and maintained the GitHub Actions pipelines for the client mobile projects.",
             },
             {
               label: "Full-Stack Contribution",
-              text: "Contributed to Laravel and PHP backend services alongside the mobile work, covering both ends of client projects rather than one.",
+              text: "Contributed to the Laravel and PHP backend services alongside the mobile work.",
             },
             {
               label: "Concurrent Client Delivery",
-              text: "Shipped production-quality work across several concurrent agency clients while holding one consistent code quality standard, on architectures built with BLoC, Riverpod, and Provider.",
+              text: "Shipped for several agency clients at once, working in codebases built with BLoC, Riverpod, and Provider.",
             },
           ],
         },
         {
-          title: "Software Engineer at CRAFT-TEC Inc., Cebu City",
+          title: "Software Engineer",
+          org: "CRAFT-TEC Inc. · Cebu City, Philippines",
           date: "Mar 2021 - Aug 2022",
           intro:
-            "Mobile lead on a four person team, two Flutter developers and two backend developers. Owned most of the stack: the majority of the Flutter codebase, the PHP and Laravel services behind the apps, and the CI/CD, release, and deployment work that shipped both.",
+            "Led the full stack as technical lead on a four-person team of two Flutter and two backend developers, and owned most of what shipped: the majority of the Flutter codebase, the PHP and Laravel services behind the apps, and the CI/CD, release, and deployment work for both.",
           bullets: [
             {
               label: "Flutter Architecture & Ownership",
@@ -133,7 +156,7 @@ const resume: Resume = {
             },
             {
               label: "Technical Leadership",
-              text: "Mentored the other Flutter developer and ran code review and architectural direction for the mobile codebase.",
+              text: "Mentored the other Flutter developer and ran code review and architectural direction across the mobile and backend codebases.",
             },
             {
               label: "CI/CD, Releases & Deployments",
@@ -146,18 +169,19 @@ const resume: Resume = {
           ],
         },
         {
-          title: "Software Engineer at SystemsCore Inc. & Freelance, Cebu City",
+          title: "Software Engineer",
+          org: "SystemsCore Inc. & Freelance · Cebu City, Philippines",
           date: "Mar 2019 - Mar 2021",
           intro:
-            "Enterprise systems in C# and .NET Core plus full-stack web delivery, at SystemsCore and for freelance clients. This role is also where the team's early CI/CD, version control, and automated testing practices came from.",
+            "Built enterprise systems in C# and .NET Core alongside full-stack web delivery, at SystemsCore and for freelance clients, and introduced CI/CD, version control, and automated testing to the SystemsCore team.",
           bullets: [
             {
               label: ".NET & C# Development",
-              text: "Built enterprise systems in C# and .NET Core with Entity Framework and the repository pattern, keeping data access and business logic cleanly separated so the systems stayed maintainable as they grew.",
+              text: "Built enterprise systems in C# and .NET Core with Entity Framework and the repository pattern.",
             },
             {
               label: "Web Systems Development",
-              text: "Delivered full-stack web systems end to end in JavaScript and Razor Pages, backed by Firebase Firestore, Authentication, and Cloud Functions for the cloud-backed features.",
+              text: "Delivered full-stack web systems in JavaScript, Vue.js, and Razor Pages, with Firebase Firestore, Authentication, and Cloud Functions behind the cloud features.",
             },
           ],
         },
@@ -166,28 +190,30 @@ const resume: Resume = {
     {
       label: "Skills",
       skills: [
-        "Flutter & Dart",
-        "Android Development, Kotlin, Jetpack Compose",
+        "Swift, SwiftUI, UIKit, Xcode",
+        "Flutter, Dart",
+        "Kotlin, Jetpack Compose, Android Studio",
         "PHP & Laravel",
-        "Vue.js, JQuery",
+        "Vue.js, jQuery",
         "Docker, OrbStack, Apple Container",
         "Cloudflare (Workers, R2, Hyperdrive)",
-        "CI/CD Pipelines (GitHub Actions, BitBucket Pipelines, Azure DevOps)",
-        "iOS Development, SwiftUI & UIKit",
-        "C# & .NET, Entity Framework",
+        "CI/CD Pipelines (GitHub Actions, Bitbucket Pipelines, Azure DevOps)",
+        "Git, Fastlane, REST APIs, Unit Testing",
+        "C#, .NET, Entity Framework",
         "JavaScript, React & TanStack",
         "HTML/CSS",
         "Firebase (Auth, Firestore, Cloud Functions)",
         "PostgreSQL, MySQL, MSSQL",
-        "Clean/Domain Driven Architecture, SOLID Principles",
+        "Clean/Domain-Driven Architecture, SOLID Principles",
       ],
     },
     {
       label: "Education",
+      dashes: false,
       entries: [
         {
-          title:
-            "Bachelor of Science in Information Technology, Cristal e-College, Tagbilaran City, Bohol",
+          title: "Bachelor of Science in Information Technology",
+          org: "Cristal e-College · Tagbilaran City, Bohol",
           date: "Graduated 2019",
         },
       ],
@@ -195,22 +221,31 @@ const resume: Resume = {
     {
       label: "Software projects",
       intro:
-        "Most of my professional software work is covered under NDA and isn't publicly shareable, but here are a few personal projects that showcase my skills outside of client and employer work",
+        "Most of my professional software work is covered under NDA and isn't publicly shareable, but here are a few personal projects that showcase my skills outside of client and employer work.",
       entries: [
         {
-          title: "rate-stuff.online",
+          title:
+            "<a href='https://github.com/photosunthesis/bebi-app-flutter' target='_blank' rel='noopener'>Bebi App (for Couples)</a>",
           intro:
-            "Built a <a href='https://rate-stuff.online/'>full-stack social platform</a> for creating, rating, and discovering items of interest, featuring real-time updates, image uploads, and a personalized explore feed. Developed with TypeScript, React 19, TanStack Start/Router/Query, and Tailwind CSS, deployed on Cloudflare Workers at the edge. Backend architected with PostgreSQL (via CockroachDB and Cloudflare Hyperdrive) and Drizzle ORM, with real-time functionality via PartyKit WebSockets, plus integrated auth, image CDN, transactional email, and SEO optimization.",
+            "Built a couples app for staying connected through shared calendars, daily photo stories, AI-powered cycle tracking insights, and real-time location sharing. Flutter and Dart with BLoC, go_router, and get_it/injectable, on Firebase (Firestore, Auth, Cloud Functions, Analytics, Crashlytics), with media on Cloudflare R2 and Gemini behind the insights. Releases are automated on tag through GitHub Actions.",
         },
         {
-          title: "Bebi App (for Couples)",
+          title:
+            "<a href='https://rate-stuff.online/' target='_blank' rel='noopener'>rate-stuff.online</a>",
           intro:
-            "Built a <a href='https://github.com/photosunthesis/bebi-app-flutter'>cross-platform couples app</a> for staying connected through shared calendars, daily photo stories, AI-powered cycle tracking insights, and real-time location sharing. Developed with Flutter and Dart using BLoC, go_router, and get_it/injectable for a clean, scalable architecture. Powered by Firebase (Firestore, Auth, Cloud Functions, Analytics, Crashlytics) with media on Cloudflare R2, and integrated Gemini AI for personalized insights.",
+            "Built a social platform for rating and reviewing anything you can think of, with real-time updates, image uploads, and a personalized explore feed. It runs on TypeScript, React 19, TanStack Start/Router/Query, and Tailwind CSS on Cloudflare Workers, over PostgreSQL (CockroachDB through Cloudflare Hyperdrive) with Drizzle ORM and PartyKit WebSockets, plus auth, an image CDN, and transactional email.",
         },
         {
-          title: "sun-envidiado.com",
+          title:
+            "<a href='https://sun-envidiado.com/' target='_blank' rel='noopener'>sun-envidiado.com</a>",
           intro:
-            "Built a <a href='https://sun-envidiado.com/'>personal portfolio and blog</a> with a retro terminal-inspired design, featuring ASCII art animation, MDX blog posts, a double opt-in email newsletter, and an RSS feed. Developed with Astro (hybrid SSR/static) and SCSS with a custom retro bitmap font and terminal UI. Implemented a serverless newsletter system with JWT-based verification via Resend and Cloudflare Workers, plus SEO optimizations including structured data and an auto-generated sitemap.",
+            "Built my portfolio and blog, designed after vim and terminal UIs, on Astro and Tailwind CSS running on Cloudflare Workers. Static pages plus a few Worker routes, including a double opt-in newsletter that runs on Resend with no database behind it, MDX blog posts, an RSS feed, and structured data for SEO.",
+        },
+        {
+          title:
+            "<a href='https://github.com/photosunthesis/zomboid-b42-server' target='_blank' rel='noopener'>zomboid-b42-server</a>",
+          intro:
+            "Built a Docker Compose setup for self-hosting a Project Zomboid server so friends can join without port forwarding, using a playit.gg tunnel, with automated world backups on a schedule.",
         },
       ],
     },
@@ -259,7 +294,23 @@ const isProd = import.meta.env.PROD;
          on it. When public/resume.pdf exists, replace the button with
          <a href="/resume.pdf" download> for a real one click download. -->
     <div class="toolbar">
-      <button type="button" class="print" data-print>Download PDF</button>
+      <button type="button" class="print" data-print>
+        <svg
+          class="print-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3v12"></path>
+          <path d="m7 11 5 5 5-5"></path>
+          <path d="M4 20h16"></path>
+        </svg>
+        Download as PDF
+      </button>
     </div>
 
     <!-- Layout table on purpose: thead and tfoot repeat on every printed sheet,
@@ -295,7 +346,12 @@ const isProd = import.meta.env.PROD;
 
             {
               resume.sections.map((section) => (
-                <section class="section">
+                <section
+                  class:list={[
+                    "section",
+                    { "no-dashes": section.dashes === false },
+                  ]}
+                >
                   <h2 class="label">{section.label}</h2>
                   <div class="section-body">
                     {section.intro && (
@@ -304,6 +360,9 @@ const isProd = import.meta.env.PROD;
                     {section.entries?.map((entry) => (
                       <article class="entry">
                         <h3 class="title" set:html={nb(entry.title)} />
+                        {entry.org && (
+                          <p class="org" set:html={nb(entry.org)} />
+                        )}
                         {entry.date && (
                           <p class="date" set:html={nb(entry.date)} />
                         )}
@@ -344,9 +403,15 @@ const isProd = import.meta.env.PROD;
     </table>
 
     <script>
+      import { yearsOfExperience } from "../../utils/experience";
+
       document
         .querySelector("[data-print]")
         ?.addEventListener("click", () => window.print());
+
+      // Baked at build; refreshed on load so it rolls over without a redeploy.
+      const yoe = document.querySelector("[data-yoe]");
+      if (yoe) yoe.textContent = String(yearsOfExperience());
     </script>
   </body>
 </html>
@@ -373,7 +438,7 @@ const isProd = import.meta.env.PROD;
     background: #fff;
     color: var(--color-ink);
     font-family:
-      "Inter Variable",
+      "Inter",
       system-ui,
       -apple-system,
       "Segoe UI",
@@ -383,8 +448,10 @@ const isProd = import.meta.env.PROD;
       sans-serif;
     font-size: 10pt;
     letter-spacing: -0.4pt;
-    orphans: 1;
-    widows: 1;
+    /* Two lines minimum either side of a page break, so a paragraph never
+       leaves a single stray word at the top or bottom of a sheet. */
+    orphans: 2;
+    widows: 2;
   }
 
   a {
@@ -440,18 +507,39 @@ const isProd = import.meta.env.PROD;
   }
 
   .section {
-    margin-top: 18pt;
+    margin-top: 22pt;
   }
   /* Everything under a section heading sits a little to the right of it. */
   .section-body {
     padding-left: var(--indent);
   }
+  /* Dash marker in the indent gutter beside each entry title. Drawn as a
+     border, not a dash character, so nothing lands in the PDF's text layer
+     for an ATS to read. */
+  .section-body > .entry > .title {
+    position: relative;
+  }
+  .section-body > .entry > .title::before {
+    content: "";
+    position: absolute;
+    /* Middle of the first line only, so a wrapped title keeps it on line one. */
+    top: 0.5lh;
+    left: calc(-1 * var(--indent));
+    width: calc(var(--indent) - 3pt);
+    border-top: 0.08em solid currentColor;
+    transform: translateY(-50%);
+  }
+  .no-dashes .title::before {
+    display: none;
+  }
+  /* Smaller than the entry titles on purpose: the caps and tracking already
+     mark a heading, so the size can step back and let the entries lead. */
   .label {
-    margin: 0 0 2pt;
-    font-size: 10.5pt;
+    margin: 0 0 6pt;
+    font-size: 9pt;
     font-weight: 700;
     line-height: 1.21;
-    letter-spacing: 0.6pt;
+    letter-spacing: 0.8pt;
     text-transform: uppercase;
     break-after: avoid;
   }
@@ -467,8 +555,14 @@ const isProd = import.meta.env.PROD;
     line-height: 1.235;
     break-after: avoid;
   }
+  .org {
+    margin: 2pt 0 0;
+    font-size: 10pt;
+    line-height: 1.235;
+    break-after: avoid;
+  }
   .date {
-    margin: 5.4pt 0 0;
+    margin: 4pt 0 0;
     color: var(--color-muted);
     font-size: 8pt;
     line-height: 1.21;
@@ -476,8 +570,7 @@ const isProd = import.meta.env.PROD;
   }
 
   .p {
-    margin: 6.6pt 0 0;
-    font-size: 10pt;
+    margin: 4pt 0 0;
     line-height: 1.349;
   }
   .lead {
@@ -486,55 +579,96 @@ const isProd = import.meta.env.PROD;
   .skills {
     break-inside: avoid;
   }
+  /* A section intro must not be the last thing on a page, and a short entry
+     must not be split across one. */
+  /* Project entries are the short, dateless ones; keeping them whole stops a
+     four-line blurb splitting across a sheet. */
+  .entry:not(:has(.date)) {
+    break-inside: avoid;
+  }
+  /* Only a lead that introduces entries, so the rule cannot chain "keep with
+     the next thing" from one section into the one after it. */
+  .section-body > .lead:has(+ .entry) {
+    break-inside: avoid;
+  }
 
   .bullets {
-    margin: 5.1pt 0 0;
+    margin: 3.75pt 0 0;
     padding: 0;
     list-style: none;
   }
   .bullets li {
-    position: relative;
     padding-left: 23.1pt;
-    font-size: 10pt;
+    text-indent: -8.9pt;
     line-height: 1.349;
   }
   .bullets li::before {
-    content: "\2022";
-    position: absolute;
-    left: 14.2pt;
+    content: "\2022\00a0";
   }
 
   /* Screen affordances: the print button, and the document kept at A4 width. */
   @media screen {
     body {
-      padding: 24px 16px 48px;
+      /* Room at the bottom so the floating button never sits over the last lines. */
+      padding: 24px 16px 96px;
     }
+    /* Pinned to the bottom of the window but only as wide as the document
+       column (same width and centering as .sheet), so the button hugs the
+       column's corner instead of drifting to the screen edge on wide monitors. */
     .toolbar {
       position: fixed;
-      top: 16px;
-      right: 16px;
+      right: 0;
+      bottom: 24px;
+      left: 0;
       z-index: 1;
+      display: flex;
+      justify-content: flex-end;
+      width: min(var(--sheet-width), 100% - 32px);
+      margin: 0 auto;
+      /* Let clicks through the empty part of the strip to the text below. */
+      pointer-events: none;
     }
     .print {
-      padding: 9px 16px;
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 22px;
       border: 0;
       /* corner-shape is progressive: browsers without it keep the radius. */
-      border-radius: 14px;
+      border-radius: 16px;
       corner-shape: squircle;
       background: var(--color-ink);
       color: #fff;
       font: inherit;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
+      line-height: 1.2;
       letter-spacing: 0;
       cursor: pointer;
-      transition: opacity 150ms ease-out;
+      box-shadow:
+        0 1px 2px rgb(0 0 0 / 0.08),
+        0 6px 16px rgb(0 0 0 / 0.1);
+      transition:
+        background-color 150ms ease-out,
+        box-shadow 150ms ease-out,
+        transform 150ms ease-out;
+    }
+    .print-icon {
+      width: 17px;
+      height: 17px;
     }
     .print:hover {
-      opacity: 0.85;
+      background: #333;
+      box-shadow:
+        0 2px 4px rgb(0 0 0 / 0.1),
+        0 10px 24px rgb(0 0 0 / 0.14);
+      transform: translateY(-1px);
     }
     .print:active {
-      opacity: 0.7;
+      background: #111;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+      transform: translateY(0);
     }
     .print:focus-visible {
       outline: 2px solid var(--color-ink);
@@ -552,7 +686,7 @@ const isProd = import.meta.env.PROD;
       --margin-x: 12pt;
     }
     body {
-      padding: 24px 0 48px;
+      padding-inline: 0;
     }
   }
 
