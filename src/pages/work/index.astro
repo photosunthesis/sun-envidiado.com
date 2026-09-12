@@ -22,45 +22,6 @@ const [rateStuffHash, bebiAppHash, twentyFourHash, zomboidHash] =
     ),
   );
 
-const skills = [
-  {
-    label: "Frontend & Mobile",
-    items: [
-      "Swift & SwiftUI",
-      "Flutter & Dart",
-      "iOS & Android",
-      "TypeScript, React, TanStack",
-      "Vue.js, jQuery",
-      "HTML/CSS, Responsive Web",
-      "Razor Pages, Laravel Blade",
-    ],
-  },
-  {
-    label: "Backend & Database",
-    items: [
-      "C# & .NET",
-      "Entity Framework",
-      "PHP & Laravel",
-      "RESTful APIs",
-      "Firebase (Auth, Firestore)",
-      "Cloudflare (Workers, R2)",
-      "PostgreSQL, MySQL, MSSQL",
-    ],
-  },
-  {
-    label: "Architecture & DevOps",
-    items: [
-      "SOLID Principles",
-      "Domain-Driven Design",
-      "Repository & Service Patterns",
-      "CI/CD Pipelines",
-      "GitHub Actions, Azure DevOps",
-      "Git, Docker, Fastlane",
-      "LLM integration",
-    ],
-  },
-];
-
 const projects = [
   {
     title: "rate-stuff.online",
@@ -128,47 +89,31 @@ const jsonLd = {
         I've been building software for over <time
           datetime={CAREER_START}
           id="yoe">{years}</time
-        >+ years, engineering systems across the web, backend, and mobile.
+        > years, engineering systems across the web, backend, and mobile.
       </p>
       <p>
         I started with Vue.js on the web, picked up C# (.NET) and PHP (Laravel)
-        on the backend, then moved into mobile with Flutter and Dart. Right now,
-        I'm building iOS apps with Swift.
+        on the backend, then moved into mobile with Flutter and Dart. Right now
+        I'm building iOS apps with Swift and SwiftUI, and I still write Kotlin
+        when a feature has to go native on Android.
       </p>
       <p>
-        I've worked across fintech, healthcare, and a handful of other domains,
-        tightening up CI/CD pipelines, shipping production iOS and Android apps,
-        and architecting backends along the way. The full timeline (companies,
-        dates, the long version) lives in <a
+        I'm framework agnostic. Every stack I learned was the one the job
+        needed, and the parts I rely on are the same everywhere: how the data is
+        modelled, where state lives, how the code is structured, and how it's
+        tested. Mobile is where I'm focused now.
+      </p>
+      <p>
+        Most of my work has been in fintech and healthcare. The CI/CD pipelines,
+        releases, and tests behind it were usually mine too. You can find the
+        full timeline and other details about my professional career as a
+        software engineer in <a
           class="link"
           href="/work/resume"
           target="_blank"
           rel="noopener noreferrer">my resume</a
         >.
       </p>
-    </section>
-
-    <section class="mt-12">
-      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">Skills</h2>
-      <div class="grid grid-cols-1 gap-[1lh] md:grid-cols-3 md:gap-[2ch]">
-        {
-          skills.map((group) => (
-            <div>
-              <h3 class="mb-[0.5lh] font-semibold">{group.label}</h3>
-              <ul class="space-y-[0.25lh]">
-                {group.items.map((item) => (
-                  <li class="flex gap-[1ch]">
-                    <span class="text-vim-dim" aria-hidden="true">
-                      ·
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
     </section>
 
     <section class="mt-12">

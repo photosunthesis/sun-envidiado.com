@@ -29,11 +29,16 @@ interface ResumeEntry {
   bullets?: ResumeBullet[];
 }
 
+interface SkillGroup {
+  label: string; // bold prefix, rendered as "Label: a, b, c"
+  items: string[];
+}
+
 interface ResumeSection {
   label: string; // "EXPERIENCE", rendered uppercase by CSS not by data
   intro?: string; // optional paragraph before the entries
   entries?: ResumeEntry[];
-  skills?: string[]; // if present, rendered as ONE comma separated run
+  skills?: SkillGroup[]; // one comma separated run per group, one line each
   dashes?: boolean; // false hides the dash beside each entry title
 }
 
@@ -190,21 +195,78 @@ const resume: Resume = {
     {
       label: "Skills",
       skills: [
-        "Swift, SwiftUI, UIKit, Xcode",
-        "Flutter, Dart",
-        "Kotlin, Jetpack Compose, Android Studio",
-        "PHP & Laravel",
-        "Vue.js, jQuery",
-        "Docker, OrbStack, Apple Container",
-        "Cloudflare (Workers, R2, Hyperdrive)",
-        "CI/CD Pipelines (GitHub Actions, Bitbucket Pipelines, Azure DevOps)",
-        "Git, Fastlane, REST APIs, Unit Testing",
-        "C#, .NET, Entity Framework",
-        "JavaScript, React & TanStack",
-        "HTML/CSS",
-        "Firebase (Auth, Firestore, Cloud Functions)",
-        "PostgreSQL, MySQL, MSSQL",
-        "Clean/Domain-Driven Architecture, SOLID Principles",
+        {
+          label: "Mobile",
+          items: [
+            "Swift",
+            "SwiftUI",
+            "UIKit",
+            "Flutter",
+            "Dart",
+            "Kotlin",
+            "Jetpack Compose",
+          ],
+        },
+        {
+          label: "Web",
+          items: [
+            "JavaScript",
+            "TypeScript",
+            "React",
+            "TanStack",
+            "Vue.js",
+            "jQuery",
+            "HTML",
+            "CSS",
+          ],
+        },
+        {
+          label: "Backend",
+          items: [
+            "C#",
+            ".NET",
+            "Entity Framework",
+            "PHP",
+            "Laravel",
+            "REST APIs",
+          ],
+        },
+        {
+          label: "Databases",
+          items: ["PostgreSQL", "MySQL", "MSSQL"],
+        },
+        {
+          label: "Cloud & Infrastructure",
+          items: [
+            "Cloudflare (Workers, R2, Hyperdrive)",
+            "Firebase (Auth, Firestore, Cloud Functions)",
+            "Docker",
+            "OrbStack",
+          ],
+        },
+        {
+          label: "CI/CD & Tooling",
+          items: [
+            "GitHub Actions",
+            "Bitbucket Pipelines",
+            "Azure DevOps",
+            "Fastlane",
+            "Git",
+            "Xcode",
+            "Android Studio",
+          ],
+        },
+        {
+          label: "Architecture & Practices",
+          items: [
+            "Clean Architecture",
+            "Layered Architecture",
+            "Feature-Driven Architecture",
+            "Domain-Driven Design",
+            "SOLID Principles",
+            "Testing (Unit, Golden, E2E)",
+          ],
+        },
       ],
     },
     {
@@ -384,12 +446,12 @@ const isProd = import.meta.env.PROD;
                         )}
                       </article>
                     ))}
-                    {section.skills && (
+                    {section.skills?.map((group) => (
                       <p
                         class="p lead skills"
-                        set:html={nb(section.skills.join(", "))}
+                        set:html={`<b>${nb(group.label)}:</b> ${nb(group.items.join(", "))}`}
                       />
-                    )}
+                    ))}
                   </div>
                 </section>
               ))
@@ -578,6 +640,9 @@ const isProd = import.meta.env.PROD;
   }
   .skills {
     break-inside: avoid;
+  }
+  .skills + .skills {
+    margin-top: 3pt;
   }
   /* A section intro must not be the last thing on a page, and a short entry
      must not be split across one. */
