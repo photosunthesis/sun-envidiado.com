@@ -350,34 +350,6 @@ const isProd = import.meta.env.PROD;
     }
   </head>
   <body>
-    <!-- Screen only. /resume.pdf is rendered from this very page at build
-         time by scripts/resume-pdf.ts, so every browser downloads the same
-         file and nobody goes through a print dialog. -->
-    <div class="toolbar">
-      <a
-        class="download"
-        href="/resume.pdf"
-        download={`${resume.name} - Resume.pdf`}
-        data-download
-      >
-        <svg
-          class="download-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 3v12"></path>
-          <path d="m7 11 5 5 5-5"></path>
-          <path d="M4 20h16"></path>
-        </svg>
-        <span class="download-label">Download PDF</span>
-      </a>
-    </div>
-
     <!-- Layout table on purpose: thead and tfoot repeat on every printed sheet,
          which is the only way to get the same top and bottom whitespace on
          every page while keeping @page margin at 0 (so a background could
@@ -396,6 +368,31 @@ const isProd = import.meta.env.PROD;
               <div class="contact">
                 {resume.contact.map((line) => <p set:html={nb(line)} />)}
               </div>
+              <!-- Screen only; print hides it. /resume.pdf is rendered from
+                   this very page at build time by scripts/resume-pdf.ts, so
+                   every browser downloads the same file. Set in the section
+                   label style so it reads as part of the paper. -->
+              <a
+                class="download"
+                href="/resume.pdf"
+                download={`${resume.name} - Resume.pdf`}
+              >
+                Download PDF
+                <svg
+                  class="download-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3v12"></path>
+                  <path d="m7 11 5 5 5-5"></path>
+                  <path d="M4 20h16"></path>
+                </svg>
+              </a>
             </header>
 
             {
@@ -469,15 +466,6 @@ const isProd = import.meta.env.PROD;
 
     <script>
       import { yearsOfExperience } from "../../utils/experience";
-
-      const download = document.querySelector("[data-download]");
-
-      // Full label while the header is on screen, where most people decide to
-      // save; just the icon once they start reading, so it stays out of the way.
-      const fold = () =>
-        download?.classList.toggle("collapsed", window.scrollY > 120);
-      fold();
-      window.addEventListener("scroll", fold, { passive: true });
 
       // Baked at build; refreshed on load so it rolls over without a redeploy.
       const yoe = document.querySelector("[data-yoe]");
@@ -679,100 +667,42 @@ const isProd = import.meta.env.PROD;
     content: "\2022\00a0";
   }
 
-  /* Screen affordances: the download button, and the document kept at A4 width. */
+  /* Screen affordances: the download link, and the document kept at A4 width. */
   @media screen {
     body {
-      /* Room at the bottom so the floating button never sits over the last lines. */
-      padding: 24px 16px 80px;
+      padding: 24px 16px;
     }
-    /* Pinned to the bottom of the window but only as wide as the document
-       column (same width and centering as .sheet), so the button hugs the
-       column's corner instead of drifting to the screen edge on wide monitors. */
-    .toolbar {
-      position: fixed;
-      right: 0;
-      bottom: 24px;
-      left: 0;
-      z-index: 1;
-      display: flex;
-      justify-content: flex-end;
-      width: min(var(--sheet-width), 100% - 32px);
-      margin: 0 auto;
-      /* Let clicks through the empty part of the strip to the text below. */
-      pointer-events: none;
-      /* iOS Safari defers repositioning fixed elements until a scroll gesture
-         settles, so without its own compositor layer the button visibly
-         drifts toward the middle of the screen mid-scroll. Promoting it to
-         its own layer keeps it pinned throughout. */
-      transform: translateZ(0);
-      will-change: transform;
+    header {
+      position: relative;
     }
-    /* Quiet on purpose: white with a hairline so it sits beside the document
-       instead of competing with it, and only turns ink when reached for. */
+    /* Same voice as the section labels (9pt caps, tracked), muted until
+       reached for. Its cap line sits on the name's so the two read as one row. */
     .download {
-      pointer-events: auto;
+      position: absolute;
+      top: 2.5pt;
+      right: 0;
       display: inline-flex;
       align-items: center;
-      padding: 9px 13px 9px 11px;
-      border: 1px solid #d4d4d4;
-      border-radius: 999px;
-      background: #fff;
-      color: #4a4a4a;
-      font: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.2;
-      letter-spacing: 0;
+      gap: 4pt;
+      color: var(--color-muted);
+      font-size: 9pt;
+      font-weight: 700;
+      line-height: 1.21;
+      letter-spacing: 0.8pt;
+      text-transform: uppercase;
       text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
-      transition:
-        color 150ms ease-out,
-        border-color 150ms ease-out,
-        background-color 150ms ease-out,
-        padding 200ms ease;
-    }
-    .download-icon {
-      width: 16px;
-      height: 16px;
-    }
-    /* Folds away once the reader scrolls (see the script), leaving a circle of
-       just the icon; hover or keyboard focus brings it back. The spacing sits
-       on the label rather than a gap so it folds to nothing as well. */
-    .download-label {
-      max-width: 8em;
-      margin-left: 6px;
-      overflow: hidden;
-      white-space: nowrap;
-      transition:
-        max-width 200ms ease,
-        margin-left 200ms ease,
-        opacity 200ms ease;
-    }
-    .download.collapsed:not(:hover, :focus-visible) {
-      padding: 9px;
-    }
-    .download.collapsed:not(:hover, :focus-visible) .download-label {
-      max-width: 0;
-      margin-left: 0;
-      opacity: 0;
+      transition: color 150ms ease-out;
     }
     .download:hover {
       color: var(--color-ink);
-      border-color: var(--color-ink);
-    }
-    .download:active {
-      background: #f5f5f5;
     }
     .download:focus-visible {
       outline: 2px solid var(--color-ink);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .download,
-      .download-label {
-        transition: none;
-      }
+    .download-icon {
+      width: 9pt;
+      height: 9pt;
     }
     .sheet {
       max-width: var(--sheet-width);
@@ -788,10 +718,15 @@ const isProd = import.meta.env.PROD;
     body {
       padding-inline: 0;
     }
+    /* Not enough room beside the name, so it drops under the contact lines. */
+    .download {
+      position: static;
+      margin-top: 8pt;
+    }
   }
 
   @media print {
-    .toolbar {
+    .download {
       display: none;
     }
     /* Underlines are a screen affordance; the PDF keeps links unmarked. */
