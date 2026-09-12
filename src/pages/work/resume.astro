@@ -326,8 +326,8 @@ const isProd = import.meta.env.PROD;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <!-- Chrome and Safari use the document title as the default filename when
-         saving to PDF. Plain hyphen on purpose: some systems choke on dashes. -->
+    <!-- Becomes the PDF's title metadata and matches the download filename.
+         Plain hyphen on purpose: some systems choke on dashes. -->
     <title>{resume.name} - Resume</title>
     <!-- noindex: this page prints a phone number and email address in plain
          text, and a resume is something to hand out deliberately rather than
@@ -350,19 +350,22 @@ const isProd = import.meta.env.PROD;
     }
   </head>
   <body>
-    <!-- Screen only, hidden in print. Two things this page cannot control:
-         the user still has to pick "Save as PDF" as the destination, and
-         untick "Headers and footers" or the file gets the URL and date printed
-         on it. When public/resume.pdf exists, replace the button with
-         <a href="/resume.pdf" download> for a real one click download. -->
+    <!-- Screen only. /resume.pdf is rendered from this very page at build
+         time by scripts/resume-pdf.ts, so every browser downloads the same
+         file and nobody goes through a print dialog. -->
     <div class="toolbar">
-      <button type="button" class="print" data-print>
+      <a
+        class="download"
+        href="/resume.pdf"
+        download={`${resume.name} - Resume.pdf`}
+        data-download
+      >
         <svg
-          class="print-icon"
+          class="download-icon"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2.2"
+          stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
           aria-hidden="true"
@@ -371,8 +374,8 @@ const isProd = import.meta.env.PROD;
           <path d="m7 11 5 5 5-5"></path>
           <path d="M4 20h16"></path>
         </svg>
-        Download as PDF
-      </button>
+        <span class="download-label">Download PDF</span>
+      </a>
     </div>
 
     <!-- Layout table on purpose: thead and tfoot repeat on every printed sheet,
@@ -467,9 +470,14 @@ const isProd = import.meta.env.PROD;
     <script>
       import { yearsOfExperience } from "../../utils/experience";
 
-      document
-        .querySelector("[data-print]")
-        ?.addEventListener("click", () => window.print());
+      const download = document.querySelector("[data-download]");
+
+      // Full label while the header is on screen, where most people decide to
+      // save; just the icon once they start reading, so it stays out of the way.
+      const fold = () =>
+        download?.classList.toggle("collapsed", window.scrollY > 120);
+      fold();
+      window.addEventListener("scroll", fold, { passive: true });
 
       // Baked at build; refreshed on load so it rolls over without a redeploy.
       const yoe = document.querySelector("[data-yoe]");
@@ -671,11 +679,11 @@ const isProd = import.meta.env.PROD;
     content: "\2022\00a0";
   }
 
-  /* Screen affordances: the print button, and the document kept at A4 width. */
+  /* Screen affordances: the download button, and the document kept at A4 width. */
   @media screen {
     body {
       /* Room at the bottom so the floating button never sits over the last lines. */
-      padding: 24px 16px 96px;
+      padding: 24px 16px 80px;
     }
     /* Pinned to the bottom of the window but only as wide as the document
        column (same width and centering as .sheet), so the button hugs the
@@ -699,51 +707,72 @@ const isProd = import.meta.env.PROD;
       transform: translateZ(0);
       will-change: transform;
     }
-    .print {
+    /* Quiet on purpose: white with a hairline so it sits beside the document
+       instead of competing with it, and only turns ink when reached for. */
+    .download {
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
-      gap: 9px;
-      padding: 13px 22px;
-      border: 0;
-      /* corner-shape is progressive: browsers without it keep the radius. */
-      border-radius: 16px;
-      corner-shape: squircle;
-      background: var(--color-ink);
-      color: #fff;
+      padding: 9px 13px 9px 11px;
+      border: 1px solid #d4d4d4;
+      border-radius: 999px;
+      background: #fff;
+      color: #4a4a4a;
       font: inherit;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       line-height: 1.2;
       letter-spacing: 0;
+      text-decoration: none;
       cursor: pointer;
-      box-shadow:
-        0 1px 2px rgb(0 0 0 / 0.08),
-        0 6px 16px rgb(0 0 0 / 0.1);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
       transition:
+        color 150ms ease-out,
+        border-color 150ms ease-out,
         background-color 150ms ease-out,
-        box-shadow 150ms ease-out,
-        transform 150ms ease-out;
+        padding 200ms ease;
     }
-    .print-icon {
-      width: 17px;
-      height: 17px;
+    .download-icon {
+      width: 16px;
+      height: 16px;
     }
-    .print:hover {
-      background: #333;
-      box-shadow:
-        0 2px 4px rgb(0 0 0 / 0.1),
-        0 10px 24px rgb(0 0 0 / 0.14);
-      transform: translateY(-1px);
+    /* Folds away once the reader scrolls (see the script), leaving a circle of
+       just the icon; hover or keyboard focus brings it back. The spacing sits
+       on the label rather than a gap so it folds to nothing as well. */
+    .download-label {
+      max-width: 8em;
+      margin-left: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      transition:
+        max-width 200ms ease,
+        margin-left 200ms ease,
+        opacity 200ms ease;
     }
-    .print:active {
-      background: #111;
-      box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
-      transform: translateY(0);
+    .download.collapsed:not(:hover, :focus-visible) {
+      padding: 9px;
     }
-    .print:focus-visible {
+    .download.collapsed:not(:hover, :focus-visible) .download-label {
+      max-width: 0;
+      margin-left: 0;
+      opacity: 0;
+    }
+    .download:hover {
+      color: var(--color-ink);
+      border-color: var(--color-ink);
+    }
+    .download:active {
+      background: #f5f5f5;
+    }
+    .download:focus-visible {
       outline: 2px solid var(--color-ink);
       outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .download,
+      .download-label {
+        transition: none;
+      }
     }
     .sheet {
       max-width: var(--sheet-width);

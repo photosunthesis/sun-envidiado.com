@@ -63,6 +63,7 @@ src/
 scripts/
 ├─ optimize-images.ts   # image optimization
 ├─ send-newsletter.ts   # newsletter dispatch (Resend)
+├─ resume-pdf.ts        # renders /resume.pdf via Cloudflare Browser Rendering
 └─ bearblog-export.ts   # export posts for cross-posting to Bear Blog
 ```
 
