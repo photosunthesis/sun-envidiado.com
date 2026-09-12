@@ -692,6 +692,12 @@ const isProd = import.meta.env.PROD;
       margin: 0 auto;
       /* Let clicks through the empty part of the strip to the text below. */
       pointer-events: none;
+      /* iOS Safari defers repositioning fixed elements until a scroll gesture
+         settles, so without its own compositor layer the button visibly
+         drifts toward the middle of the screen mid-scroll. Promoting it to
+         its own layer keeps it pinned throughout. */
+      transform: translateZ(0);
+      will-change: transform;
     }
     .print {
       pointer-events: auto;
