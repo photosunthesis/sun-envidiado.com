@@ -70,7 +70,7 @@ export const GET: APIRoute = async (context) => {
     "",
     "## Contact",
     "",
-    "- Email: hello@sun-envidiado.com",
+    "- Email: sun.adriann@icloud.com",
     "- LinkedIn: https://www.linkedin.com/in/sunenvidiado/",
     "- GitHub: https://github.com/photosunthesis",
     `- Contact page: ${siteUrl}/contact`,
