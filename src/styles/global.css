@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/geist-mono";
 
 @theme {
   --font-mono:
-    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
 
   --color-vim-bg: #0a0a0a;

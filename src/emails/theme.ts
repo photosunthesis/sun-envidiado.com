@@ -9,5 +9,5 @@ export const emailTheme = {
   panel: "#fafafa",
   rule: "#e4e4e7",
   fontStack:
-    "'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+    "'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
 } as const;
