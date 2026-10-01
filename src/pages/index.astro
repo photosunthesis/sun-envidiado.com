@@ -3,20 +3,17 @@ import SunLogo from "../assets/sun-logo.svg";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { PERSON_SCHEMA, WEBSITE_SCHEMA } from "../utils/seo";
 
-const tagline = "I'm a software developer, gamer, and karaoke menace.";
-const description = `${tagline} This is my tiny corner of the internet, where I keep my projects, blog posts, and stray thoughts on life, anime, and games.`;
-
-const sections = [
-  { href: "/about", label: ":about", desc: "to learn more about me" },
-  { href: "/blog", label: ":blog", desc: "to see my blog posts" },
-  { href: "/contact", label: ":contact", desc: "to get in touch" },
-  { href: "/work", label: ":work", desc: "for my work details" },
+const navItems = [
+  { href: "/about", label: ":about", desc: "to learn more about me." },
+  { href: "/blog", label: ":blog", desc: "to read my posts." },
+  { href: "/contact", label: ":contact", desc: "to get in touch." },
+  { href: "/work", label: ":work", desc: "for my professional side." },
 ];
 ---
 
 <BaseLayout
   title="Sun Envidiado"
-  description={description}
+  description="I'm Sun Envidiado, a software engineer , pro-gamer, and karaoke menace. Welcome to my website."
   jsonLd={[WEBSITE_SCHEMA, PERSON_SCHEMA]}
 >
   <article class="w-full max-w-[40ch] leading-relaxed">
@@ -30,7 +27,11 @@ const sections = [
     <h1 class="text-vim-link text-center font-semibold">I'm Sun Envidiado.</h1>
 
     <p class="mt-[1lh] text-center min-[375px]:[text-align-last:center]">
-      {tagline} Welcome to my website.
+      I'm great at code, great at games, and loud at karaoke. Pick two to trust.
+    </p>
+
+    <p class="mt-[1lh] text-center min-[375px]:[text-align-last:center]">
+      Anyway, welcome to my website.
     </p>
 
     <nav class="mt-[1lh]" aria-label="Site sections">
@@ -38,13 +39,13 @@ const sections = [
         class="mx-auto w-fit space-y-1 font-mono whitespace-nowrap min-[375px]:grid min-[375px]:grid-cols-[auto_auto_auto] min-[375px]:space-y-0 min-[375px]:gap-x-[clamp(0.75ch,1vw,2.5ch)]"
       >
         {
-          sections.map((s) => (
+          navItems.map((item) => (
             <li class="min-[375px]:contents">
-              <span>{`go to `}</span>
-              <a class="link" href={s.href}>
-                {s.label}
+              <span>{`Go to `}</span>
+              <a class="link" href={item.href}>
+                {item.label}
               </a>
-              <span>{` ${s.desc}.`}</span>
+              <span>{` ${item.desc}`}</span>
             </li>
           ))
         }
