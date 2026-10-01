@@ -36,6 +36,7 @@ body {
   outline: none;
   text-decoration: underline;
   text-decoration-color: transparent;
+  text-underline-offset: 4px;
   transition: text-decoration-color 150ms ease-out;
 }
 .link:hover,
