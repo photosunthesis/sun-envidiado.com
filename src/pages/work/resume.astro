@@ -38,7 +38,7 @@ interface ResumeSection {
   intro?: string; // optional paragraph before the entries
   entries?: ResumeEntry[];
   skills?: SkillGroup[]; // one comma separated run per group, one line each
-  dashes?: boolean; // false hides the dash beside each entry title
+  dashes?: boolean; // false hides the marker beside each entry title
 }
 
 interface Resume {
@@ -569,9 +569,8 @@ const isProd = import.meta.env.PROD;
   .section-body {
     padding-left: var(--indent);
   }
-  /* Dash marker in the indent gutter beside each entry title. Drawn as a
-     border, not a dash character, so nothing lands in the PDF's text layer
-     for an ATS to read. */
+  /* Solid dot in the indent gutter beside each entry title. Drawn with CSS
+     so nothing lands in the PDF's text layer for an ATS to read. */
   .section-body > .entry > .title {
     position: relative;
   }
@@ -580,9 +579,11 @@ const isProd = import.meta.env.PROD;
     position: absolute;
     /* Middle of the first line only, so a wrapped title keeps it on line one. */
     top: 0.5lh;
-    left: calc(-1 * var(--indent));
-    width: calc(var(--indent) - 3pt);
-    border-top: 0.08em solid currentColor;
+    left: -7pt;
+    width: 3pt;
+    height: 3pt;
+    border-radius: 50%;
+    background: currentColor;
     transform: translateY(-50%);
   }
   .no-dashes .title::before {
@@ -716,10 +717,14 @@ const isProd = import.meta.env.PROD;
     body {
       padding-inline: 0;
     }
-    /* Not enough room beside the name, so it drops under the contact lines. */
+    /* Reserve a row above the name for the top-right download link. */
+    header {
+      padding-top: 24pt;
+    }
+    /* Center the link in the full screen whitespace above the name. */
     .download {
-      position: static;
-      margin-top: 8pt;
+      top: calc((24pt - var(--margin-y) - 24px) / 2);
+      transform: translateY(-50%);
     }
   }
 
