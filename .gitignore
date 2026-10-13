@@ -37,3 +37,7 @@ pnpm-debug.log*
 
 # Claude Code
 .claude/
+
+# Codex
+.codex/
+.agents/
