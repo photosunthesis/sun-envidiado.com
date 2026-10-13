@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# generated resume for local downloads
+/public/resume.pdf
+
 # email preview output
 .preview/
 

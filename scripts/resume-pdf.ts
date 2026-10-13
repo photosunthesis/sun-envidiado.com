@@ -5,6 +5,7 @@ import path from "path";
 const CLIENT_DIR = "dist/client";
 const PAGE = path.join(CLIENT_DIR, "work/resume.html");
 const OUT = path.join(CLIENT_DIR, "resume.pdf");
+const DEV_OUT = path.join("public", "resume.pdf");
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const token = process.env.CLOUDFLARE_BROWSER_RENDERING_TOKEN;
@@ -79,4 +80,7 @@ if (
 
 const pdf = Buffer.from(await response.arrayBuffer());
 await fs.writeFile(OUT, pdf);
+await fs.mkdir(path.dirname(DEV_OUT), { recursive: true });
+await fs.writeFile(DEV_OUT, pdf);
 console.log(`✅ Wrote ${OUT} (${Math.round(pdf.byteLength / 1024)} KB)`);
+console.log(`✅ Copied to ${DEV_OUT} for the dev server`);
