@@ -24,15 +24,6 @@ const [rateStuffHash, bebiAppHash, twentyFourHash, zomboidHash] =
 
 const projects = [
   {
-    title: "rate-stuff.online",
-    url: "https://github.com/photosunthesis/rate-stuff.online",
-    image: rateStuffImage,
-    placeholder: rateStuffHash,
-    alt: "Screenshot of rate-stuff.online",
-    description:
-      "A website for rating and reviewing anything you can think of. Built with React, TanStack Start, and TypeScript on Cloudflare Workers — my deep dive into the modern serverless stack.",
-  },
-  {
     title: "Bebi App",
     url: "https://github.com/photosunthesis/bebi-app-flutter",
     image: bebiAppImage,
@@ -40,6 +31,15 @@ const projects = [
     alt: "Screenshot of Bebi App",
     description:
       "A Flutter app for couples — shared photo albums, a shared calendar, and cycle tracking, with a Firebase backend. A personal project for my partner and me.",
+  },
+  {
+    title: "rate-stuff.online",
+    url: "https://github.com/photosunthesis/rate-stuff.online",
+    image: rateStuffImage,
+    placeholder: rateStuffHash,
+    alt: "Screenshot of rate-stuff.online",
+    description:
+      "A website for rating and reviewing anything you can think of. Built with React, TanStack Start, and TypeScript on Cloudflare Workers — my deep dive into the modern serverless stack.",
   },
   {
     title: "zomboid-b42-server",
@@ -89,35 +89,27 @@ const jsonLd = {
         I've been building software for over <time
           datetime={CAREER_START}
           id="yoe">{years}</time
-        > years, engineering systems across the web, backend, and mobile.
+        > years, across mobile, web, and backend. These days I build iOS apps with
+        Swift and cross-platform apps with Flutter—still my favorite stack.
       </p>
       <p>
-        I started with Vue.js, picked up C# (.NET) and PHP (Laravel) for backend
-        work, then moved into mobile with Flutter and Dart. Today I build iOS
-        apps with Swift and cross-platform apps with Flutter—still my favorite
-        stack. That experience has made adapting to new languages and frameworks
-        one of my strengths.
+        My work has spanned fintech, healthcare, and other industries, from
+        building features to shaping app architecture and helping teams test and
+        ship. I've worked on the backend services behind those apps too, so I'm
+        comfortable taking something from the database through to the interface.
       </p>
       <p>
-        My work has spanned fintech, healthcare, and several other industries.
-        I've set up CI/CD pipelines, releases, and testing across teams, with
-        fintech being a particularly strong part of that experience. You can
-        find the full timeline and other details about my career as a software
-        engineer in <a
+        You can find the full timeline and details in <a
           class="link"
           href="/work/resume"
           target="_blank"
           rel="noopener noreferrer">my resume</a
-        >.
+        >. Below are a few personal projects I've built for myself and the
+        people around me.
       </p>
     </section>
 
     <section class="mt-12">
-      <h2 class="text-vim-link mb-[1lh] text-lg font-semibold">Projects</h2>
-      <p class="mb-[1lh]">
-        Almost everything I've built for a company is under NDA, so I can't show
-        any of it here. These are the personal projects I can.
-      </p>
       <ul class="space-y-[2lh]">
         {
           projects.map((project) => (
@@ -157,6 +149,12 @@ const jsonLd = {
         }
       </ul>
     </section>
+    <p class="mt-12">
+      If you'd like to work together, <a
+        class="link"
+        href="mailto:sun.adriann@icloud.com">email me</a
+      >.
+    </p>
   </article>
 
   <script>
