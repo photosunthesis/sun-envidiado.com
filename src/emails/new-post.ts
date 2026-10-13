@@ -5,7 +5,6 @@ export interface NewPostEmailData {
   title: string;
   description: string;
   url: string;
-  // Defaults to Resend's merge tag, swapped for the real link at send time.
   unsubscribeUrl?: string;
 }
 

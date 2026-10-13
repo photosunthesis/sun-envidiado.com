@@ -11,8 +11,6 @@ export const SITE = {
 export const PERSON_ID = `${SITE.url}/#person`;
 export const WEBSITE_ID = `${SITE.url}/#website`;
 
-// The author's details. PERSON_NODE goes inside larger data; PERSON_SCHEMA is
-// the standalone version.
 export const PERSON_NODE = {
   "@type": "Person",
   "@id": PERSON_ID,
@@ -47,8 +45,6 @@ export function absoluteUrl(path: string, site?: URL | string): string {
   return new URL(path, site ?? SITE.url).toString();
 }
 
-// With build.format "file", prerendered pathnames end in ".html"; canonicals
-// must use the clean URL the server serves without redirecting.
 export function canonicalUrl(pathname: string, site?: URL | string): string {
   const path =
     pathname

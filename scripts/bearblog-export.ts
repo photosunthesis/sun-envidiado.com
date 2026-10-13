@@ -1,8 +1,3 @@
-// Usage: pnpm tsx scripts/bearblog-export.ts <slug>
-// Reads src/content/blog/<slug>/index.{md,mdx}, converts the Astro frontmatter
-// to Bear Blog's plaintext header format, rewrites relative blog links to
-// absolute URLs, and writes bearblog-out/<slug>.txt for pasting into Bear's editor.
-
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -34,8 +29,6 @@ function parseFrontmatter(raw: string): { fm: Frontmatter; body: string } {
     const [, key] = m;
     let val = m[2].trim();
 
-    // Prettier pushes long arrays onto their own line, and YAML also allows
-    // "- item" lists, so gather anything indented under the key first.
     const items: string[] = [];
     while (
       (val === "" || (val.startsWith("[") && !val.endsWith("]"))) &&

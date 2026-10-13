@@ -28,7 +28,6 @@ const emails = [
   },
 ];
 
-// Right frame approximates a client's dark-mode auto-invert (see .pane--dark).
 const section = (e: (typeof emails)[number]) => `
     <section class="email">
       <h2 class="title">${e.label}</h2>

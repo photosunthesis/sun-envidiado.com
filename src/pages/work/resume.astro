@@ -5,46 +5,38 @@ import "@fontsource/bricolage-grotesque/latin-700.css";
 import { yearsOfExperience } from "../../utils/experience";
 import { nowrapHyphenated as nb } from "../../utils/text";
 
-// Standalone print document: no BaseLayout, no global.css, no site font.
-// Prerendering is already this site's default; the export makes it explicit.
 export const prerender = true;
 
-// The resume content lives here so there is one file to find and edit.
-// Any text field may contain inline HTML (<b>, <i>, <a>); the template
-// renders these fields raw. Section labels are sentence case here; the CSS
-// uppercases them.
-
 interface ResumeBullet {
-  label?: string; // bold prefix, rendered as "Label: text"
+  label?: string;
   text: string;
 }
 
 interface ResumeEntry {
-  // Kept apart so a parser reads a job title and an employer, not one run.
-  title: string; // "Software Engineer"
-  org?: string; // "MCS Inc. · Makati City, Philippines"
-  date?: string; // "Mar 2026 - Present"
-  intro?: string; // paragraph under the title
+  title: string;
+  org?: string;
+  date?: string;
+  intro?: string;
   bullets?: ResumeBullet[];
 }
 
 interface SkillGroup {
-  label: string; // bold prefix, rendered as "Label: a, b, c"
+  label: string;
   items: string[];
 }
 
 interface ResumeSection {
-  label: string; // "EXPERIENCE", rendered uppercase by CSS not by data
-  intro?: string; // optional paragraph before the entries
+  label: string;
+  intro?: string;
   entries?: ResumeEntry[];
-  skills?: SkillGroup[]; // one comma separated run per group, one line each
-  dashes?: boolean; // false hides the marker beside each entry title
+  skills?: SkillGroup[];
+  dashes?: boolean;
 }
 
 interface Resume {
   name: string;
   role: string;
-  contact: string[]; // one array entry per line; entries may contain <a> markup
+  contact: string[];
   summary?: string;
   sections: ResumeSection[];
 }
@@ -315,8 +307,6 @@ const resume: Resume = {
   ],
 };
 
-// `summary` is a top level field rather than a section, but ATS parsers look
-// for a SUMMARY heading, so it is rendered as the first section under this.
 const summaryLabel = "Summary";
 
 const isProd = import.meta.env.PROD;
@@ -327,18 +317,12 @@ const isProd = import.meta.env.PROD;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <!-- Becomes the PDF's title metadata and matches the download filename.
-         Plain hyphen on purpose: some systems choke on dashes. -->
     <title>{resume.name} - Resume</title>
-    <!-- noindex: this page prints a phone number and email address in plain
-         text, and a resume is something to hand out deliberately rather than
-         have aggregators scrape. To index it, delete this tag and remove
-         "/work/resume" from the sitemap filter in astro.config.mjs. -->
+    <!-- Keep personal contact details out of search results and aggregators. -->
     <meta name="robots" content="noindex, nofollow" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <!-- Same analytics snippet BaseLayout adds to every page. -->
     {
       isProd && (
         <script
@@ -351,11 +335,7 @@ const isProd = import.meta.env.PROD;
     }
   </head>
   <body>
-    <!-- Layout table on purpose: thead and tfoot repeat on every printed sheet,
-         which is the only way to get the same top and bottom whitespace on
-         every page while keeping @page margin at 0 (so a background could
-         reach the paper edge). Horizontal padding lives on the body cell
-         because it repeats across pages on its own. -->
+    <!-- Table headers and footers repeat print margins while @page stays at zero. -->
     <table class="sheet" role="presentation">
       <thead>
         <tr><td class="margin"></td></tr>
@@ -369,10 +349,6 @@ const isProd = import.meta.env.PROD;
               <div class="contact">
                 {resume.contact.map((line) => <p set:html={nb(line)} />)}
               </div>
-              <!-- Screen only; print hides it. /resume.pdf is rendered from
-                   this very page at build time by scripts/resume-pdf.ts, so
-                   every browser downloads the same file. Set in the section
-                   label style so it reads as part of the paper. -->
               <a
                 class="download"
                 href="/resume.pdf"
@@ -468,7 +444,6 @@ const isProd = import.meta.env.PROD;
     <script>
       import { yearsOfExperience } from "../../utils/experience";
 
-      // Baked at build; refreshed on load so it rolls over without a redeploy.
       const yoe = document.querySelector("[data-yoe]");
       if (yoe) yoe.textContent = String(yearsOfExperience());
     </script>
@@ -476,8 +451,6 @@ const isProd = import.meta.env.PROD;
 </html>
 
 <style is:global>
-  /* Global on purpose: this page owns its whole document, and scoped styles
-     cannot reach the <a>/<b> markup or the .nb spans injected via set:html. */
   @page {
     size: A4;
     margin: 0;
@@ -499,8 +472,6 @@ const isProd = import.meta.env.PROD;
     font-family: "Bricolage Grotesque", sans-serif;
     font-size: 10pt;
     letter-spacing: normal;
-    /* Two lines minimum either side of a page break, so a paragraph never
-       leaves a single stray word at the top or bottom of a sheet. */
     orphans: 2;
     widows: 2;
   }
@@ -524,7 +495,6 @@ const isProd = import.meta.env.PROD;
     white-space: nowrap;
   }
 
-  /* Repeating page margins: see the comment on the table in the markup. */
   .sheet {
     width: 100%;
     border-collapse: collapse;
@@ -565,19 +535,15 @@ const isProd = import.meta.env.PROD;
   .section {
     margin-top: 22pt;
   }
-  /* Everything under a section heading sits a little to the right of it. */
   .section-body {
     padding-left: var(--indent);
   }
-  /* Solid dot in the indent gutter beside each entry title. Drawn with CSS
-     so nothing lands in the PDF's text layer for an ATS to read. */
   .section-body > .entry > .title {
     position: relative;
   }
   .section-body > .entry > .title::before {
     content: "";
     position: absolute;
-    /* Middle of the first line only, so a wrapped title keeps it on line one. */
     top: 0.5lh;
     left: -7pt;
     width: 3pt;
@@ -589,8 +555,6 @@ const isProd = import.meta.env.PROD;
   .no-dashes .title::before {
     display: none;
   }
-  /* Smaller than the entry titles on purpose: the caps and tracking already
-     mark a heading, so the size can step back and let the entries lead. */
   .label {
     margin: 0 0 6pt;
     font-size: 9pt;
@@ -601,7 +565,6 @@ const isProd = import.meta.env.PROD;
     break-after: avoid;
   }
 
-  /* Any entry that follows something (a section intro or another entry). */
   .section-body > * + .entry {
     margin-top: 9pt;
   }
@@ -639,15 +602,9 @@ const isProd = import.meta.env.PROD;
   .skills + .skills {
     margin-top: 3pt;
   }
-  /* A section intro must not be the last thing on a page, and a short entry
-     must not be split across one. */
-  /* Project entries are the short, dateless ones; keeping them whole stops a
-     four-line blurb splitting across a sheet. */
   .entry:not(:has(.date)) {
     break-inside: avoid;
   }
-  /* Only a lead that introduces entries, so the rule cannot chain "keep with
-     the next thing" from one section into the one after it. */
   .section-body > .lead:has(+ .entry) {
     break-inside: avoid;
   }
@@ -666,7 +623,6 @@ const isProd = import.meta.env.PROD;
     content: "\2022\00a0";
   }
 
-  /* Screen affordances: the download link, and the document kept at A4 width. */
   @media screen {
     body {
       padding: 24px 16px;
@@ -674,8 +630,6 @@ const isProd = import.meta.env.PROD;
     header {
       position: relative;
     }
-    /* Same voice as the section labels (9pt caps, tracked), muted until
-       reached for. Its cap line sits on the name's so the two read as one row. */
     .download {
       position: absolute;
       top: 2.5pt;
@@ -709,7 +663,6 @@ const isProd = import.meta.env.PROD;
     }
   }
 
-  /* Phones: the print margins waste too much of a narrow screen. */
   @media screen and (max-width: 640px) {
     :root {
       --margin-x: 12pt;
@@ -717,11 +670,9 @@ const isProd = import.meta.env.PROD;
     body {
       padding-inline: 0;
     }
-    /* Reserve a row above the name for the top-right download link. */
     header {
       padding-top: 24pt;
     }
-    /* Center the link in the full screen whitespace above the name. */
     .download {
       top: calc((24pt - var(--margin-y) - 24px) / 2);
       transform: translateY(-50%);
@@ -732,7 +683,6 @@ const isProd = import.meta.env.PROD;
     .download {
       display: none;
     }
-    /* Underlines are a screen affordance; the PDF keeps links unmarked. */
     a {
       text-decoration: none;
     }

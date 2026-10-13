@@ -7,8 +7,6 @@ export interface EmailLayoutOptions {
   footer?: string;
 }
 
-// Full HTML document so the color-scheme meta can opt into the client's native
-// dark mode. Templates supply only the prompt and body.
 export function emailLayout({
   title,
   prompt,

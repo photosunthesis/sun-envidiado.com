@@ -47,7 +47,6 @@ async function optimizeImages() {
         } else if (metadata.format === "webp") {
           pipeline = pipeline.webp({ quality: 80 });
         } else if (metadata.format === "heif") {
-          // sharp reports AVIF/HEIC input as "heif"
           pipeline = pipeline.avif({ quality: 80 });
         } else if (metadata.format === "gif") {
           pipeline = pipeline.gif({ effort: 7 });

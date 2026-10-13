@@ -56,7 +56,7 @@ if (cover) {
       `${process.cwd()}/src/content/blog/${cover.replace(/^\.\//, "")}`,
     );
   } catch {
-    // No placeholder is fine — the image just loads without a blur-up.
+    coverPlaceholder = undefined;
   }
 }
 

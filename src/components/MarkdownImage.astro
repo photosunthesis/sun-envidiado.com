@@ -18,21 +18,18 @@ const {
   ...rest
 } = Astro.props;
 
-// Markdown ![]() resolves a local image to ImageMetadata; remote/unresolved stays a string.
 const meta =
   typeof src === "object" && src !== null
     ? (src as ImageMetadata & { fsPath?: string })
     : null;
 
-// fsPath is served by the asset Proxy's get-trap and is invisible to `"fsPath" in src`,
-// so read it directly rather than testing for the key.
+// Astro exposes fsPath through a Proxy; checking "fsPath" in src misses it.
 const fsPath = meta?.fsPath ?? null;
 const ref = fsPath ?? meta?.src ?? (typeof src === "string" ? src : "");
 
-// GIFs and SVGs must skip sharp (it drops animation frames / rasterizes), so no thumbhash.
-const passthrough = !meta || /\.(gif|svg)(\?|$)/i.test(ref);
+const preserveOriginalFormat = !meta || /\.(gif|svg)(\?|$)/i.test(ref);
 const thumbhash =
-  passthrough || !fsPath ? null : await thumbHashFromPath(fsPath);
+  preserveOriginalFormat || !fsPath ? null : await thumbHashFromPath(fsPath);
 
 const imgClass = [
   "block h-auto w-full opacity-0 transition-opacity duration-500 ease-out motion-reduce:transition-none",
@@ -41,8 +38,6 @@ const imgClass = [
   .filter(Boolean)
   .join(" ");
 
-// Cap the box at the image's own width and lock its aspect-ratio so the blur reserves
-// the exact final space (no layout shift, no thumbhash spilling past the image).
 const box =
   (meta
     ? `max-width:${meta.width}px;aspect-ratio:${meta.width}/${meta.height};`

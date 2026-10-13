@@ -28,18 +28,16 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Generate JWT token
     const secret = new TextEncoder().encode(JWT_SECRET);
     const token = await new SignJWT({ email })
       .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("24h") // Token valid for 24 hours
+      .setExpirationTime("24h")
       .sign(secret);
 
     const verifyUrl = `${SITE_URL}/api/verify-blog-subscription?token=${token}`;
 
     const resend = new Resend(RESEND_API_KEY);
 
-    // Send verification email
     const { error } = await resend.emails.send({
       from: `Sun Envidiado's Blogs <blogs@sun-envidiado.com>`,
       to: email,

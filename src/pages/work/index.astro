@@ -160,7 +160,6 @@ const jsonLd = {
   <script>
     import { yearsOfExperience } from "../../utils/experience";
 
-    // Baked at build; refreshed on load so it rolls over without a redeploy.
     const el = document.getElementById("yoe");
     if (el) el.textContent = String(yearsOfExperience());
   </script>

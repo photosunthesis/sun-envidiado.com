@@ -154,16 +154,13 @@ const isProd = import.meta.env.PROD;
     </noscript>
 
     <script is:inline>
-      // Fade each blur-placeholder image in once it loads. `complete` alone is
-      // true for already-cached images (good) but ALSO for lazy images that
-      // haven't started loading — revealing those early shows an empty box over
-      // the placeholder. naturalWidth > 0 means the pixels are actually decoded.
       (() => {
         const reveal = (img) => {
           img.style.opacity = "1";
         };
         for (const img of document.querySelectorAll("[data-lqip] img")) {
-          if (img.complete && img.naturalWidth > 0) {
+          const hasLoadedPixels = img.complete && img.naturalWidth > 0;
+          if (hasLoadedPixels) {
             reveal(img);
           } else {
             img.addEventListener("load", () => reveal(img), { once: true });

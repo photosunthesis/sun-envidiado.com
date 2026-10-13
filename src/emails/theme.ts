@@ -1,5 +1,4 @@
-// Light on purpose: a clean light palette lets each client's native dark mode
-// invert it, instead of us shipping dark and fighting the client.
+// Email clients invert this light palette for their native dark mode.
 export const emailTheme = {
   bg: "#ffffff",
   fg: "#3f3f46",

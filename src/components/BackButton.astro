@@ -11,8 +11,6 @@ const { class: className } = Astro.props;
 <script>
   document.querySelectorAll("a[data-back]").forEach((el) => {
     el.addEventListener("click", (e) => {
-      // Only intercept if we have a same-origin referrer to fall back to.
-      // Otherwise the <a href="/"> default takes over and we go home.
       if (window.history.length <= 1 || !document.referrer) return;
       try {
         if (new URL(document.referrer).origin !== window.location.origin)

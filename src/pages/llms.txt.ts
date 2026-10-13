@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import { yearsOfExperience } from "../utils/experience";
 import { SITE } from "../utils/seo";
 
-// Rendered per request so the years figure is live, not frozen at build.
 export const prerender = false;
 
 export const GET: APIRoute = async (context) => {

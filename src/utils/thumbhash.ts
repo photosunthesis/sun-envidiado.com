@@ -1,7 +1,6 @@
 import sharp from "sharp";
 import { rgbaToThumbHash, thumbHashToRGBA } from "thumbhash";
 
-// Same image can be referenced by cover + body in one build; hash it once.
 const cache = new Map<string, string>();
 
 export async function thumbHashFromPath(fsPath: string): Promise<string> {

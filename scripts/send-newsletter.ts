@@ -66,8 +66,6 @@ async function getPublishedSlugs(): Promise<Set<string> | null> {
     console.log(`✅ Found ${slugs.length} published posts.`);
     return new Set(slugs);
   } catch (error) {
-    // If we can't see what's live, we can't tell what's new — better to send
-    // nothing than to risk re-announcing every post.
     console.warn(`⚠️ Couldn't reach ${SLUGS_URL}: ${(error as Error).message}`);
     return null;
   }
