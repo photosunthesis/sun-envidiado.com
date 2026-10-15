@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { confirmSubscriptionEmail } from "../src/emails/confirm-subscription";
 import { newPostEmail } from "../src/emails/new-post";
+import { emailTheme } from "../src/emails/theme";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, "../.preview");
@@ -34,11 +35,11 @@ const section = (e: (typeof emails)[number]) => `
       <div class="panes">
         <div class="pane">
           <p class="label">Light &mdash; as sent</p>
-          <iframe src="${e.slug}.html" title="${e.label}, light"></iframe>
+          <iframe src="${e.slug}-light.html" title="${e.label}, light"></iframe>
         </div>
         <div class="pane pane--dark">
-          <p class="label">Dark mode &mdash; approximate auto-invert</p>
-          <iframe src="${e.slug}.html" title="${e.label}, dark approximation"></iframe>
+          <p class="label">Dark mode</p>
+          <iframe src="${e.slug}-dark.html" title="${e.label}, dark"></iframe>
         </div>
       </div>
     </section>`;
@@ -54,7 +55,7 @@ const index = `<!doctype html>
         margin: 0;
         padding: 24px;
         background: #efefef;
-        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-family: ${emailTheme.fontStack};
         color: #333;
       }
       .email { margin: 0 0 40px; }
@@ -79,10 +80,6 @@ const index = `<!doctype html>
         border-radius: 6px;
         background: #fff;
       }
-      .pane--dark iframe {
-        filter: invert(1) hue-rotate(180deg);
-        background: #111;
-      }
     </style>
   </head>
   <body>
@@ -93,8 +90,22 @@ const index = `<!doctype html>
 
 await fs.mkdir(OUT_DIR, { recursive: true });
 await Promise.all([
-  ...emails.map((e) =>
-    fs.writeFile(path.join(OUT_DIR, `${e.slug}.html`), e.html, "utf-8"),
+  ...emails.flatMap((e) =>
+    ["original", "light", "dark"].map((mode) =>
+      fs.writeFile(
+        path.join(
+          OUT_DIR,
+          `${e.slug}${mode === "original" ? "" : `-${mode}`}.html`,
+        ),
+        mode === "original"
+          ? e.html
+          : e.html.replace(
+              "@media (prefers-color-scheme: dark)",
+              mode === "dark" ? "@media all" : "@media not all",
+            ),
+        "utf-8",
+      ),
+    ),
   ),
   fs.writeFile(INDEX_FILE, index, "utf-8"),
 ]);
