@@ -37,7 +37,7 @@ const years = yearsOfExperience();
 
 const identity = {
   name: "Sun Adriann B. Envidiado",
-  role: "Software Engineer",
+  role: "Senior Software Engineer",
   contact: [
     "Metro Manila, PH",
     "<a href='mailto:sun.adriann@icloud.com'>sun.adriann@icloud.com</a>",
@@ -46,12 +46,33 @@ const identity = {
 
 const summary: ResumeSection = {
   label: "Summary",
-  intro: `Software engineer with <span data-yoe>${years}</span>+ years of experience across the full stack: mobile, backend, and web apps, taking features from the database through to the interface. Now on native Swift and SwiftUI for an iOS health coaching app, after years of shipping cross-platform apps in Flutter. Production work also covers Android through Flutter plugins written in Kotlin, backends in C#/.NET and PHP/Laravel, and web front ends in JavaScript, React, and Vue. Fintech, healthcare, and consumer products, where security and compliance requirements shaped the work, with LLMs in production apps and CI/CD owned on GitHub Actions and Azure DevOps. Builds and ships production features with Claude Code and Google Gemini in the loop for engineering, debugging, and code review.`,
+  intro: `Senior software engineer with <span data-yoe>${years}</span>+ years of experience across frontend, backend, full-stack, and mobile development, in industries including logistics, fintech, and healthcare. Currently a Senior Web and App Developer at DAI Post, working on a legacy C#/.NET application with SQL queries and stored procedures. My broader experience includes web applications with JavaScript, React, and Vue, backend services with PHP/Laravel, and mobile apps with Flutter, Swift, and SwiftUI. I bring that background to application development, architecture, debugging, and release automation, across both established codebases and new projects.`,
 };
 
 const experience: ResumeSection = {
   label: "Experience",
   entries: [
+    {
+      title: "Senior Web and App Developer",
+      org: "DAI Post",
+      date: "Present",
+      intro:
+        "Develop and maintain the company's main logistics application, an established C#/.NET system with much of its business logic in SQL queries and stored procedures. Work across the application code and database to support ongoing changes to the software used in logistics operations.",
+      bullets: [
+        {
+          label: "Legacy Application Development",
+          text: "Build features and resolve issues within the existing C#/.NET codebase, tracing how the application and database interact to understand existing behavior before making changes.",
+        },
+        {
+          label: "SQL & Stored Procedures",
+          text: "Write and maintain SQL queries and stored procedures that support application workflows, working with database-side business logic alongside the .NET code that calls it.",
+        },
+        {
+          label: "Codebase Maintenance & Version Control",
+          text: "Work within the conventions of a long-running application and use Subversion (SVN) to track and version changes across the existing codebase.",
+        },
+      ],
+    },
     {
       title: "Software Engineer",
       org: "MCS Inc. · Makati City, Philippines",
@@ -214,7 +235,7 @@ const skills: ResumeSection = {
     },
     {
       label: "Databases",
-      items: ["PostgreSQL", "MySQL", "MSSQL"],
+      items: ["PostgreSQL", "MySQL", "MSSQL", "SQL", "Stored Procedures"],
     },
     {
       label: "Cloud & Infrastructure",
@@ -233,6 +254,7 @@ const skills: ResumeSection = {
         "Azure DevOps",
         "Fastlane",
         "Git",
+        "Subversion (SVN)",
         "Xcode",
         "Android Studio",
       ],

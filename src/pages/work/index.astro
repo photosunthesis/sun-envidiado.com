@@ -12,7 +12,7 @@ import zomboidImage from "./_assets/zomboid.png";
 
 const years = yearsOfExperience();
 
-const description = `Software engineer with ${years}+ years of experience — currently focused on Swift and native iOS development.`;
+const description = `Senior Web and App Developer at DAI Post with ${years}+ years of experience, building applications for the logistics industry.`;
 
 const [rateStuffHash, bebiAppHash, twentyFourHash, zomboidHash] =
   await Promise.all(
@@ -69,7 +69,11 @@ const jsonLd = {
     "@type": "Person",
     name: SITE.name,
     url: SITE.url,
-    jobTitle: "Software Engineer",
+    jobTitle: "Senior Web and App Developer",
+    worksFor: {
+      "@type": "Organization",
+      name: "DAI Post",
+    },
     description,
   },
 };
@@ -89,14 +93,15 @@ const jsonLd = {
         I've been building software for over <time
           datetime={CAREER_START}
           id="yoe">{years}</time
-        > years, across mobile, web, and backend. These days I build iOS apps with
-        Swift and cross-platform apps with Flutter—still my favorite stack.
+        > years, across mobile, web, and backend. I'm currently a Senior Web and App
+        Developer at DAI Post, working on applications that support logistics operations.
       </p>
       <p>
-        My work has spanned fintech, healthcare, and other industries, from
-        building features to shaping app architecture and helping teams test and
-        ship. I've worked on the backend services behind those apps too, so I'm
-        comfortable taking something from the database through to the interface.
+        My work has spanned industries including fintech, healthcare, and
+        logistics, from building features to shaping app architecture and
+        helping teams test and ship. I work across the frontend and backend,
+        building and improving the applications people rely on in their
+        day-to-day work.
       </p>
       <p>
         You can find the full timeline and details in <a
