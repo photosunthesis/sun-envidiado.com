@@ -1,4 +1,6 @@
 ---
+import "@fontsource/ibm-plex-sans/latin-400.css";
+import "@fontsource/ibm-plex-sans/latin-600.css";
 import "@fontsource/bricolage-grotesque/latin-400.css";
 import "@fontsource/bricolage-grotesque/latin-600.css";
 import "@fontsource/bricolage-grotesque/latin-700.css";
@@ -551,7 +553,7 @@ const isProd = import.meta.env.PROD;
     margin: 0;
     background: #fff;
     color: var(--color-ink);
-    font-family: "Bricolage Grotesque", sans-serif;
+    font-family: "IBM Plex Sans", sans-serif;
     font-size: 10pt;
     letter-spacing: normal;
     orphans: 2;
@@ -595,6 +597,13 @@ const isProd = import.meta.env.PROD;
 
   header {
     break-inside: avoid;
+  }
+
+  .name,
+  .role,
+  .label,
+  .title {
+    font-family: "Bricolage Grotesque", sans-serif;
   }
 
   .name {
