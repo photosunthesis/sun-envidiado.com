@@ -3,7 +3,7 @@ import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 
 /** @type {Record<string, { pubDate?: string; updatedDate?: string }> | null} */
 let blogPostDates = null;
@@ -48,6 +48,45 @@ export default defineConfig({
     imageService: { build: "compile", runtime: "passthrough" },
     prerenderEnvironment: "node",
   }),
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Geist",
+      cssVariable: "--font-geist",
+      weights: [400, 600],
+      styles: ["normal"],
+      subsets: ["latin"],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Geist Mono",
+      cssVariable: "--font-geist-mono",
+      fallbacks: [
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "Consolas",
+        "monospace",
+      ],
+      weights: ["100 900"],
+      styles: ["normal"],
+      subsets: ["latin"],
+    },
+    {
+      provider: fontProviders.local(),
+      name: "Aspekta",
+      cssVariable: "--font-aspekta",
+      options: {
+        variants: [
+          {
+            src: ["./src/assets/fonts/Aspekta-600.woff2"],
+            weight: 600,
+            style: "normal",
+          },
+        ],
+      },
+    },
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

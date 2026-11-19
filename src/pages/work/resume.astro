@@ -1,9 +1,5 @@
 ---
-import "@fontsource/ibm-plex-sans/latin-400.css";
-import "@fontsource/ibm-plex-sans/latin-600.css";
-import "@fontsource/bricolage-grotesque/latin-400.css";
-import "@fontsource/bricolage-grotesque/latin-600.css";
-import "@fontsource/bricolage-grotesque/latin-700.css";
+import { Font } from "astro:assets";
 import { yearsOfExperience } from "../../utils/experience";
 import { nowrapHyphenated as nb } from "../../utils/text";
 
@@ -374,6 +370,8 @@ const isProd = import.meta.env.PROD;
     <!-- Keep personal contact details out of search results and aggregators. -->
     <meta name="robots" content="noindex, nofollow" />
     <meta name="color-scheme" content="light" />
+    <Font cssVariable="--font-geist" preload />
+    <Font cssVariable="--font-aspekta" preload />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     {
@@ -553,7 +551,7 @@ const isProd = import.meta.env.PROD;
     margin: 0;
     background: #fff;
     color: var(--color-ink);
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: var(--font-geist);
     font-size: 10pt;
     letter-spacing: normal;
     orphans: 2;
@@ -602,13 +600,13 @@ const isProd = import.meta.env.PROD;
   .name,
   .role,
   .title {
-    font-family: "Bricolage Grotesque", sans-serif;
+    font-family: var(--font-aspekta);
   }
 
   .name {
     margin: 0;
     font-size: 16pt;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.21;
   }
   .role {
@@ -672,9 +670,10 @@ const isProd = import.meta.env.PROD;
     display: none;
   }
   .label {
+    font-family: var(--font-aspekta);
     margin: 0 0 6pt;
     font-size: 9pt;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.21;
     letter-spacing: 0.5pt;
     text-transform: uppercase;

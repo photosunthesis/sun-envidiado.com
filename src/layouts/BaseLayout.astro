@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import BackButton from "../components/BackButton.astro";
 import SEO from "../components/SEO.astro";
 import StatusBar from "../components/StatusBar.astro";
@@ -98,6 +99,8 @@ const isProd = import.meta.env.PROD;
       noindex={noindex}
       schemas={schemas}
     />
+
+    <Font cssVariable="--font-geist-mono" preload />
 
     <slot name="head" />
 
