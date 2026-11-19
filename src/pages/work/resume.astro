@@ -44,7 +44,7 @@ const identity = {
 
 const summary: ResumeSection = {
   label: "Summary",
-  intro: `Senior software engineer with <span data-yoe>${years}</span>+ years of experience building and maintaining web, backend, and mobile applications across fintech, healthcare, and logistics. My technical background includes JavaScript, React, and Vue for web development, C#/.NET and PHP/Laravel for backend systems, and Flutter, Swift, and SwiftUI for mobile apps. I’ve led application architecture and rebuilds, developed native integrations, and automated build and release workflows. My work spans new products and established codebases, from implementing features and designing APIs to debugging application and database issues.`,
+  intro: `Senior software engineer with <span data-yoe>${years}</span>+ years of experience building web, backend, and mobile apps across fintech, healthcare, and logistics. I’ve worked on Flutter banking apps used by millions of people and written the native Swift and Kotlin code behind their biometric security checks. I’ve also run architecture and code review for a four-person team, set the architecture an iOS app was rebuilt on, and cut a three-day release process down to a one-hour merge. At DAI Post, I maintain a 26-year-old C#/.NET logistics system that handles thousands of shipments a week and lead the design of the company’s new web and mobile apps. I focus on end-to-end ownership of applications, from architecture through release.`,
 };
 
 const experience: ResumeSection = {
@@ -55,23 +55,27 @@ const experience: ResumeSection = {
       org: "DAI Post · Makati City, Philippines",
       date: "October 2026 - Present",
       intro:
-        "Develop and maintain the company's main logistics application, an established C#/.NET system with much of its business logic in SQL queries and stored procedures. Work across the application code and database to support ongoing changes to the software used in logistics operations.",
+        "Develop and maintain the company's main logistics application, a C#/.NET system in production for 26 years that handles thousands of shipments a week, with much of its business logic in SQL queries and stored procedures. Work across the application code and database to support ongoing changes to the software used in logistics operations.",
       bullets: [
         {
+          label: "Web & Mobile App Lead",
+          text: "Lead the design and development of the company's new web and mobile apps.",
+        },
+        {
           label: "Legacy Application Development",
-          text: "Build features and resolve issues within the existing C#/.NET codebase, tracing how the application and database interact to understand existing behavior before making changes.",
+          text: "Build features and resolve issues within the existing C#/.NET codebase, versioned with Subversion (SVN), tracing how the application and database interact before making changes.",
         },
         {
           label: "SQL & Stored Procedures",
           text: "Write and maintain SQL queries and stored procedures that support application workflows, working with database-side business logic alongside the .NET code that calls it.",
         },
         {
-          label: "IT Support & Data Requests",
-          text: "Provide IT support for application errors and missing data, coordinating with colleagues to investigate issues and carry out the queries and data processing needed to keep logistics operations moving.",
+          label: "Production Support",
+          text: "Investigate application errors and data issues with operations staff, and run the queries and data fixes that keep logistics operations moving.",
         },
         {
-          label: "Codebase Maintenance & Version Control",
-          text: "Work within the conventions of a long-running application and use Subversion (SVN) to track and version changes across the existing codebase.",
+          label: "Agentic Workflows & Automation",
+          text: "Run agentic workflows in GitHub Copilot CLI, wired to internal tools via MCP, to automate development, debugging, and recurring support work.",
         },
       ],
     },
@@ -80,19 +84,19 @@ const experience: ResumeSection = {
       org: "MCS Inc. · Makati City, Philippines",
       date: "March 2026 - October 2026",
       intro:
-        "Owns the iOS codebase for a health coaching app and leads its technical direction inside an iOS team, setting the architecture the app was rebuilt on. The work is Swift and SwiftUI across LLM-backed product features, activity tracking, and release automation, alongside the re-architecture itself.",
+        "Owned the iOS codebase for a health coaching app and led its technical direction within the iOS team, setting the architecture the app was rebuilt on. The work was Swift and SwiftUI across LLM-backed product features, activity tracking, and release automation, alongside the re-architecture itself.",
       bullets: [
         {
           label: "Architectural Direction",
-          text: "Set the architectural standards and review practices the iOS team builds against.",
+          text: "Set the architectural standards and review practices the iOS team built against.",
         },
         {
           label: "Refactoring & Re-architecture",
-          text: "Re-architected the app into reusable SwiftUI modules with Swift Package Manager so code could be shared across products.",
+          text: "Re-architected the app into four reusable SwiftUI modules with Swift Package Manager so code could be shared across products.",
         },
         {
           label: "LLM Product Features",
-          text: "Integrated a large language model (LLM) into the app for context-aware guidance and real-time in-app support, and built, debugged, and reviewed the work with Claude Code in the loop.",
+          text: "Integrated a large language model (LLM) into the app for context-aware guidance and real-time in-app support, built and reviewed through agentic workflows with Claude Code.",
         },
         {
           label: "Run & Walk Tracking",
@@ -100,7 +104,7 @@ const experience: ResumeSection = {
         },
         {
           label: "Release Automation",
-          text: "Built the automated release pipeline that took manual steps out of shipping, on Fastlane and Azure DevOps.",
+          text: "Built the release pipeline on Fastlane and Azure DevOps, which cut a three-day manual release down to about an hour, triggered by a git merge.",
         },
       ],
     },
@@ -109,7 +113,7 @@ const experience: ResumeSection = {
       org: "Nextbank · Remote",
       date: "November 2023 - March 2026",
       intro:
-        "Built secure, high-transaction iOS and Android fintech apps in a Flutter monorepo, delivering them alongside security and compliance stakeholders across regulated banking, lending, and remittance products.",
+        "Built secure iOS and Android fintech apps used by millions of customers in a Flutter monorepo, delivering them alongside security and compliance stakeholders across regulated banking, lending, and remittance products.",
       bullets: [
         {
           label: "Native Security Integrations",
@@ -125,7 +129,7 @@ const experience: ResumeSection = {
         },
         {
           label: "Shared Codebase Consolidation",
-          text: "Re-architected a codebase shared across multiple banking apps in one monorepo, cutting duplicate code, shortening new-feature delivery, and lifting release frequency for the teams working in it, on an architecture structured with BLoC and GetIt.",
+          text: "Helped re-architect the codebase shared by more than seven banking apps into one Flutter monorepo using BLoC and GetIt, so features built once could ship across every app instead of being rewritten for each.",
         },
       ],
     },
@@ -154,7 +158,7 @@ const experience: ResumeSection = {
         },
         {
           label: "Concurrent Client Delivery",
-          text: "Shipped for several agency clients at once, working in codebases built with BLoC, Riverpod, and Provider.",
+          text: "Shipped about five apps for agency clients, often at the same time, in codebases built with BLoC, Riverpod, and Provider.",
         },
       ],
     },
@@ -163,11 +167,11 @@ const experience: ResumeSection = {
       org: "CRAFT-TEC Inc. · Cebu City, Philippines",
       date: "March 2021 - August 2022",
       intro:
-        "Led the full stack as technical lead on a four-person team of two Flutter and two backend developers, and owned most of what shipped: the majority of the Flutter codebase, the PHP and Laravel services behind the apps, and the CI/CD, release, and deployment work for both.",
+        "Led the full stack on a four-person team of two Flutter and two backend developers, and owned most of what shipped: the majority of the Flutter codebase, the PHP and Laravel services behind the apps, and the CI/CD, release, and deployment work for both.",
       bullets: [
         {
           label: "Flutter Architecture & Ownership",
-          text: "Architected the Flutter apps and wrote the majority of the mobile codebase, setting the structure and conventions the team built on across several concurrent projects.",
+          text: "Architected two Flutter apps and the core system they integrate with, and wrote most of the mobile codebase, setting the structure and conventions the team built on.",
         },
         {
           label: "Technical Leadership",
@@ -188,7 +192,7 @@ const experience: ResumeSection = {
       org: "SystemsCore Inc. & Freelance · Cebu City, Philippines",
       date: "March 2019 - March 2021",
       intro:
-        "Built enterprise systems in C# and .NET Core alongside full-stack web delivery, at SystemsCore and for freelance clients, and introduced CI/CD, version control, and automated testing to the SystemsCore team.",
+        "Built enterprise systems in C# and .NET Core at SystemsCore, and full-stack web systems for three freelance clients.",
       bullets: [
         {
           label: ".NET & C# Development",
